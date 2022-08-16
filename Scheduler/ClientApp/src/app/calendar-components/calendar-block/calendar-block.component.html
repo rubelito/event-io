@@ -1,0 +1,9 @@
+<div id="{{ block?.stringDate }}" class="block" [className]="!block?.isEmptyBlock ? 'block real-block' : 'block'" (contextmenu)="onRightClickBlock($event); false" cdkDropList (cdkDropListDropped)="drop($event)" [style.background-color]="getBGColor()">
+    <span [className]="block?.isToday ? 'today' : ''" *ngIf="!block?.isEmptyBlock">{{block?.day}}</span>
+    <div class="event event-block block-part" *ngFor="let ev of block?.events" matTooltip="{{ ev.Details }}"
+     [style.background-color]="getEventBGColor(ev.IsOwner)" [cdkDragDisabled]="!ev.IsOwner" [matTooltipShowDelay]="0" [matTooltipHideDelay]="0"
+        [cdkDragData]="ev" cdkDrag>
+        <div class="event-child event-child-title block-part" (contextmenu)="onRightClickAppointment(ev, $event); $event.stopPropagation(); false">{{ev.Title}}</div>
+        <div class="event-child event-child-time block-part" (contextmenu)="onRightClickAppointment(ev, $event); $event.stopPropagation(); false">{{ev.Time}}</div>
+    </div>
+</div>

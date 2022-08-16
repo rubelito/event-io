@@ -1,0 +1,9 @@
+.register-left-field {
+    padding-top: 17px;
+    text-align: right;
+    line-height: 17px;
+}
+
+.register-required {
+    color: #7c869c;
+}

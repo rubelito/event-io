@@ -1,0 +1,59 @@
+.schedule-details {
+    overflow: auto;
+    height: 150px;
+}
+
+.select-included {
+    width: 100%;
+    max-height: 108px;
+}
+
+.timepicker__main-content {
+    --body-background-color: #4f4e4e !important;
+}
+
+.select-list {
+    width: 140px;
+}
+
+.attendees-form {
+    width: 100%;
+}
+
+.dialog-fields-text {
+    width: 700px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+
+.block-margin-10 {
+    margin-top: 10px;
+    display: block;
+}
+
+.mat-option {
+    line-height: 30px;
+    height: 30px;
+}
+
+.addedit-schedule-dialog {
+    display: grid;
+    grid-column-gap: 7px;
+}
+
+.invites-section {
+    width: 100%;
+}
+
+.mat-inputs {
+}
+
+.mat-inputs > div {
+  margin: -4px 0 !important;
+}
+
+.mat-form-field-infix {
+    width: auto !important;
+}

@@ -1,0 +1,19 @@
+<div class="member-selection-div">
+    <div>
+        <select class="members-select" [(ngModel)]="selectedMember" size="11">
+            <option *ngFor="let u of members" [ngValue]="u">{{ u.FirstName}} {{ u.LastName}}</option>
+        </select>
+        <br>
+        <input type="button" value="Remove" (click)="removeMember()" [disabled]="selectedMember == undefined">
+    </div>
+    <div>
+        <select class="members-select" [(ngModel)]="selectedUser" size="11">
+            <option *ngFor="let u of users" [ngValue]="u">{{ u.FirstName}} {{ u.LastName}}</option>
+        </select>
+        <br>
+        <input type="button" value="Add" (click)="addMember()"  [disabled]="selectedUser == undefined">
+    </div>
+</div>
+<div class="buttons-group">
+    <input type="button" (click)="close()" value="Close"> &nbsp;&nbsp; <input type="button" (click)="save()" value="Save">
+</div>

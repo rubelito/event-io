@@ -1,0 +1,27 @@
+.delete-message-box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: #4d525b;
+    width: 350px;
+    color: white;
+}
+
+.message-box-title {
+    font-size: 22px;
+    padding-left: 20px;
+    border-bottom: 1px solid #454a53;
+}
+
+.message-box-message {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.button-section {
+    text-align: right;
+    padding-right: 20px;
+}

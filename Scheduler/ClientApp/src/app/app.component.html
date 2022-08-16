@@ -1,0 +1,95 @@
+<div class="gradiant-animation">
+    <mat-toolbar class="scheduler-toolbar" [ngClass]="(onTop && showLargeMenu) ? 'scheduler-toolbar-top' : 'scheduler-toolbar-down'">
+        <div>
+            <mat-toolbar-row>
+                <button *ngIf="!showLargeMenu && authService.isLoggedIn()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="toggleSideMenu()">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <img height="48" width="48" class="logo" [src]="logoIcon">
+
+                <span class="menu-spacer"></span>
+                <div class="display-flex" *ngIf="showLargeMenu && authService.isLoggedIn()">
+                    <a class="toolbar-link-top" routerLink="/Schedules" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">
+                        <img height="38" width="38" [src]="contactIcon">    
+                        Schedules
+                    </a>
+                    <a class="toolbar-link-top" routerLink="/Contacts" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">
+                        <img height="38" width="38" [src]="eventIcon">  
+                        Contacts
+                    </a>
+                    <a class="toolbar-link-top" routerLink="/Manage-group" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">
+                        <img height="38" width="38" [src]="manageGroupIcon">  
+                        Manage Group
+                    </a>                   
+                </div>
+                <span class="menu-spacer"></span>
+                <div class="display-flex" *ngIf="!authService.isLoggedIn()">               
+                    <a class="toolbar-link-top" (click)="onLoginClick()"><img [src]="loginUserIcon" height="18" width="18"></a>
+                    <a class="toolbar-link-top" (click)="onRegisterClick()"><img [src]="registerUserIcon" height="16" width="16"></a>
+                </div>
+                <div class="display-flex" *ngIf="authService.isLoggedIn()">
+                    <a class="toolbar-link-top" (click)="showProfile()">My Profile</a>
+                    <a class="toolbar-link-top" (click)="onLogoutClick()"><img [src]="logoutUserIcon" height="18" width="18"></a>
+                </div>
+            </mat-toolbar-row>
+        </div>
+        <!-- <div class="miniMenu" *ngIf="!showLargeMenu && toggleMenu && authService.isLoggedIn()" [@slideSideInOut]>
+            <mat-toolbar-row>
+                <a mat-button routerLink="/Schedules" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">Schedules</a>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <a mat-button routerLink="/Contacts" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">Contacts</a>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <a mat-button routerLink="/Manage-group" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">Manage Group</a>
+            </mat-toolbar-row>
+        </div> -->
+        <div class="mini2" *ngIf="!showLargeMenu && toggleMenu && authService.isLoggedIn()" [@slideSideInOut]>
+            <mat-toolbar-row>
+                <a mat-button routerLink="/Schedules" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">Schedules</a>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <a mat-button routerLink="/Contacts" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">Contacts</a>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <a mat-button routerLink="/Manage-group" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">Manage Group</a>
+            </mat-toolbar-row>
+        </div>
+    </mat-toolbar>
+     <!-- <div class="mini2" *ngIf="!showLargeMenu && toggleMenu && authService.isLoggedIn()" [@slideSideInOut]>
+            <mat-toolbar-row>
+                <a mat-button routerLink="/Schedules" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">Schedules</a>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <a mat-button routerLink="/Contacts" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">Contacts</a>
+            </mat-toolbar-row>
+            <mat-toolbar-row>
+                <a mat-button routerLink="/Manage-group" routerLinkActive="nav-link-active" ariaCurrentWhenActive="page">Manage Group</a>
+            </mat-toolbar-row>
+    </div> -->
+    <!-- <div class="mini2" *ngIf="!showLargeMenu && toggleMenu && authService.isLoggedIn()" [@slideSideInOut]>
+    Hello there
+    </div>  -->
+    
+    <div class="toolbar-content-space">
+        <div class="welcome-auth" *ngIf="!authService.isLoggedIn()">
+            <h1>Lorem ipsum dolor amet</h1>
+            <p>
+                Integer enim neque volutpat ac tincidunt vitae. Eu consequat ac felis donec et. Semper risus in hendrerit gravida. Pharetra sit amet aliquam id diam maecenas. Id donec ultrices tincidunt arcu non sodales neque sodales ut
+            </p>
+            <div class="flex-center">
+                <button class="auth-button button-lightblue button-icon-flex" (click)="onLoginClick()">
+                    <img height="18" width="18" [src]="authUserIcon">
+                    Log In
+                </button>
+                <button class="auth-button button-orange button-icon-flex" (click)="onRegisterClick()">
+                    <img height="18" width="18" [src]="authCrossIcon">
+                    Register
+                </button>
+            </div>
+        </div>
+    </div>
+    <div style="height: 50px; overflow: hidden;" ><svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;"><path d="M-4.22,-0.48 C169.01,258.05 353.55,-126.80 499.15,51.80 L500.00,150.00 L0.00,150.00 Z" style="stroke: none; fill: #182139;"></path></svg></div>
+</div>
+
+<router-outlet class="component-center"></router-outlet>

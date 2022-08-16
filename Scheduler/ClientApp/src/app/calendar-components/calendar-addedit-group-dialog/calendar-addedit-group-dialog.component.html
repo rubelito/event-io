@@ -1,0 +1,63 @@
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>Create Group</span>
+        <span class="auth-close-x" (click)="cancel()">&times;</span>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">Group Name:</div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="groupName">
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">Description:</div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="description">
+        </div>
+    </div>
+    <div class="auth-footer">
+        <div class="auth-footer-fields background-color-3a405a">
+            <div class="auth-footer-left"></div>
+            <div class="auth-footer-right">
+                <button mat-flat-button class="blue-button opacity-button" (click)="add()" [disabled]="groupName.length == 0 || description.length == 0">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 
+<span><h3 id="dialog-title" cdkDrag cdkDragRootElement=".cdk-overlay-pane">Create Group</h3></span>
+<div class="add-user-dialog">
+    <mat-form-field class="mat-inputs" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="groupName" placeholder="Enter group name">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="mat-inputs" appearance="outline">
+        <mat-label>Description</mat-label>
+        <input matInput [(ngModel)]="description" placeholder="Enter description">
+    </mat-form-field>
+
+    <div>
+        <div class="user-dialog-fields">
+            <div class="user-dialog-fields-text">
+                <div class="user-dialog-fields">
+                    <div class="user-dialog-fields-label"><label for="id">Id :</label> </div>
+                    <div><input id="id" [(ngModel)]="id" disabled></div>
+                </div>
+                <div class="user-dialog-fields">
+                    <div class="user-dialog-fields-label"><label for="groupName">Name :</label> </div>
+                    <div><input id="groupName" [(ngModel)]="groupName" #groupNameRef  placeholder="Enter Name"></div>
+                </div>
+                <div class="user-dialog-fields">
+                    <div class="user-dialog-fields-label"><label for="description">Description :</label> </div>
+                    <div><input id="description" [(ngModel)]="description" #descriptionRef  placeholder="Enter Description"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<div class="buttons-group">
+    <button mat-flat-button class="blue-button opacity-button" (click)="add()" [disabled]="groupName.length == 0 || description.length == 0">Ok</button> &nbsp;&nbsp;
+    <button mat-flat-button class="transparent-button opacity-button" (click)="cancel()">Cancel</button>
+</div> -->

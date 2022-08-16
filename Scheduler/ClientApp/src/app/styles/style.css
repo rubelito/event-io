@@ -1,0 +1,39 @@
+/*  Mat button  */
+
+.blue-button {
+    background-color: #3f51b5;
+  }
+  
+.red-button {
+background-color: #f44336;
+}
+
+.icon-blue {
+color: #3f51b5;
+}
+
+.transparent-button {
+background-color: transparent;
+border: 1px solid #363739;
+}
+
+.opacity-button:hover {
+    opacity: 0.9;
+}
+
+/* Mat chips */
+.custom-chip {
+margin: 1.5px;
+font-size: 13px; 
+padding-top: 0px;
+padding-bottom: 0px;
+padding-right: 5px;
+padding-left: 5px;
+min-height: 21px;
+}
+
+.custom-chip > button {
+margin-left: 3px;
+}
+
+  

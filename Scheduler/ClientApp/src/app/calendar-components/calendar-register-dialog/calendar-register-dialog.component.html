@@ -1,0 +1,112 @@
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>Register</span>
+        <span class="auth-close-x" (click)="onCancel()">&times;</span>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">
+            <div class="register-left-field">
+                Username:
+                <br>
+                <span class="register-required">Required</span>
+            </div>
+        </div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" #usernameRef [(ngModel)]="username">
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">
+            <div class="register-left-field">
+                Email:
+                <br>
+                <span class="register-required">Required</span>
+            </div>
+        </div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" #emailRef [(ngModel)]="email">
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">
+            <div class="register-left-field">
+                Password:
+                <br>
+                <span class="register-required">Required</span>
+            </div>
+        </div>
+        <div class="auth-right-fields background-color-272e48">
+            <input #password1Ref class="auth-text auth-password-text" [type]="show1 ? 'text' : 'password'" [(ngModel)]="password1">
+            <button class="auth-text show-password-button" (click)="showPassword1()">
+                <img *ngIf="!show1" height="18" width="18" [src]="showPasswordIcon">
+                <img *ngIf="show1" height="18" width="18" [src]="hidePasswordIcon">
+                {{ show1 ? 'Hide' : 'Show' }}
+               
+            </button>
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">
+            <div class="register-left-field">
+                Re-Password:
+                <br>
+                <span class="register-required">Required</span>
+            </div>
+        </div>
+        <div class="auth-right-fields background-color-272e48">
+            <input #password2Ref class="auth-text auth-password-text" [type]="show2 ? 'text' : 'password'" [(ngModel)]="password2">
+            <button class="auth-text show-password-button" (click)="showPassword2()">
+                <img *ngIf="!show2" height="18" width="18" [src]="showPasswordIcon">
+                <img *ngIf="show2" height="18" width="18" [src]="hidePasswordIcon">
+                {{ show2 ? 'Hide' : 'Show' }}
+               
+            </button>
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">
+            <div class="register-left-field">
+                First Name:
+                <br>
+                <span class="register-required">Required</span>
+            </div>
+        </div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="firstname">
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">
+            <div class="register-left-field">
+                Middle Name:
+                <br>
+                <span class="register-required">Required</span>
+            </div>
+        </div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="middlename">
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">
+            <div class="register-left-field">
+                Last Name:
+                <br>
+                <span class="register-required">Required</span>
+            </div>
+        </div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="lastname">
+        </div>
+    </div>
+
+    <div class="auth-footer">
+        <div class="auth-footer-fields background-color-3a405a">
+            <div class="auth-footer-left"></div>
+            <div class="auth-footer-right">
+                <input type="button" class="auth-button button-lightblue" value="Register" (click)="onRegister()"
+                [disabled]="username.length == 0 || password1.length == 0 || password2.length == 0 || email.length == 0 || firstname.length == 0 || lastname.length == 0 || middlename.length == 0">
+            </div>
+        </div>
+    </div>
+</div>

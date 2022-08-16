@@ -1,0 +1,30 @@
+.log-in-content {
+    width: 424px;
+    text-align: center;
+}   
+
+.login-selection {
+    background-color: #ebeff2;
+    padding: 50px;
+}
+
+.login-title-section {
+    color: white;
+}
+
+.logn-register-selection {
+    margin-bottom: 50px;
+}
+
+.login-text {
+    margin-bottom: 15px;
+}
+
+.button-section {
+    margin-top: 30px;
+}
+
+.button-section > input {
+    width: 155px;
+    background-color: #d3dce3;
+}

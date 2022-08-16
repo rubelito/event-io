@@ -1,0 +1,8 @@
+.member-selection-div {
+    display: flex;
+    gap: 5px;
+}
+
+.members-select {
+    width: 150px;
+}

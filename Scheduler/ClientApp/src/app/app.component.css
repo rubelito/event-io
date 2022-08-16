@@ -1,0 +1,377 @@
+.main-page {
+  display: flex;
+  box-sizing: border-box;
+  height: 700px;
+}
+
+.left-nav {
+  min-width: 276px;
+  background-color: beige;
+}
+
+.right-content {
+  width: 100%;
+}
+
+.left-nav-buttons {
+  background: lightblue;
+  margin-top: 20px;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+  .left-nav-buttons > a {
+    display: block;
+    text-decoration: none;
+    color: #000;
+    height: 100%;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border: 2px solid #add8e6;
+  }
+
+.flex-gap-13 {
+  justify-content: center;
+  gap: 13px;
+}
+
+.flex-left-gap-13 {
+  display: flex;
+  gap: 13px;
+  justify-content: start;
+  align-items: center;
+}
+
+.flex-other-side {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logout-button {
+  cursor: pointer;
+}
+
+::placeholder {
+  color: red;
+  font-style: italic;
+  opacity: 1;
+}
+
+/* toolbar buttons top */
+
+.toolbar-link-top {
+  padding: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 15px;
+  color: white;
+  border-bottom: 2px solid transparent;
+  gap: 6px;
+}
+
+.toolbar-link-top:hover {
+  background-color: rgba(255,255,255,0.2);
+  color: white;
+  cursor: pointer;
+}
+
+.nav-link-active {
+  background-color: rgba(255,255,255,0.2);
+  border-bottom: 2px solid white;
+}
+
+/* Add Edit and Add user dialog styles */
+
+.user-dialog-fields {
+  display: flex;
+  gap: 10px;
+}
+
+.user-dialog-fields-label {
+  min-width: 100px;
+  text-align: right;
+}
+
+.user-dialog-fields-text > div {
+  margin-bottom: 3px;
+}
+
+.dialog-fields {
+  display: flex;
+  gap: 10px;
+}
+
+.dialog-fields-label {
+  text-align: left;
+  color: white;
+}
+
+.dialog-fields-label > div {
+  margin-bottom: 12px;
+}
+
+.buttons-group {
+  margin-top: 30px;
+} */
+
+.miniMenu {
+  overflow: hidden;
+}
+
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar > * {
+  margin-right: 10px !important;
+  overflow: hidden;
+}
+
+.component-center + *{
+  display: flex;
+  justify-content: center;
+}
+
+.scheduler-toolbar {
+  position: fixed;
+  z-index: 2;
+}
+
+/* Gradiant annimation on toolbar */
+
+.scheduler-toolbar-top {
+  background: transparent;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.scheduler-toolbar-down {
+  background-color: #272e48 !important;
+  border-bottom: 1px solid #3d445b;
+  box-shadow: 0px 5px 7px 3px rgba(0,0,0,0.22);
+  -webkit-box-shadow: 0px 5px 7px 3px rgba(0,0,0,0.22);
+  -moz-box-shadow: 0px 5px 7px 3px rgba(0,0,0,0.22);
+}
+
+.toolbar-content-space {
+  min-height: 140px;
+
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.welcome-auth {
+  padding-top: 95px;
+  text-align: center;
+  color: #dae1f4;
+  margin-bottom: 60px;
+}
+
+.welcome-auth > h1 {
+  font-weight: bold;
+  font-size: 26px;
+}
+
+.welcome-auth > p {
+  font-size: 15px;
+}
+
+.flex-center {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.button-icon-flex {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+}
+
+/* gradient background */
+
+.gradiant-animation {
+  background: linear-gradient(92deg, #5a0b03, #0c4d01, #0d0261, #611b01, #565800, #3b0163);
+  background-size: 1200% 1200%;
+
+  -webkit-animation: AnimationName 48s ease infinite;
+  -moz-animation: AnimationName 48s ease infinite;
+  animation: AnimationName 48s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+  0%{background-position:0% 51%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 51%}
+}
+@-moz-keyframes AnimationName {
+  0%{background-position:0% 51%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 51%}
+}
+@keyframes AnimationName { 
+  0%{background-position:0% 51%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 51%}
+}
+
+/* Auth dialog */
+
+.auth-dialog {
+  background-color: #2c3351;;
+}
+
+.auth-fields {
+  display: flex;
+}
+
+.auth-fields > div {
+  padding: 0 10px;
+  min-height: 55px;
+  display: flex;
+  align-items: center;
+}
+
+.auth-dialog-title {
+  border-bottom: 1px solid #384166;
+  color: #d6d9e0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  padding: 14px;
+}
+
+.auth-left-fields {
+  min-width: 33%;
+  border-right: 1px solid #384166;
+  color: #dae1f4;
+  flex-direction: row-reverse;
+}
+
+.auth-right-fields {
+  min-width: 67%;
+  color: #dae1f4;
+  flex-direction: row;
+}
+
+.background-color-272e48 {
+  background-color: #272e48;
+}
+
+.background-color-3a405a {
+  background-color: #3a405a;
+}
+
+.background-color-161f35 {
+  background-color: #161f35;
+}
+
+.auth-footer {
+  border-top: 1px solid #384166;
+  color: #dae1f4;
+}
+
+.auth-footer > div {
+  padding: 6px;
+}
+
+.auth-text {
+  background-color: #2f3650;
+  border: 1px solid #3a4369;
+  outline: none;
+  border-radius: 5px;
+  padding: 5px;
+  width: 100%;
+  caret-color: white;
+  color: white;
+}
+
+.auth-text:focus {
+  background-color: #272e48;
+  border: 1px solid #737d92;
+}
+
+.auth-close-x {
+  color: #838aa2;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.auth-close-x:hover {
+  color: #22b9ff;
+  cursor: pointer;
+}
+
+.auth-footer-fields {
+  display: flex;
+}
+
+.auth-footer-left {
+  flex: 33%
+}
+
+.auth-footer-right {
+  flex: 67%;
+}
+
+.auth-button {
+  color: white;
+  padding: 7px;
+  text-align: center;
+  border-radius: 4px;
+  border: 0;
+  min-width: 110px;
+}
+
+.auth-button:disabled {
+  opacity: .5;
+}
+
+.auth-grey-button {
+  background-color: #929db0;
+}
+
+.auth-grey-button:hover {
+  background-color: #aab1c2;
+}
+
+.button-lightblue {
+  background-color: #22b9ff;
+}
+
+.button-lightblue:hover {
+  background-color: #4bc6ff;
+}
+
+.button-orange {
+  background-color: #d35500;
+}
+
+.button-orange:hover {
+  background-color: #f48b7d;
+}
+
+.auth-password-text {
+  border-radius: 5px 0 0 5px !important;
+  border-right: 0 !important;
+}
+
+.auth-password-text:focus + .show-password-button {
+  background-color: #272e48;
+  border: 1px solid #737d92;
+}
+
+.show-password-button {
+  display: flex;
+  width: 80px;
+  gap: 5px;
+  align-items: center;
+  border-radius: 0 5px 5px 0 !important;
+}

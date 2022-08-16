@@ -1,0 +1,55 @@
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>Login</span>
+        <span class="auth-close-x" (click)="onCancel()">&times;</span>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">Your username:</div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="userName">
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">Password:</div>
+        <div class="auth-right-fields background-color-272e48">
+            <input #password1Ref class="auth-text auth-password-text" [type]="show ? 'text' : 'password'" [(ngModel)]="password">
+            <button class="auth-text show-password-button" (click)="showPassword()">
+                <img *ngIf="!show" height="18" width="18" [src]="showPasswordIcon">
+                <img *ngIf="show" height="18" width="18" [src]="hidePasswordIcon">
+                {{ show ? 'Hide' : 'Show' }}
+               
+            </button>
+        </div>
+    </div>
+    <div class="auth-footer">
+        <div class="auth-footer-fields background-color-3a405a">
+            <div class="auth-footer-left"></div>
+            <div class="auth-footer-right">
+                <button class="auth-button auth-grey-button" (click)="onAuth()">
+                    <img height="16" width="16" [src]="lockIcon">
+                    Log In
+                </button>
+            </div>
+        </div>
+
+        <div class="auth-footer-fields background-color-161f35">
+            <div class="auth-footer-left"></div>
+            <div class="auth-footer-right">
+                <span class="dont-have-account">Don't have an account?</span>
+                <input type="button" class="auth-button button-lightblue" (click)="onRegisterNow()" value="Register Now">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <p>Log In</p>
+<div>
+    <span>User name: </span><input type="text" [(ngModel)]="userName">
+</div>
+<div>
+    <span>Password : </span><input type="password" [(ngModel)]="password">
+</div>
+<input type="button" value="Cancel" (click)="onCancel()"> 
+&nbsp;&nbsp; <input type="button" value="Login" (click)="onAuth()"> -->

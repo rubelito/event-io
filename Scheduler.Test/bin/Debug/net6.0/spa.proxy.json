@@ -1,0 +1,8 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "http://localhost:44442",
+"LaunchCommand": "npm start",
+"WorkingDirectory": "/Users/rubelitoisiderio/Documents/Projects/Scheduler/Scheduler/ClientApp/",
+"MaxTimeoutInSeconds": "120"
+}
+}

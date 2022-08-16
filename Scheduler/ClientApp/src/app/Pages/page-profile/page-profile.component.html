@@ -1,0 +1,16 @@
+<div class="page-profile">
+    <div>
+        <span class="profile-label">First Name :</span><input type="text" [(ngModel)]="firstName">
+    </div>
+    <div>
+        <span class="profile-label">Middle Name :</span><input type="text" [(ngModel)]="middleName">
+    </div>
+    <div>
+        <span class="profile-label">Last Name :</span><input type="text"[(ngModel)]="lastName">
+    </div>
+    <div *ngIf="user != null">
+        <input type="button" value="Cancel" (click)="cancel()" [disabled]="firstName == preFirstName && middleName == preMiddleName && lastName == preLastName"> &nbsp;&nbsp;
+        <input type="button" value="Update" (click)="onUpdate()" [disabled]="firstName == preFirstName && middleName == preMiddleName && lastName == preLastName"><br>
+        <input type="button" value="Change Password" (click)="changePass()">
+    </div>
+</div>

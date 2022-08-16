@@ -1,0 +1,62 @@
+<div class="log-in-content">
+    <div class="login-title-section">
+        <h1>Scheduler</h1>
+    </div>
+    <div class="login-selection" *ngIf="!authService.isLoggedIn()">
+        <div class="logn-register-selection">
+            <input type="button" value="Login" (click)="onSelectMode('login')"> &nbsp;&nbsp;
+            <input type="button" value="Register"  (click)="onSelectMode('register')">
+        </div>
+        <div *ngIf="mode == 'login'">
+            <div class="username-section login-text">
+                <input id="username" type="text" [(ngModel)]="userNameLogin" placeholder="Username">
+            </div>
+            <div class="password-section login-text">
+                <input id="password" type="password" [(ngModel)]="passwordLogin" placeholder="Password">
+            </div>
+            <div class="button-section">
+                <input type="button" value="Login" (click)="login()">
+            </div>
+        </div>
+        <div *ngIf="mode == 'register'">
+            <div class="add-user-dialog">
+                <div>
+                    <div class="user-dialog-fields">
+                        <div class="user-dialog-fields-text">
+                            <div class="user-dialog-fields">
+                                <div class="user-dialog-fields-label"><label for="username">UserName :</label> </div>
+                                <div><input id="username" [(ngModel)]="usernameReg" #usernameRef  placeholder="Enter Username"></div>
+                            </div>
+                            <div class="user-dialog-fields">
+                                <div class="user-dialog-fields-label"><label for="email">Password :</label> </div>
+                                <div><input id="password1" type="password" [(ngModel)]="password1Reg" placeholder="Password"></div>
+                            </div>
+                            <div class="user-dialog-fields">
+                                <div class="user-dialog-fields-label"><label for="email">Password :</label> </div>
+                                <div><input id="password2" type="password" [(ngModel)]="password2Reg" placeholder="Re-type Password"></div>
+                            </div>
+                            <div class="user-dialog-fields">
+                                <div class="user-dialog-fields-label"><label for="email">Email :</label> </div>
+                                <div><input id="email" [(ngModel)]="emailReg" #emailRef  placeholder="Enter Email"></div>
+                            </div>
+                            <div class="user-dialog-fields">
+                                <div class="user-dialog-fields-label"><label for="lastname">Last Name :</label> </div>
+                                <div><input id="lastname" [(ngModel)]="lastnameReg"  placeholder="Enter last name"></div>
+                            </div>
+                            <div class="user-dialog-fields">
+                                <div class="user-dialog-fields-label"><label for="firstname">First Name :</label> </div>
+                                <div><input id="firstname" [(ngModel)]="firstnameReg"  placeholder="Enter first name"></div>
+                            </div>
+                            <div class="user-dialog-fields">
+                                <div class="user-dialog-fields-label"><label for="middlename">Middle Name :</label> </div>
+                                <div><input id="middlename" [(ngModel)]="middlenameReg"  placeholder="Enter middle name"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div class="button-section">
+                <input type="button" (click)="register()" value="Register" [disabled]="usernameReg.length == 0 || password1Reg.length == 0 || password2Reg.length == 0 || emailReg.length == 0 || firstnameReg.length == 0 || lastnameReg.length == 0 || middlenameReg.length == 0">
+            </div>
+        </div>
+    </div>

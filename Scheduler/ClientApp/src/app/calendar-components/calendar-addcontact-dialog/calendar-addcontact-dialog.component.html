@@ -1,0 +1,44 @@
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>Add Contact</span>
+        <span class="auth-close-x" (click)="cancel()">&times;</span>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">Email:</div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="email">
+        </div>
+    </div>
+    <div class="auth-footer">
+        <div class="auth-footer-fields background-color-3a405a">
+            <div class="auth-footer-left"></div>
+            <div class="auth-footer-right">
+                <button mat-flat-button class="blue-button opacity-button" (click)="add()" [disabled]="email.length == 0">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- <span><h3 id="dialog-title" cdkDrag cdkDragRootElement=".cdk-overlay-pane">Add Contact</h3></span>
+<div class="add-user-dialog">
+    <mat-form-field class="mat-inputs" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="email" placeholder="Enter contact's email">
+    </mat-form-field>
+    <div>
+        <button mat-flat-button class="blue-button opacity-button" (click)="add()" [disabled]="email.length == 0">Ok</button> &nbsp;&nbsp;
+        <button mat-flat-button class="transparent-button opacity-button" (click)="cancel()">Cancel</button>
+    </div>
+</div>
+ -->
+<!-- <div class="user-dialog-fields">
+    <div class="user-dialog-fields-label"><label for="role">Role :</label> </div>
+    <div>
+        <select id="role" [(ngModel)]="selectedRole">
+            <option *ngFor="let r of roles" [value]="r">{{r}}</option>
+        </select>
+    </div>
+</div> -->
