@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve --port 44442",
     "build": "ng build",
+    "build-prod": "ng build --prod",
     "build:ssr": "ng run Scheduler:server:dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
