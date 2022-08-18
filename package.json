@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 44442",
-    "build": "cd './Scheduler/ClientApp/' && ng build --configuration=production",
+    "build": "cd './Scheduler/ClientApp/' && npm install && ng build --configuration=production",
     "build:ssr": "ng run Scheduler:server:dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
