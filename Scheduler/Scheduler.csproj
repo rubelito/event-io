@@ -42,6 +42,8 @@
     <None Remove="ClientApp\dist\main.1f6b9871f27fa6d2.js" />
     <None Remove="Certificate\" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
+    <None Remove="Db\" />
+    <None Remove="Db\testDatabase.db" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +53,13 @@
     <Folder Include="Services\" />
     <Folder Include="SharedCode\" />
     <Folder Include="Certificate\" />
+    <Folder Include="Db\" />
+  </ItemGroup>
+  
+   <ItemGroup>
+    <Content Include="Db\testDatabase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   
   <ItemGroup>
