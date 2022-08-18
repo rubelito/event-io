@@ -13,25 +13,26 @@ namespace Scheduler.Services
 
         public UserService()
         {
-            _userRepository = new UserRepository();
+            //_userRepository = new UserRepository();
         }
 
         public UserIdentity Authenticate(string username, string password)
         {
             UserIdentity u = new UserIdentity();
-            var user = _userRepository.GetUserByUsername(username);
-            _userRepository.Dispose();
+           // var user = _userRepository.GetUserByUsername(username);
+           // _userRepository.Dispose();
 
-            if (user != null)
+            //if (user != null)
+            if (true)
             {
-                if (user.UserName == username && user.Password == password)
-                {
+                //if (user.UserName == username && user.Password == password)
+               // {
                     u.Id = user.Id;
                     u.Username = username;
                     u.IsAuthenticated = true;
                     u.LoginStatus = "Success";
                     return u;
-                }
+               // }
             }
 
             u.IsAuthenticated = false;
