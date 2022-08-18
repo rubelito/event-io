@@ -56,7 +56,7 @@ public class UserController : ControllerBase
          //   user.Credential = Convert.ToBase64String(plainTextBytes);
       //  }
       
-      User user = new User();
+      UserIdentity user = new UserIdentity();
       
       user.Id = 1;
                    user.Username = "rube";
