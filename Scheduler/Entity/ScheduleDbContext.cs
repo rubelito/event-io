@@ -19,7 +19,7 @@ public class SchedulerDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         string DbPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-        optionsBuilder.UseSqlite(@"Data Source=" + DbPath + @"/Db/testDatabase.db", options =>
+        optionsBuilder.UseSqlite(@"Data Source=" + DbPath + @"/testDatabase.db", options =>
         {
             options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
         });
