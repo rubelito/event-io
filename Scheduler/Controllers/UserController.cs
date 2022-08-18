@@ -46,16 +46,30 @@ public class UserController : ControllerBase
     [Consumes("application/json")]
     public ActionResult Login([FromBody] UserCredential userCredential)
     {
-        //var user = _userService.Authenticate(userCredential.Username, userCredential.Password);
+       // var user = _userService.Authenticate(userCredential.Username, userCredential.Password);
 
-        //if (user.IsAuthenticated)
-        if (true)
-        {
-            string credential = userCredential.Username + ":" + userCredential.Password;
+      //  if (user.IsAuthenticated)
+      //  {
+        //    string credential = userCredential.Username + ":" + userCredential.Password;
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(credential);
-            user.Credential = Convert.ToBase64String(plainTextBytes);
-        }
+         //   var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(credential);
+         //   user.Credential = Convert.ToBase64String(plainTextBytes);
+      //  }
+      
+      User user = new User();
+      
+      user.Id = 1;
+                   user.Username = "rube";
+                    user.IsAuthenticated = true;
+                    user.LoginStatus = "Success";
+      
+      string credential = userCredential.Username + ":" + userCredential.Password;
+      var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(credential);
+      user.Credential = Convert.ToBase64String(plainTextBytes);
+
+
+
+
 
         return Ok(user);
     }
