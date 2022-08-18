@@ -1,0 +1,112 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Provide sufficient contrast against white background */
+/* a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
+
+.mat-form-field-infix {
+  width: auto !important;
+}
+
+/* @import '@angular/material/prebuilt-themes/pink-bluegrey.css'; */
+
+body {
+  background-color: #182139;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Time picker color theme */
+.cdk-overlay-container {
+  z-index: 999;
+}
+
+.timepicker__main-content {
+--body-background-color: #4f4e4e !important;
+}
+
+.clock-face {
+--clock-face-background-color: #777676;
+}
+
+.clock-face__number > span {
+color: white !important;
+}
+
+.display-flex {
+  display: flex;
+  align-items: center;
+}
+
+/* For toolbar link */
+
+mat-toolbar-row {
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+mat-toolbar-row > .ng-star-inserted {
+  height: 100%;
+}
+
+/* Mat dialog  */
+mat-dialog-container {
+  padding: 0 !important;
+}
+
+/* Change color of time picker icon */
+
+mat-datepicker-toggle > button {
+  width: 30px !important;
+}
+
+ngx-material-timepicker-toggle > button > svg {
+  fill: white;
+}
+
+.mini2 {
+  width: 280px;
+  margin-top: 65px;
+  position: fixed;
+  z-index: 1;
+  background-color: #272e48;
+  color: white;
+}
+
+.mini2 > mat-toolbar-row {
+  max-width: 280px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  border-top: 1px solid #545c73;
+  border-bottom: 1px solid #545c73;
+  margin-top: -1px;
+  padding: 0;
+}
+
+.mini2 > mat-toolbar-row > a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  align-items: center;
+}
+
+.mini2 > mat-toolbar-row > a:hover {
+  color: white;
+}
