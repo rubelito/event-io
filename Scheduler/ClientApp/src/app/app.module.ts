@@ -48,6 +48,7 @@ import { CalendarAddremoveMemberDialogComponent } from './calendar-components/ca
 import { PageLoginComponent } from './Pages/page-login/page-login.component';
 import { CalendarRegisterDialogComponent } from './calendar-components/calendar-register-dialog/calendar-register-dialog.component';
 import { CalendarMyprofileDialogComponent } from './calendar-components/calendar-myprofile-dialog/calendar-myprofile-dialog.component';
+import { PageHomeComponent } from './Pages/page-home/page-home.component';
 
 
 @NgModule({
@@ -70,14 +71,15 @@ import { CalendarMyprofileDialogComponent } from './calendar-components/calendar
     CalendarAddremoveMemberDialogComponent,
     PageLoginComponent,
     CalendarRegisterDialogComponent,
-    CalendarMyprofileDialogComponent
+    CalendarMyprofileDialogComponent,
+    PageHomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: PageLoginComponent },
+      { path: '', component: PageHomeComponent },
       { path: 'Schedules', component: PageCalendarComponent, canActivate: [LinkguardGuard] },
       { path: 'Contacts', component: PageContactsComponent, canActivate: [LinkguardGuard] },
       { path: 'Manage-group', component: PageGroupComponent, canActivate: [LinkguardGuard] }
