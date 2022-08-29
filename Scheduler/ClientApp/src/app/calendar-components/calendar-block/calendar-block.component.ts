@@ -20,7 +20,7 @@ export class CalendarBlockComponent implements OnInit {
   constructor(private appointmentService: AppointmentService) {
    }
   ngOnInit(): void {
-  }
+  } 
 
   onRightClickBlock(event: any){
     if (!this.block?.isEmptyBlock){

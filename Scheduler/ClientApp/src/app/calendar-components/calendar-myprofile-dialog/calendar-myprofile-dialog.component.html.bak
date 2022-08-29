@@ -1,0 +1,59 @@
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>My Profile</span>
+        <span class="auth-close-x" (click)="close()">&times;</span>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">Password:</div>
+        <div class="auth-right-fields background-color-272e48">
+            <button mat-flat-button class="blue-button opacity-button" (click)="changePass()">Change Password</button>
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">First Name:</div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="firstName">
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">Middle Name:</div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="middleName">
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields">Last Name:</div>
+        <div class="auth-right-fields background-color-272e48">
+            <input class="auth-text" type="text" [(ngModel)]="lastName">
+        </div>
+    </div>
+    <div class="auth-footer">
+        <div class="auth-footer-fields background-color-3a405a">
+            <div class="auth-footer-left"></div>
+            <div class="auth-footer-right flex-left-gap-13"> 
+                <!-- <button mat-flat-button class="blue-button opacity-button" (click)="add()" [disabled]="email.length == 0">Update Pasword</button> -->
+                <button mat-flat-button class="blue-button opacity-button" (click)="onUpdate()" [disabled]="firstName == preFirstName && middleName == preMiddleName && lastName == preLastName">Update</button>
+                <button mat-flat-button class="transparent-button opacity-button" (click)="reset()" [disabled]="firstName == preFirstName && middleName == preMiddleName && lastName == preLastName">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="page-profile">
+    <div>
+        <span class="profile-label">First Name :</span><input type="text" [(ngModel)]="firstName">
+    </div>
+    <div>
+        <span class="profile-label">Middle Name :</span><input type="text" [(ngModel)]="middleName">
+    </div>
+    <div>
+        <span class="profile-label">Last Name :</span><input type="text"[(ngModel)]="lastName">
+    </div>
+    <div *ngIf="user != null">
+        <input type="button" value="Cancel" (click)="cancel()" [disabled]="firstName == preFirstName && middleName == preMiddleName && lastName == preLastName"> &nbsp;&nbsp;
+        <input type="button" value="Update" (click)="onUpdate()" [disabled]="firstName == preFirstName && middleName == preMiddleName && lastName == preLastName"><br>
+        <input type="button" value="Change Password" (click)="changePass()">
+    </div>
+</div> -->

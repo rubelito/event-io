@@ -1,0 +1,36 @@
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>Schedule</span>
+        <span class="auth-close-x" (click)="close()">&times;</span>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields left-field-width">Created By :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <span>{{ event.appointment.CreatedBy }}</span>
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields left-field-width">Title :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <span>{{ event.appointment.Title }}</span>
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields left-field-width">Location :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <span>{{ event.appointment.Location }}</span>
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields left-field-width">Date & Time :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <span>{{ event.appointment.Date | date:'MMM dd, yyyy' }} - {{ event.appointment.Time }}</span>
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields left-field-width">Details :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <span>{{ event.appointment.Details }}</span>
+        </div>
+    </div>
+</div>

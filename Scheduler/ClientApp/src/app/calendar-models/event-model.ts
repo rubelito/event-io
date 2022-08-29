@@ -1,5 +1,6 @@
 export class EventModel {
     Id: number = 0;
+    Location: string = "";
     Title: string ='';
     Details: string = '';
     Date: string = '';

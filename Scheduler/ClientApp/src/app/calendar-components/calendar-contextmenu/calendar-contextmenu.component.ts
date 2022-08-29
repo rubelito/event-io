@@ -10,6 +10,7 @@ export class CalendarContextmenuComponent implements OnInit {
   constructor() { }
 
   @Input() isAdd?: boolean;
+  @Input() isOwner?: boolean;
   @Output() showDialog = new EventEmitter<string>();
 
   ngOnInit(): void {

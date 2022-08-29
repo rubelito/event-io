@@ -4,14 +4,14 @@
         <span class="auth-close-x" (click)="onCancel()">&times;</span>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields">Your username:</div>
-        <div class="auth-right-fields background-color-272e48">
+        <div class="auth-left-fields auth-left-fields-width">Your username:</div>
+        <div class="auth-right-fields auth-right-fields-width background-color-272e48 padding-top">
             <input class="auth-text" type="text" [(ngModel)]="userName">
         </div>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields">Password:</div>
-        <div class="auth-right-fields background-color-272e48">
+        <div class="auth-left-fields auth-left-fields-width">Password:</div>
+        <div class="auth-right-fields auth-right-fields-width background-color-272e48 padding-bottom">
             <input #password1Ref class="auth-text auth-password-text" [type]="show ? 'text' : 'password'" [(ngModel)]="password">
             <button class="auth-text show-password-button" (click)="showPassword()">
                 <img *ngIf="!show" height="18" width="18" [src]="showPasswordIcon">

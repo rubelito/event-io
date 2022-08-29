@@ -4,6 +4,7 @@ namespace Scheduler.Models
 	public class EventModel
 	{
 		public int Id { get; set; }
+		public string Location { get; set; }
 		public string Title { get; set; }
 		public string Details { get; set; }
 		public string YearMonth { get; set; }

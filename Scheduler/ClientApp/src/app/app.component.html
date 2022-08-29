@@ -1,11 +1,28 @@
 <div class="gradiant-animation">
+    <div class="bubble-animate">
+        <div class="circle small square1"></div>
+        <div class="circle small square2"></div>
+        <div class="circle small square3"></div>
+        <div class="circle small square4"></div>
+        <div class="circle small square5"></div>
+        <div class="circle medium square1"></div>
+        <div class="circle medium square2"></div>
+        <div class="circle medium square3"></div>
+        <div class="circle medium square4"></div>
+        <div class="circle medium square5"></div>
+        <div class="circle large square1"></div>
+        <div class="circle large square2"></div>
+        <div class="circle large square3"></div>
+        <div class="circle large square4"></div>
+    </div>
+
     <mat-toolbar class="scheduler-toolbar" [ngClass]="(onTop && showLargeMenu) ? 'scheduler-toolbar-top' : 'scheduler-toolbar-down'">
         <div>
             <mat-toolbar-row>
                 <button *ngIf="!showLargeMenu && authService.isLoggedIn()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="toggleSideMenu()">
                     <mat-icon>menu</mat-icon>
                 </button>
-                <img height="48" width="48" class="logo" [src]="logoIcon">
+                <img height="48" width="48" class="logo" (click)="homeClicked()" [src]="logoIcon">
 
                 <span class="menu-spacer"></span>
                 <div class="display-flex" *ngIf="showLargeMenu && authService.isLoggedIn()">
@@ -78,11 +95,11 @@
                 Integer enim neque volutpat ac tincidunt vitae. Eu consequat ac felis donec et. Semper risus in hendrerit gravida. Pharetra sit amet aliquam id diam maecenas. Id donec ultrices tincidunt arcu non sodales neque sodales ut
             </p>
             <div class="flex-center">
-                <button class="auth-button button-lightblue button-icon-flex" (click)="onLoginClick()">
+                <button class="auth-button button-lightblue button-icon-flex z-index-1" (click)="onLoginClick()">
                     <img height="18" width="18" [src]="authUserIcon">
                     Log In
                 </button>
-                <button class="auth-button button-orange button-icon-flex" (click)="onRegisterClick()">
+                <button class="auth-button button-orange button-icon-flex z-index-1" (click)="onRegisterClick()">
                     <img height="18" width="18" [src]="authCrossIcon">
                     Register
                 </button>
@@ -93,3 +110,23 @@
 </div>
 
 <router-outlet class="component-center"></router-outlet>
+<footer>
+    <div class="footer-content" [ngClass]="showLargeMenu ? 'footer-content-large' : 'footer-content-small'">
+        <div class="footer-left">
+          <span class="footer-title">Event-IO</span>
+        </div>
+        <div class="footer-right">
+          <span class="footer-social-media">
+            <a href="" class="round-image-icon footer-icon-link">
+                <img [src]="socialEmailImage">
+            </a>
+            <a href="" class="round-image-icon footer-icon-link">
+                <img [src]="facebookImage">
+            </a>
+            <a href="" class="round-image-icon footer-icon-link">
+                <img [src]="twitterImage">
+            </a>
+          </span>
+        </div>
+    </div>
+  </footer>

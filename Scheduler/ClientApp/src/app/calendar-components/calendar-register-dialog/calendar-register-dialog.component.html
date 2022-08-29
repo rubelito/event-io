@@ -4,38 +4,38 @@
         <span class="auth-close-x" (click)="onCancel()">&times;</span>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields">
+        <div class="auth-left-fields auth-left-fields-width">
             <div class="register-left-field">
                 Username:
                 <br>
                 <span class="register-required">Required</span>
             </div>
         </div>
-        <div class="auth-right-fields background-color-272e48">
+        <div class="auth-right-fields auth-right-fields-width background-color-272e48">
             <input class="auth-text" type="text" #usernameRef [(ngModel)]="username">
         </div>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields">
+        <div class="auth-left-fields auth-left-fields-width">
             <div class="register-left-field">
                 Email:
                 <br>
                 <span class="register-required">Required</span>
             </div>
         </div>
-        <div class="auth-right-fields background-color-272e48">
+        <div class="auth-right-fields auth-right-fields-width background-color-272e48">
             <input class="auth-text" type="text" #emailRef [(ngModel)]="email">
         </div>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields">
+        <div class="auth-left-fields auth-left-fields-width">
             <div class="register-left-field">
                 Password:
                 <br>
                 <span class="register-required">Required</span>
             </div>
         </div>
-        <div class="auth-right-fields background-color-272e48">
+        <div class="auth-right-fields auth-right-fields-width background-color-272e48">
             <input #password1Ref class="auth-text auth-password-text" [type]="show1 ? 'text' : 'password'" [(ngModel)]="password1">
             <button class="auth-text show-password-button" (click)="showPassword1()">
                 <img *ngIf="!show1" height="18" width="18" [src]="showPasswordIcon">
@@ -46,14 +46,14 @@
         </div>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields">
+        <div class="auth-left-fields auth-left-fields-width">
             <div class="register-left-field">
                 Re-Password:
                 <br>
                 <span class="register-required">Required</span>
             </div>
         </div>
-        <div class="auth-right-fields background-color-272e48">
+        <div class="auth-right-fields auth-right-fields-width background-color-272e48">
             <input #password2Ref class="auth-text auth-password-text" [type]="show2 ? 'text' : 'password'" [(ngModel)]="password2">
             <button class="auth-text show-password-button" (click)="showPassword2()">
                 <img *ngIf="!show2" height="18" width="18" [src]="showPasswordIcon">
@@ -64,38 +64,38 @@
         </div>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields">
+        <div class="auth-left-fields auth-left-fields-width">
             <div class="register-left-field">
                 First Name:
                 <br>
                 <span class="register-required">Required</span>
             </div>
         </div>
-        <div class="auth-right-fields background-color-272e48">
+        <div class="auth-right-fields auth-right-fields-width background-color-272e48">
             <input class="auth-text" type="text" [(ngModel)]="firstname">
         </div>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields">
+        <div class="auth-left-fields auth-left-fields-width">
             <div class="register-left-field">
                 Middle Name:
                 <br>
                 <span class="register-required">Required</span>
             </div>
         </div>
-        <div class="auth-right-fields background-color-272e48">
+        <div class="auth-right-fields auth-right-fields-width background-color-272e48">
             <input class="auth-text" type="text" [(ngModel)]="middlename">
         </div>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields">
+        <div class="auth-left-fields auth-left-fields-width">
             <div class="register-left-field">
                 Last Name:
                 <br>
                 <span class="register-required">Required</span>
             </div>
         </div>
-        <div class="auth-right-fields background-color-272e48">
+        <div class="auth-right-fields auth-right-fields-width background-color-272e48">
             <input class="auth-text" type="text" [(ngModel)]="lastname">
         </div>
     </div>

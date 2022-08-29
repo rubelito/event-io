@@ -1,0 +1,195 @@
+.middle-section {
+    width: 100%;
+    font-family: Montserrat, sans-serif;
+    font-size: 14px;
+}
+
+.screenshot-section {
+    display: flex;
+    justify-content: center;
+}
+
+.screenshot-section-large > img {
+    max-width: 920px;
+}
+
+.screenshot-section-small > img {
+    max-width: 920px;
+    width: 90%;
+}
+
+.home-content-width {
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.home-section {
+    width: 100%;
+    padding-top: 80px;
+    padding-bottom: 60px;
+}
+
+.browser-large {
+    display: flex;
+    margin-top: 100px;
+}
+
+.browser-large > div {
+    flex-basis: 50%;
+}
+
+.layout-images > img {
+    margin-left: 2px;
+    margin-right: 5px;
+    margin-top: 25px;
+}
+
+.tablets-image-small {
+    display: block;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tablets-image-big {
+    display: block;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.browser-os-title {
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.browser-small {
+    flex-direction: column;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 100px;
+}
+
+.browser-small > div {
+    flex-basis: 100%;
+}
+
+.section-title {
+    text-align: center;
+}
+
+.color-333333 {
+    color: #333333;
+}
+
+.section-title > h1 {
+    font-size: 31px;
+}
+
+.feature-top-large {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.second-square-container {
+    text-align: center;
+}
+
+.feature-top-large > .second-square-container {
+    flex-basis: 25%;
+}
+
+.feature-top-large > .second-square-container > .circle-container {
+    border-radius: 150px;
+}
+
+.feature-top-small {
+    flex-direction: column;
+    align-items: center;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.feature-top-small > .second-square-container {
+    flex-basis: 100%;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.feature-top-small > .second-square-container > .circle-container {
+    max-width: 488px;
+    width: 100%;
+    min-width: 436px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0;
+}
+
+.circle-container {
+    background-color: white;
+    height: 300px;
+    width: 300px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.circle-number {
+    background-color: #353a48;
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    border-radius: 23px;
+    text-align: center;
+    padding-top: 12px;
+    color: white;
+    font-size: 20px;
+}
+
+.circle-image {
+    width: 224px;
+    height: 150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 23px;
+}
+
+.second-square-desc {
+    margin-top: 25px;
+}
+
+.second-square-desc > h2 {
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.third-section-layout-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.third-section-layout-row > div {
+    flex-basis: 26.333%;
+    text-align: center;
+}
+
+.grey-text {
+    color: #84899a;
+}
+
+.first-section {
+    background-color: white;
+}
+
+.second-section {
+    background-color: #eff1f4;
+}
+
+.third-section {
+    background-color: white;
+}

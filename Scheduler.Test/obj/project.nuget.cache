@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fPmbSqvOk73RqH1DIpC3IwdW1nx9F7Xi6TwJsMFY0nGQ+bC3EsRoasmNT6Cadmk9qyZCGz/sEnbOAL1XL+JDYA==",
+  "dgSpecHash": "v87jI0TJLgm/COGaTxVvsdvRANTuWDGpIgK79boN40mI46C5O6U4YbHa1rtwfVJV7mEiTNfXxJXQK+1ZH+99jA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Rubelito\\Documents\\github2\\Scheduler\\Scheduler.Test\\Scheduler.Test.csproj",
+  "projectFilePath": "C:\\Users\\Rubelito\\Documents\\2nd enhancement\\Scheduler.Test\\Scheduler.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Rubelito\\.nuget\\packages\\bouncycastle.netcore\\1.8.5\\bouncycastle.netcore.1.8.5.nupkg.sha512",
     "C:\\Users\\Rubelito\\.nuget\\packages\\coverlet.collector\\3.1.2\\coverlet.collector.3.1.2.nupkg.sha512",

@@ -9,6 +9,7 @@ import { GlobalConstants } from './common/global-constant';
 import { CalendarLoginDialogComponent } from './calendar-components/calendar-login-dialog/calendar-login-dialog.component';
 import { CalendarRegisterDialogComponent } from './calendar-components/calendar-register-dialog/calendar-register-dialog.component';
 import { CalendarMyprofileDialogComponent } from './calendar-components/calendar-myprofile-dialog/calendar-myprofile-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,12 @@ export class AppComponent implements OnInit {
   eventIcon = GlobalConstants.eventIcon;
   manageGroupIcon = GlobalConstants.manageGroupIcon;
 
-  constructor(public authService: AuthService, private dialog: MatDialog, private responsive: BreakpointObserver) { }
+  socialEmailImage = GlobalConstants.socialEmailImage;
+  facebookImage = GlobalConstants.facebookImage;
+  twitterImage = GlobalConstants.twitterImage;
+
+  constructor(public authService: AuthService, private dialog: MatDialog,
+     private responsive: BreakpointObserver, private router: Router) { }
 
   ngOnInit(): void {
     this.responsive.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
@@ -43,6 +49,10 @@ export class AppComponent implements OnInit {
   @HostListener('window:scroll', ['$event']) 
   kapagIniscrollNgUser(){
     this.onTop = window.scrollY == 0;
+  }
+
+  homeClicked(){
+    this.router.navigate(["/"]);
   }
 
   onLoginClick(){

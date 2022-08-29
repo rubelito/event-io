@@ -90,6 +90,7 @@ namespace Scheduler.Services
                     throw new ArgumentException("Cannot find existing appointment Id=" + appointmentToEdit.Id);
                 }
 
+                appoint.Location = appointmentToEdit.Location;
                 appoint.Title = appointmentToEdit.Title;
                 appoint.Details = appointmentToEdit.Details;
 

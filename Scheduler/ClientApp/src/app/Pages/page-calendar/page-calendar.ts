@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CalendarDialogComponent } from 'src/app/calendar-components/calendar-dialog/calendar-dialog.component';
 import { GlobalConstants } from 'src/app/common/global-constant';
+import { CalendarViewDialogComponent } from 'src/app/calendar-components/calendar-view-dialog/calendar-view-dialog.component';
 
 @Component({
   selector: 'page-calendar',
@@ -34,6 +35,7 @@ export class PageCalendarComponent {
   contextMenuX: string = "";
   contextMenuY: string = "";
   contextMenuAdd: any;
+  contextMenuOwner: any;
   shouldShowDialog: boolean = false;
   dialogParam: DialogOperation = new DialogOperation();
   yearMonth: string = "";
@@ -163,6 +165,7 @@ export class PageCalendarComponent {
     this.contextMenuX = menu.locationX.toString();
     this.contextMenuY = menu.locationY.toString();
     this.contextMenuAdd = menu.isAdd;
+    this.contextMenuOwner = menu.isOwner;
   }
 
   openDialog(operation: string){
@@ -183,15 +186,18 @@ export class PageCalendarComponent {
       this.showDeleteDialog = true;
       this.appointmentToDelete = param.appointment;
     }
+    else if (operation == "View"){
+      this.showViewDialog(param);
+    }
 
     if (operation == "Add" || operation == "Edit"){
-      this.showMatDialog(param);
+      this.showAddEditMatDialog(param);
     }
   }
 
-  showMatDialog(dialogParam: DialogOperation){
+  showAddEditMatDialog(dialogParam: DialogOperation){
     this.dialogResult = this.dialog.open(CalendarDialogComponent, {
-      width: '800px',
+      width: '500px',
       disableClose: true,
       data: { param : dialogParam}
     });
@@ -221,6 +227,14 @@ export class PageCalendarComponent {
             );
         }
       }
+    });
+  }
+
+  showViewDialog(dialogParam: DialogOperation){
+    this.dialogResult = this.dialog.open(CalendarViewDialogComponent, {
+      width: '500px',
+      disableClose: true,
+      data: { param : dialogParam}
     });
   }
 

@@ -8,6 +8,7 @@ namespace Scheduler.Entity
 	{
 		public Appointment()
 		{
+			Location = "";
 			Title = "";
 			Details = "";
 			YearMonth = "";
@@ -21,6 +22,7 @@ namespace Scheduler.Entity
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
+		public string Location { get; set; }
 		public string Title { get; set; }
 		public string Details { get; set; }
 		public string YearMonth { get; set; }

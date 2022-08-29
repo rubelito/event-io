@@ -32,6 +32,7 @@ export class CalendarDialogComponent implements OnInit {
   
   param: DialogOperation;
 
+  location: string ="";
   title: string = "";
   details: string = "";
   date: Date;
@@ -96,6 +97,7 @@ export class CalendarDialogComponent implements OnInit {
 
     if (this.param?.operation == 'Edit'){
       this.title = this.param.appointment.Title;
+      this.location = this.param.appointment.Location;
       this.details = this.param.appointment.Details;
       this.time = this.param.appointment.Time;
       this.isOwner = this.param?.appointment.IsOwner as boolean;
@@ -178,6 +180,7 @@ export class CalendarDialogComponent implements OnInit {
     if (this.param?.operation == 'Add'){
       let newAppointment = new EventModel();
       newAppointment.Title = this.title;
+      newAppointment.Location =  this.location;
       newAppointment.Details = this.details;
       newAppointment.Date = moment(this.date).format("MM/DD/YYYY");
       newAppointment.Time = this.time;
@@ -186,6 +189,7 @@ export class CalendarDialogComponent implements OnInit {
     }
     else if (this.param?.operation == 'Edit') {
       this.param.appointment.Title = this.title;
+      this.param.appointment.Location = this.location;
       this.param.appointment.Details = this.details;
       this.param.appointment.Date = moment(this.date).format("MM/DD/YYYY");
       this.param.appointment.Time = this.time;

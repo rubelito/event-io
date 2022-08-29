@@ -20,7 +20,7 @@
   </div>
   <div class="calendar-container">
     <app-calendar-contextmenu class="contextMenu" *ngIf="showContextMenu" (showDialog)="openDialog($event)"
-    [isAdd]="contextMenuAdd" [ngStyle]="{'left': contextMenuX + 'px', 'top': contextMenuY + 'px'}">
+    [isAdd]="contextMenuAdd" [isOwner]="contextMenuOwner" [ngStyle]="{'left': contextMenuX + 'px', 'top': contextMenuY + 'px'}">
       
     </app-calendar-contextmenu>
     <div id="calendar" class="calendar">

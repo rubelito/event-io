@@ -51,6 +51,7 @@ namespace Scheduler.SharedCode
             {
                 var m = new EventModel();
                 m.Id = a.Id;
+                m.Location = a.Location;
                 m.Title = a.Title;
                 m.Details = a.Details;
                 m.YearMonth = a.YearMonth;
@@ -70,6 +71,7 @@ namespace Scheduler.SharedCode
             Appointment a = new Appointment();
 
             a.Id = model.Id;
+            a.Location = model.Location;
             a.Title = model.Title;
             a.Details = model.Details;
             a.YearMonth = model.YearMonth;

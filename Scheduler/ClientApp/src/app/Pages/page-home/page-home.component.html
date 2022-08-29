@@ -1,0 +1,149 @@
+<div class="middle-section">
+    <div class="screenshot-section" [ngClass]="big ? 'screenshot-section-large' : 'screenshot-section-small'">
+        <img [src]="screenshotImage">
+    </div>
+    <div class="home-section first-section grey-text">
+        <div class="home-content-width">
+            <div class="section-title">
+                <h1 class="color-333333 ">Your Calenday Scheduler will be beautiful everywhere.</h1>
+                <p>Send it to your best friends and your grandma. It’ll work on their computers and phones.</p>
+            </div>
+            <div [ngClass]="firstSectionLayout">
+                <div>
+                    <img [ngClass]="big ? 'tablets-image-big' : 'tablets-image-small'" [src]="tabletImage">
+                </div>
+                <div>
+                    <div>
+                        <div class="layout-images">
+                            <img height="37px" width="37px" [src]="chromeBrowserIcon">
+                            <img height="37px" width="37px" [src]="firefoxIcon">
+                            <img height="37px" width="37px" [src]="ieIcon">
+                            <img height="37px" width="37px" [src]="safaryIcon">
+                        </div>
+                        <div class="browser-os-title color-333333 ">Broad browser support, baby.</div>
+                        <div>
+                            All major browsers are supported including Internet Explorer. Send it to your best friends and your grandma. It’ll work on their computers and phones. Send it to your best friends and your grandma. It’ll work on their computers and phones.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="layout-images">
+                            <img height="37px" width="37px" [src]="appleIcon">
+                            <img height="37px" width="37px" [src]="androidIcon">
+                            <img height="37px" width="37px" [src]="windowsIcon">
+                        </div>
+                        <div class="browser-os-title color-333333 ">It’s gonna look good on all devices.</div>
+                        <div>
+                            Send it to your best friends and your grandma. It’ll work on their computers and phones. Send it to your best friends and your grandma. It’ll work on their computers and phones.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home-section second-section grey-text">
+        <div class="home-content-width">
+            <div class="section-title">
+                <h1 class="color-333333">Your Calenday Scheduler will be beautiful everywhere.</h1>
+                <p>Send it to your best friends and your grandma. It’ll work on their computers and phones.</p>
+            </div>
+            <div [ngClass]="secondSectionLayout">
+                <div class="second-square-container">
+                    <div class="circle-container">
+                        <span class="circle-number">1</span>
+                        <img class="circle-image" [src]="simpleImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Simple</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+                    </div>
+                </div>
+                <div class="second-square-container">
+                    <div class="circle-container">
+                        <span class="circle-number">2</span>
+                        <img class="circle-image" [src]="stackedImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Stacked</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla.</p>
+                    </div>
+                </div>
+                <div class="second-square-container">
+                    <div class="circle-container">
+                        <span class="circle-number">3</span>
+                        <img class="circle-image" [src]="tetrisImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Tetris</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="home-section third-section grey-text">
+        <div class="home-content-width">
+            <div class="section-title">
+                <h1 class="color-333333 ">Here’s some more things you’ll love.</h1>
+                <p>Send it to your best friends and your grandma. It’ll work on their computers and phones.</p>
+            </div>
+            <div class="third-section-layout-row">
+                <div>
+                    <div class="round-image-icon">
+                        <img [src]="brushImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Brush</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="round-image-icon">
+                        <img [src]="chatImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Chat</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="round-image-icon">
+                        <img [src]="responsiveImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Styles</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="third-section-layout-row">
+                <div>
+                    <div class="round-image-icon">
+                        <img [src]="seeImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">See</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="round-image-icon">
+                        <img [src]="stylesImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Responsive</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="round-image-icon">
+                        <img [src]="videoImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Videos</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
