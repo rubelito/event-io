@@ -20,7 +20,7 @@ export class CalendarBlockComponent implements OnInit {
   constructor(private appointmentService: AppointmentService) {
    }
   ngOnInit(): void {
-  } 
+  }
 
   onRightClickBlock(event: any){
     if (!this.block?.isEmptyBlock){
@@ -28,6 +28,7 @@ export class CalendarBlockComponent implements OnInit {
       param.show = true;
       param.isBlock = true;
       param.isAdd = true;
+      param.isOwner = true;
       param.selectedBlock = this.block as Block;
       param.locationX = event.layerX;
       param.locationY = event.layerY;
@@ -40,6 +41,7 @@ export class CalendarBlockComponent implements OnInit {
       let param = new ContextMenuValue();
       param.show = true;
       param.isBlock = false;
+      param.isOwner = appoint.IsOwner;
       param.isAdd = false;
       param.selectedEvent = appoint;
       param.locationX = event.layerX;
