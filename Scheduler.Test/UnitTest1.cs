@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using System.Globalization;
+using Google.Protobuf.WellKnownTypes;
+using MySql.Data.MySqlClient;
 using Scheduler.Entity;
 using Scheduler.Services;
 
@@ -25,6 +27,8 @@ public class Tests
         AddMoreContacts();
         AddGroups();
         CreateEvents();
+        AddRepeats();
+        AddRepeatEdits();
 
         Assert.Pass();
     }
@@ -402,8 +406,8 @@ public class Tests
         ap0.Location = "Apple premium reseller";
         ap0.Title = "Macbook pro applecare appointment";
         ap0.Details = "In hac habitasse platea dictumst. Suspendisse laoreet porta sem non maximus. Pellentesque ante felis, feugiat sit amet congue sed, dignissim consectetur orci. Vestibulum a euismod felis, ac dapibus leo. Maecenas odio leo, imperdiet congue tortor a, aliquam tristique massa. Curabitur vehicula tellus ut est dictum pharetra. Nullam id arcu id justo faucibus ultrices id vitae dui. Integer luctus, ligula nec dignissim ornare, nisi erat pretium quam, sed dapibus justo justo sed nibh. Donec et quam arcu. In hac habitasse platea dictumst. Mauris at nulla dignissim velit elementum euismod";
-        ap0.YearMonth = "8/2022";
-        ap0.Date = "08/03/2022";
+        ap0.YearMonth = "9/2022";
+        ap0.Date = DateTime.ParseExact("09/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap0.Time = "11:00 AM";
         ap0.CreatorId = 2;
 
@@ -430,8 +434,8 @@ public class Tests
         ap1.Location = "https://zoom.us/j/5551112222";
         ap1.Title = "Discuss UI related changes";
         ap1.Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed mattis velit, quis laoreet arcu. Sed convallis lacus libero, ac rutrum arcu sollicitudin sed.";
-        ap1.YearMonth = "8/2022";
-        ap1.Date = "08/04/2022";
+        ap1.YearMonth = "9/2022";
+        ap1.Date = DateTime.ParseExact("09/04/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap1.Time = "1:30 PM";
         ap1.CreatorId = 4;
 
@@ -459,8 +463,8 @@ public class Tests
         ap2.Location = "https://zoom.us/j/55511135232";
         ap2.Title = "Meetig with Business and Users";
         ap2.Details = "Praesent ac justo nisl. Aenean eu purus dictum, faucibus purus nec, sagittis nunc. Aliquam ultrices blandit sem vitae sollicitudin. In bibendum ligula eget condimentum ullamcorper. Nam ut ante sagittis, luctus odio et, aliquet leo. Phasellus eu felis aliquet, iaculis lectus ut, facilisis est. Duis sagittis quam a nulla pulvinar, ut luctus ligula dapibus. Duis consequat tortor dolor, sed dapibus nisl volutpat eget.  Etiam vitae vehicula urna, eu maximus nisi. Phasellus blandit, sapien a gravida elementum, lectus massa pellentesque ipsum, et fringilla lorem risus quis est. Cras sit amet dui sapien. In a felis sodales, mattis metus vitae, imperdiet ante. Sed elementum odio id fermentum rhoncus. Ut tincidunt bibendum ex feugiat interdum. Aliquam rhoncus dolor leo, ac sagittis enim dictum tincidunt.";
-        ap2.YearMonth = "8/2022";
-        ap2.Date = "08/08/2022";
+        ap2.YearMonth = "9/2022";
+        ap2.Date = DateTime.ParseExact("09/08/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap2.Time = "9:10 AM";
         ap2.CreatorId = 4;
 
@@ -487,8 +491,8 @@ public class Tests
         ap3.Location = "Pepper Lunch - Eastwood Cyber & Fashion Mall";
         ap3.Title = "Lunch Meeting";
         ap3.Details = "Aliquam cursus congue arcu at consequat. Suspendisse potenti. Nunc vestibulum, ante sit amet luctus porta, velit neque vehicula nunc, sed dapibus arcu dui id est. Fusce feugiat ligula id ullamcorper dapibus. Nam interdum justo metus, nec aliquet nisi mattis at. Phasellus aliquam interdum neque et malesuada. Pellentesque ac nisi sit amet lorem rutrum tristique nec sed lorem. Morbi euismod maximus ullamcorper. Pellentesque non laoreet justo. Pellentesque viverra nisi placerat urna facilisis, nec facilisis felis accumsan. Curabitur id turpis urna. Fusce elementum urna vitae leo pharetra iaculis. Sed nec nisl at eros tristique condimentum. Fusce ultricies dolor eu porta volutpat.";
-        ap3.YearMonth = "8/2022";
-        ap3.Date = "08/09/2022";
+        ap3.YearMonth = "9/2022";
+        ap3.Date = DateTime.ParseExact("09/09/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap3.Time = "12:10 PM";
         ap3.CreatorId = 4;
 
@@ -515,8 +519,8 @@ public class Tests
         ap4.Location = "Katsu Ora - Eastwood Mall, Orchard Rd, Bagumbayan, Quezon City, 1110 Metro Manila";
         ap4.Title = "Dinner Meeting";
         ap4.Details = "Nullam eget sapien imperdiet, pretium neque in, facilisis ex. Nam quis mollis felis. Aenean malesuada lacinia nulla ut aliquet. Praesent ex purus, pharetra non euismod quis, facilisis quis tortor. Ut malesuada quis lacus id efficitur. Aliquam egestas tortor vel urna scelerisque gravida. Phasellus eget quam magna. Cras metus libero, convallis in mattis eget, feugiat ac ligula. Pellentesque feugiat eget ligula ac euismod.  Integer condimentum dolor quis lobortis ornare. Integer odio lorem, mattis id dapibus eget, facilisis et eros. Vivamus in tristique dolor. Morbi posuere faucibus tellus, eget venenatis urna consectetur et. Maecenas interdum neque et scelerisque egestas. Proin faucibus, ex ut varius tristique, arcu elit luctus ligula, eget hendrerit nibh dui sed ipsum. Donec gravida condimentum massa, ultricies dignissim risus vehicula quis. Morbi tortor arcu, luctus facilisis scelerisque varius, suscipit a ante. Praesent convallis velit nec lobortis venenatis.";
-        ap4.YearMonth = "8/2022";
-        ap4.Date = "08/09/2022";
+        ap4.YearMonth = "9/2022";
+        ap4.Date = DateTime.ParseExact("09/09/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap4.Time = "6:05 PM";
         ap4.CreatorId = 4;
 
@@ -543,8 +547,8 @@ public class Tests
         ap5.Location = "LockHeed Martin - 3Rd buiding.";
         ap5.Title = "Pest Control";
         ap5.Details = "Cras laoreet interdum fermentum. In gravida nulla eget lacus tincidunt interdum. In sed sapien sed neque rhoncus egestas maximus tincidunt tortor. Nullam ut leo eros. In vitae odio id ante consequat gravida et sed orci. Phasellus in aliquet enim, non sagittis massa. Curabitur sit amet maximus erat. Aliquam tempus nunc sit amet blandit rhoncus. Etiam at urna vitae neque eleifend condimentum in eu ante. Integer non justo feugiat, imperdiet tellus sit amet, porttitor lectus. Donec at tincidunt enim, at varius orci. Donec dapibus elit vel ullamcorper pretium. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum id dolor nisl. Aenean et gravida quam. In ac arcu urna.";
-        ap5.YearMonth = "8/2022";
-        ap5.Date = "08/20/2022";
+        ap5.YearMonth = "9/2022";
+        ap5.Date = DateTime.ParseExact("09/20/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap5.Time = "6:00 PM";
         ap5.CreatorId = 2;
 
@@ -571,8 +575,8 @@ public class Tests
         ap6.Location = "https://zoom.us/j/5553232122";
         ap6.Title = "Deployment stratetegy";
         ap6.Details = "turpis at, eleifend massa. Curabitur ac elit eros. Vivamus nulla ipsum, tristique sed ultricies a, fermentum et orci. Sed odio magna, posuere eget orci at, dictum finibus est. Nam eleifend nunc velit, et maximus mauris hendrerit at. Etiam aliquam et mauris a egestas. Aliquam nisl augue, efficitur ut dolor eu, volutpat dapibus eros. In fringilla ipsum ac blandit auctor. Pellentesque malesuada dui sit amet tincidunt aliquam. Sed eu tristique ligula, nec auctor leo.";
-        ap6.YearMonth = "8/2022";
-        ap6.Date = "08/25/2022";
+        ap6.YearMonth = "9/2022";
+        ap6.Date = DateTime.ParseExact("09/25/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap6.Time = "3:30 PM";
         ap6.CreatorId = 4;
 
@@ -599,8 +603,8 @@ public class Tests
         ap7.Location = "https://zoom.us/j/555113223523";
         ap7.Title = "Team Building - 1st meeting";
         ap7.Details = "efficitur vulputate mauris. Etiam convallis lacus mattis enim gravida dapibus. Cras ut mauris enim. Aliquam nec lorem risus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vitae placerat massa. Quisque pulvinar rutrum erat vitae fringilla. Nunc fringilla vulputate diam nec aliquet. Pellentesque sed facilisis tellus, eu varius neque. Suspendisse tincidunt vestibulum justo, a porta est maximus at. Nullam at laoreet est. Interdum";
-        ap7.YearMonth = "8/2022";
-        ap7.Date = "08/30/2022";
+        ap7.YearMonth = "9/2022";
+        ap7.Date = DateTime.ParseExact("09/30/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap7.Time = "2:00 PM";
         ap7.CreatorId = 7;
 
@@ -628,8 +632,8 @@ public class Tests
         ap8.Location = "5th Floor - Resilient room";
         ap8.Title = "Onboarding Meeting";
         ap8.Details = "Ut gravida a nisl in tincidunt. In pretium velit urna, quis placerat nisl lacinia a. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum ultrices enim eget elit fringilla eleifend. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Donec egestas justo placerat lorem tincidunt volutpat.";
-        ap8.YearMonth = "7/2022";
-        ap8.Date = "07/17/2022";
+        ap8.YearMonth = "8/2022";
+        ap8.Date = DateTime.ParseExact("08/17/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap8.Time = "8:30 AM";
         ap8.CreatorId = 4;
 
@@ -657,8 +661,8 @@ public class Tests
         ap9.Location = "18Th Floor - 14 Room";
         ap9.Title = "Transition discussion";
         ap9.Details = "Viverra efficitur, ligula elit maximus arcu, eu dignissim tortor libero eget massa. Duis gravida consequat elit. Praesent non enim et nibh luctus vestibulum id eget ante. Nunc ullamcorper auctor sapien, eget pharetra urna volutpat aliquet. Donec est augue, suscipit at bibendum sed, porta ac ante. Vivamu";
-        ap9.YearMonth = "9/2022";
-        ap9.Date = "09/05/2022";
+        ap9.YearMonth = "10/2022";
+        ap9.Date = DateTime.ParseExact("10/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap9.Time = "9:30 AM";
         ap9.CreatorId = 4;
 
@@ -679,6 +683,200 @@ public class Tests
         dbContext.Meetings.Add(us27);
 
         dbContext.Appointments.Add(ap9);
+        dbContext.SaveChanges();
+    }
+
+    [Test]
+    public void AddRepeats()
+    {
+        var dbContext = new SchedulerDbContext();
+        //Repeat Daily Never
+        Appointment ap0 = new Appointment();
+        ap0.Location = "Home";
+        ap0.Title = "Excercise - Back posture";
+        ap0.Details = "Do some 2 minutes back posture";
+        ap0.YearMonth = "9/2022";
+        ap0.Date = DateTime.ParseExact("09/08/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap0.Time = "7:30 PM";
+        ap0.isRepeat = true;
+        ap0.RepeatSelection = RepeatSelectionEnum.EveryDay;
+        ap0.RepeatEnd = RepeatEndEnum.Never;
+        ap0.CreatorId = 4;
+
+        dbContext.Appointments.Add(ap0);
+        dbContext.SaveChanges();
+
+        //Repeat Daily OnDate
+        Appointment ap1 = new Appointment();
+        ap1.Location = "Home";
+        ap1.Title = "Jogging - 1 mile";
+        ap1.Details = "Do some 1 mile run";
+        ap1.YearMonth = "9/2022";
+        ap1.Date = DateTime.ParseExact("09/09/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap1.Time = "6:30 PM";
+        ap1.isRepeat = true;
+        ap1.RepeatSelection = RepeatSelectionEnum.EveryDay;
+        ap1.RepeatEnd = RepeatEndEnum.OnDate;
+        ap1.OnDate = DateTime.ParseExact("12/14/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap1.CreatorId = 4;
+
+        dbContext.Appointments.Add(ap1);
+        dbContext.SaveChanges();
+
+        //Repeat Daily After 35
+        Appointment ap2 = new Appointment();
+        ap2.Location = "Home";
+        ap2.Title = "Postre SQL course";
+        ap2.Details = "Postre SQL product presentation";
+        ap2.YearMonth = "9/2022";
+        ap2.Date = DateTime.ParseExact("09/22/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap2.Time = "2:30 PM";
+        ap2.isRepeat = true;
+        ap2.RepeatSelection = RepeatSelectionEnum.EveryDay;
+        ap2.RepeatEnd = RepeatEndEnum.After;
+        ap2.After = 35;
+        ap2.CreatorId = 4;
+
+        dbContext.Appointments.Add(ap2);
+        dbContext.SaveChanges();
+
+        //Repeat Weekly After 35
+        Appointment ap3 = new Appointment();
+        ap3.Location = "Home Office";
+        ap3.Title = "Weekly status report";
+        ap3.Details = "Status of our software development project";
+        ap3.YearMonth = "9/2022";
+        ap3.Date = DateTime.ParseExact("09/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap3.Time = "11:00 AM";
+        ap3.isRepeat = true;
+        ap3.RepeatSelection = RepeatSelectionEnum.EveryWeek;
+        ap3.RepeatEnd = RepeatEndEnum.After;
+        ap3.After = 12;
+        ap3.CreatorId = 4;
+
+        dbContext.Appointments.Add(ap3);
+        dbContext.SaveChanges();
+
+        //Repeat Weekly OnDate
+        Appointment ap6 = new Appointment();
+        ap6.Location = "Home Office";
+        ap6.Title = "Meet security";
+        ap6.Details = "Meeet and greet the security team";
+        ap6.YearMonth = "9/2022";
+        ap6.Date = DateTime.ParseExact("09/02/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap6.Time = "8:00 AM";
+        ap6.isRepeat = true;
+        ap6.RepeatSelection = RepeatSelectionEnum.EveryWeek;
+        ap6.RepeatEnd = RepeatEndEnum.OnDate;
+        ap6.OnDate = DateTime.ParseExact("09/02/2023", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap6.CreatorId = 4;
+
+        dbContext.Appointments.Add(ap6);
+        dbContext.SaveChanges();
+
+        //Repeat Monthly onDate
+        Appointment ap4 = new Appointment();
+        ap4.Location = "Office";
+        ap4.Title = "Montly status meeting";
+        ap4.Details = "Status of our software development project";
+        ap4.YearMonth = "9/2022";
+        ap4.Date = DateTime.ParseExact("09/02/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap4.Time = "11:10 AM";
+        ap4.isRepeat = true;
+        ap4.RepeatSelection = RepeatSelectionEnum.EveryMonth;
+        ap4.RepeatEnd = RepeatEndEnum.OnDate;
+        ap4.OnDate = DateTime.ParseExact("06/05/2023", "MM/dd/yyyy", CultureInfo.InvariantCulture); ;
+        ap4.CreatorId = 4;
+
+        dbContext.Appointments.Add(ap4);
+        dbContext.SaveChanges();
+
+        //Repeat Monthly After
+        Appointment ap5 = new Appointment();
+        ap5.Location = "Office";
+        ap5.Title = "Monthly Lunch meeting";
+        ap5.Details = "greetings and meetups";
+        ap5.YearMonth = "9/2022";
+        ap5.Date = DateTime.ParseExact("09/02/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap5.Time = "12:01 PM";
+        ap5.isRepeat = true;
+        ap5.RepeatSelection = RepeatSelectionEnum.EveryMonth;
+        ap5.RepeatEnd = RepeatEndEnum.After;
+        ap5.After = 13;
+        ap5.CreatorId = 4;
+
+        dbContext.Appointments.Add(ap5);
+        dbContext.SaveChanges();
+
+        //Repeat Yearly onDate
+        Appointment ap7 = new Appointment();
+        ap7.Location = "Home";
+        ap7.Title = "Yearly Insurance Update";
+        ap7.Details = "Update my life insurance and SSS";
+        ap7.YearMonth = "10/2022";
+        ap7.Date = DateTime.ParseExact("10/18/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap7.Time = "12:01 PM";
+        ap7.isRepeat = true;
+        ap7.RepeatSelection = RepeatSelectionEnum.EveryYear;
+        ap7.RepeatEnd = RepeatEndEnum.OnDate;
+        ap7.OnDate = DateTime.ParseExact("10/19/2025", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap7.CreatorId = 4;
+
+        dbContext.Appointments.Add(ap7);
+        dbContext.SaveChanges();
+
+        //Repeat Yearly After
+        Appointment ap8 = new Appointment();
+        ap8.Location = "Office";
+        ap8.Title = "Yearly performance evaluation";
+        ap8.Details = "My performance evaluation";
+        ap8.YearMonth = "10/2022";
+        ap8.Date = DateTime.ParseExact("10/19/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap8.Time = "12:01 PM";
+        ap8.isRepeat = true;
+        ap8.RepeatSelection = RepeatSelectionEnum.EveryYear;
+        ap8.RepeatEnd = RepeatEndEnum.After;
+        ap8.After = 5;
+        ap8.CreatorId = 4;
+
+        dbContext.Appointments.Add(ap8);
+        dbContext.SaveChanges();
+    }
+
+    [Test]
+    public void AddRepeatEdits()
+    {
+        var dbContext = new SchedulerDbContext();
+
+        //Weekly Repeat change
+        var parentRepeat1 = dbContext.Appointments.Where(a => a.isRepeat == true && a.Title == "Weekly status report").FirstOrDefault();
+
+        var edit1 = new RepeatEdit();
+        edit1.AppointmentId = parentRepeat1.Id;
+        edit1.OriginalDate = DateTime.ParseExact("09/12/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        edit1.EditedDate = DateTime.ParseExact("09/13/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        edit1.Title = parentRepeat1.Title + " (moved)";
+        edit1.Location = "Home Office";
+        edit1.Details = parentRepeat1.Details + " - moved due to flood";
+        edit1.Time = "11:30 AM";
+
+        dbContext.RepeatEdits.Add(edit1);
+        dbContext.SaveChanges();
+
+
+        //Monthly Repeat change
+        var parentRepeat2 = dbContext.Appointments.Where(a => a.isRepeat == true && a.Title == "Monthly Lunch meeting").FirstOrDefault();
+
+        var edit2 = new RepeatEdit();
+        edit2.AppointmentId = parentRepeat2.Id;
+        edit2.OriginalDate = DateTime.ParseExact("11/02/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        edit2.EditedDate = DateTime.ParseExact("11/04/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        edit2.Title = parentRepeat2.Title + " (moved)";
+        edit2.Location = "Office";
+        edit2.Details = parentRepeat2.Details + " - moved due to changed restaurant.";
+        edit2.Time = "12:10 PM";
+
+        dbContext.RepeatEdits.Add(edit2);
         dbContext.SaveChanges();
     }
 

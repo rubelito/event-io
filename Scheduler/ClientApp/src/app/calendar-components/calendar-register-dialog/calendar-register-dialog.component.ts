@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/auth-service/AuthService';
 import { UserBasic } from 'src/app/calendar-models/user-basic';
 import { GlobalConstants } from 'src/app/common/global-constant';
 import { CalendarLoginDialogComponent } from '../calendar-login-dialog/calendar-login-dialog.component';
+import { MessageboxComponent } from '../messagebox/messagebox.component';
 
 @Component({
   selector: 'app-calendar-register-dialog',
@@ -35,7 +36,7 @@ export class CalendarRegisterDialogComponent implements OnInit {
   show2: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<CalendarRegisterDialogComponent>,
-     private authService: AuthService, private loginDialogRef: MatDialog) { }
+     private authService: AuthService, private dialog:MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -56,7 +57,11 @@ export class CalendarRegisterDialogComponent implements OnInit {
 
   onRegister(){
     if (this.password1 != this.password2){
-      alert("Password does not match");
+      this.dialog.open(MessageboxComponent, {
+        width:'400px',
+        disableClose: true,
+        data: { title: '', message: "Password does not match", hasNoCancel: true, icon: "warning"}
+      });
       return;
     }
 
@@ -78,30 +83,44 @@ export class CalendarRegisterDialogComponent implements OnInit {
           if (!this.isEmailExist){
             this.authService.register(newUser).subscribe(data => {
               if (data.Success){
-                alert("Register successful, please login using your Username and Password");
-                this.dialogRef.close();
-                let loginDialog = this.loginDialogRef.open(CalendarLoginDialogComponent, {
+                let dialogResult = this.dialog.open(MessageboxComponent, {
+                  width:'400px',
+                  disableClose: true,
+                  data: { title: '', message: "Register successful, please login using your Username and Password", hasNoCancel: true, icon: "ok"}
+                });
+                dialogResult.afterClosed().subscribe(result => {
+                  this.dialogRef.close();
+                  this.dialog.open(CalendarLoginDialogComponent, {
                   width: '800px',
                   disableClose: true
                 });
+              });
               }
               else {
-                alert(data.Message);
+                this.showMessage(data.Message, "x");
               }
             })
           }
           else {
             this.emailRef.nativeElement.select();
             this.emailRef.nativeElement.focus();
-            alert("Email already used");
+            this.showMessage("Email already used", "warning");
           }
         });
       }
       else {
         this.usernameRef.nativeElement.select();
         this.usernameRef.nativeElement.focus();
-        alert("Username already used");
+        this.showMessage("Username already used", "warning");
       }
+    });
+  }
+
+  showMessage(message: string, icon: string){
+    this.dialog.open(MessageboxComponent, {
+      width:'400px',
+      disableClose: true,
+      data: { title: '', message: message, hasNoCancel: true, icon: icon}
     });
   }
 }

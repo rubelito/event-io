@@ -1,16 +1,15 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Block } from 'src/app/calendar-models/block';
-import { Appointment } from 'src/app/calendar-models/Appointment';
 import { ContextMenuValue } from 'src/app/calendar-models/contextMenuValue';
 import { DialogOperation } from 'src/app/calendar-models/DialogOperation';
 import { AppointmentService } from 'src/app/calendar-service/AppointmentService';
-import { AddEditModel } from 'src/app/calendar-models/addEditModel';
 import { EventModel } from 'src/app/calendar-models/event-model';
 import * as moment from 'moment';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CalendarDialogComponent } from 'src/app/calendar-components/calendar-dialog/calendar-dialog.component';
 import { GlobalConstants } from 'src/app/common/global-constant';
 import { CalendarViewDialogComponent } from 'src/app/calendar-components/calendar-view-dialog/calendar-view-dialog.component';
+import { MessageboxComponent } from 'src/app/calendar-components/messagebox/messagebox.component';
 
 @Component({
   selector: 'page-calendar',
@@ -41,8 +40,7 @@ export class PageCalendarComponent {
   yearMonth: string = "";
 
   menuParam: ContextMenuValue = new ContextMenuValue();
-  showDeleteDialog: boolean;
-  appointmentToDelete: Appointment;
+  appointmentToDelete: EventModel;
   loggedUser: string = "";
 
   monthStr: string = "";
@@ -74,7 +72,7 @@ export class PageCalendarComponent {
 
     this.daysInMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 0).getDate();
     this.yearMonth = this.currentMonth.getMonth() + 1 + "/" + this.currentYear;
-    this.generateMonth();
+    this.refreshEvents();
   }
 
   today(){
@@ -183,8 +181,8 @@ export class PageCalendarComponent {
       param.stringDate = this.menuParam.selectedEvent.Date;
     }
     else if (operation == 'Delete'){
-      this.showDeleteDialog = true;
       this.appointmentToDelete = param.appointment;
+      this.OnDelete();
     }
     else if (operation == "View"){
       this.showViewDialog(param);
@@ -203,31 +201,11 @@ export class PageCalendarComponent {
     });
 
     this.dialogResult.afterClosed().subscribe(result => {
-      if (result != "close"){
-        let model = new AddEditModel();
-        model.Appointment = result.appointment;
-        model.MemberIds = result.membersIds;
-        model.GroupIds = result.groupIds;
-    
-        if (result.operation == 'Add'){
-          this.eventService.addSchedule(model)
-            .subscribe(returnData => {
-              console.log(returnData);
-              this.shouldShowDialog = false;
-              this.generateMonth();
-            });
-        }
-        else if (result.operation == 'Edit'){
-          this.eventService.editSchedule(model)
-            .subscribe(returnData => {
-                console.log(returnData);
-                this.shouldShowDialog = false;
-                this.generateMonth();
-              }
-            );
-        }
+      if (result == 'add' || result == 'edit'){
+        this.shouldShowDialog = false;
+        this.refreshEvents();
       }
-    });
+    })
   }
 
   showViewDialog(dialogParam: DialogOperation){
@@ -238,16 +216,27 @@ export class PageCalendarComponent {
     });
   }
 
-  onOkDelete(){
-    this.eventService.deleteSchedule(this.appointmentToDelete.Id).subscribe(returnData => {
-      console.log(returnData);
-      this.showDeleteDialog = false;
-      this.generateMonth();
-    });
-  }
+  OnDelete(){
+    this.dialogResult = this.dialog.open(MessageboxComponent, {
+      width:'500px',
+      disableClose: true,
+      data: { title: 'Delete', message: 'Are you sure you want to delete "' + this.appointmentToDelete.Title + '" appointment?'}
+    })
 
-  onDeleteCancel(){
-    this.showDeleteDialog = false;
+    this.dialogResult.afterClosed().subscribe(result => {
+      if (result == "ok"){
+        if (this.appointmentToDelete.IsClone){
+          this.eventService.deleteAppointmentRepeat(this.appointmentToDelete.Id, this.appointmentToDelete.OriginalDate).subscribe(returnData => {
+            this.refreshEvents();
+          });
+        }
+        else {
+          this.eventService.deleteSchedule(this.appointmentToDelete.Id).subscribe(returnData => {
+            this.refreshEvents();
+          });
+        }
+      }
+    });
   }
 
   refreshEvents(){

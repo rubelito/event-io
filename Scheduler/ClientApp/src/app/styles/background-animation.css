@@ -1,0 +1,174 @@
+.xtr_shape{
+    position:static
+}
+.xtr_shape .shape1{
+    position:absolute;
+    left:0;
+    top:30%;
+    z-index:-1;
+    -webkit-animation:5s linear infinite movebounce;
+    animation:5s linear infinite movebounce;
+    opacity:.2
+}
+.xtr_shape .shape2{
+    position:absolute;
+    z-index:-1;
+    top:60%;
+    left:2%
+}
+.xtr_shape .shape3{
+    position:absolute;
+    left:3%;
+    bottom:25%;
+    z-index:-1;
+    -webkit-animation:15s linear infinite animationFramesOne;
+    animation:15s linear infinite animationFramesOne
+}
+.xtr_shape .shape4{
+    position:absolute;
+    right:50%;
+    bottom:20%;
+    z-index:-1;
+    -webkit-animation:20s linear infinite animationFramesOne;
+    animation:20s linear infinite animationFramesOne
+}
+.xtr_shape .shape5{
+    position:absolute;
+    right:0;
+    top:60%;
+    z-index:-1;
+    -webkit-animation:5s linear infinite movebounce;
+    animation:5s linear infinite movebounce;
+    opacity:.2
+}
+.xtr_shape .shape6{
+    position:absolute;
+    z-index:-1;
+    top:50%;
+    right:2%
+}
+.xtr_shape .shape7{
+    position:absolute;
+    left:2%;
+    top:17%;
+    z-index:-1;
+    -webkit-animation:20s linear infinite animationFramesOne;
+    animation:20s linear infinite animationFramesOne
+}
+.xtr_shape .shape8{
+    position:absolute;
+    z-index:-1;
+    top:80%;
+    right:2%
+}
+.p-pageWrapper{
+    z-index:1
+}
+@-webkit-keyframes movebounce{
+    0%,100%{
+        transform:translateY(0)
+    }
+    50%{
+        transform:translateY(20px)
+    }
+}
+@keyframes movebounce{
+    0%,100%{
+        transform:translateY(0)
+    }
+    50%{
+        transform:translateY(20px)
+    }
+}
+@-webkit-keyframes moveleftbounce{
+    0%,100%{
+        transform:translateX(0)
+    }
+    50%{
+        transform:translateX(20px)
+    }
+}
+@keyframes moveleftbounce{
+    0%,100%{
+        transform:translateX(0)
+    }
+    50%{
+        transform:translateX(20px)
+    }
+}
+.rotateme{
+    -webkit-animation-name:rotateme;
+    animation-name:rotateme;
+    -webkit-animation-duration:20s;
+    animation-duration:20s;
+    -webkit-animation-iteration-count:infinite;
+    animation-iteration-count:infinite;
+    -webkit-animation-timing-function:linear;
+    animation-timing-function:linear
+}
+@keyframes rotateme{
+    from{
+        transform:rotate(0)
+    }
+    to{
+        transform:rotate(360deg)
+    }
+}
+@-webkit-keyframes rotateme{
+    from{
+        -webkit-transform:rotate(0)
+    }
+    to{
+        -webkit-transform:rotate(360deg)
+    }
+}
+@-webkit-keyframes rotate3d{
+    0%{
+        transform:rotateY(0)
+    }
+    100%{
+        transform:rotateY(360deg)
+    }
+}
+@keyframes rotate3d{
+    0%{
+        transform:rotateY(0)
+    }
+    100%{
+        transform:rotateY(360deg)
+    }
+}
+@keyframes animationFramesOne{
+    0%,100%{
+        transform:translate(0,0) rotate(0)
+    }
+    20%{
+        transform:translate(73px,-1px) rotate(36deg)
+    }
+    40%{
+        transform:translate(141px,72px) rotate(72deg)
+    }
+    60%{
+        transform:translate(83px,122px) rotate(108deg)
+    }
+    80%{
+        transform:translate(-40px,72px) rotate(144deg)
+    }
+}
+@-webkit-keyframes animationFramesOne{
+    0%,100%{
+        -webkit-transform:translate(0,0) rotate(0)
+    }
+    20%{
+        -webkit-transform:translate(73px,-1px) rotate(36deg)
+    }
+    40%{
+        -webkit-transform:translate(141px,72px) rotate(72deg)
+    }
+    60%{
+        -webkit-transform:translate(83px,122px) rotate(108deg)
+    }
+    80%{
+        -webkit-transform:translate(-40px,72px) rotate(144deg)
+    }
+}

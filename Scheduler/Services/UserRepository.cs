@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using Scheduler.Entity;
 using Scheduler.Models;
@@ -204,6 +205,54 @@ namespace Scheduler.Services
 
         }
 
+        public UserPicture GetUserPicture(int userId)
+        {
+            return _dbContext.UserPictures.FirstOrDefault(u => u.UserId == userId);
+        }
+
+        public void InsertUserPicture(UserPicture picture)
+        {
+            if (_dbContext.UserPictures.Any(u => u.UserId == picture.UserId))
+            {
+                var userPictureToRemove = _dbContext.UserPictures.FirstOrDefault(u => u.UserId == picture.UserId);
+                _dbContext.UserPictures.Remove(userPictureToRemove);
+                _dbContext.SaveChanges();
+
+                _dbContext.UserPictures.Add(picture);
+                _dbContext.SaveChanges();
+
+
+            }
+            else
+            {
+                _dbContext.UserPictures.Add(picture);
+                _dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteProfilePicture(int userId)
+        {
+            var pictureToRemove = _dbContext.UserPictures.FirstOrDefault(u => u.UserId == userId);
+
+            if (pictureToRemove != null)
+            {
+                _dbContext.UserPictures.Remove(pictureToRemove);
+                _dbContext.SaveChanges();
+            }
+        }
+
+        public byte[] GetEmptyProfilePicture()
+        {
+            string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string picturePath = path + @"/wwwroot/empty-profileIcon.png";
+
+            bool exist = System.IO.File.Exists(picturePath);
+
+            byte[] emptyPicture = File.ReadAllBytes(picturePath);
+
+            return emptyPicture;
+        }
+
         public void Dispose()
         {
             //_conn.Close();
@@ -211,4 +260,3 @@ namespace Scheduler.Services
         }
     }
 }
-

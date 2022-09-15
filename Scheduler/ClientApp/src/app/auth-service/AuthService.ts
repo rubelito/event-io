@@ -1,9 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import { HttpClient, HttpHeaders} from "@angular/common/http";
 import { Inject, Injectable  } from "@angular/core";
-import { Observable, Observer, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ChangePasswordResult } from "../calendar-models/changePasswordResult-Model";
 import { PasswordModel } from "../calendar-models/password-Model";
-import { PrivilegeModel } from "../calendar-models/privilege-model";
 import { ResultModel } from "../calendar-models/resultMoodel";
 import { User } from "../calendar-models/user";
 import { UserBasic } from "../calendar-models/user-basic";
@@ -31,6 +30,26 @@ export class AuthService {
         return true;
       }
       return false;
+   }
+
+   getLoggedUserName(): string {
+    var username = localStorage.getItem("username");
+
+      if (username != null && username != ""){
+        return username;
+      }
+      return "";
+   }
+
+   getLoggedUserId(): number {
+    var userId = localStorage.getItem("id");
+
+    if (userId != "" && userId != null){
+      return +userId;
+    }
+    else {
+      return 0;
+    }
    }
 
    isAdministrator(): boolean {
@@ -106,7 +125,32 @@ export class AuthService {
      return this.http.post<ChangePasswordResult>(this.baseUrl + "user/ChangePassword", model,{ headers: this.headers});
    }
 
+   uploadProfileImage(file: any) : Observable<ResultModel> {
+    let cre = localStorage.getItem("accessToken");
+    let securityHeader = new HttpHeaders();
+    securityHeader =  securityHeader.append('Authorization', cre!);
+
+    return this.http.post<ResultModel>(this.baseUrl + "user/UploadProfilePicture", file, { headers: securityHeader});
+  }
+
+  removeProfilePicture(userId: number) {
+    let cre = localStorage.getItem("accessToken");
+    this.headers = this.headers.set('Authorization', cre!);
+     return this.http.get<boolean>(this.baseUrl + "user/RemoveProfilePicture?userId=" + userId, { headers: this.headers});
+   }
+
+  getAvatar(userId: number) {
+    let cre = localStorage.getItem("accessToken");
+    let securityHeader = new HttpHeaders();
+    securityHeader =  securityHeader.append('Authorization', cre!);
+    securityHeader =  securityHeader.append('Accept', "application/json");
+    securityHeader =  securityHeader.append('Content-Type', "application/json");
+
+    return this.http.post<Blob>(this.baseUrl + "user/GetAvatar", userId, {headers: securityHeader, responseType: 'blob' as 'json' });
+  }
+
    logOut(): Observable<string> {
+    localStorage.setItem("userId", "0");
     localStorage.setItem("username", "");
     localStorage.setItem("isLogin", "");
     localStorage.setItem("loginStatus", "");

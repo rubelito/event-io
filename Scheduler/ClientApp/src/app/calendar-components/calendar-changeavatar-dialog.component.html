@@ -1,0 +1,25 @@
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>Profile Picture</span>
+        <span class="auth-close-x" (click)="close()">&times;</span>
+    </div>
+    <div class="display-flex gap-10 background-color-272e48 members-select-section">
+       <img width="150" height="150" [src]="profilePic">
+       <div class="avatar-button-section">
+            <input type="file" class="upload-avatar" style="display: none;" #file (change)="uploadImage($event)">
+            <button mat-flat-button class="blue-button opacity-button" (click)="upload()">
+                <img height="16" width="16" [src]="uploadIcon">
+                Upload
+            </button>
+            <button mat-flat-button class="red-button display-none opacity-button" (click)="remove()">
+                <img height="16" width="16" [src]="removeIcon">
+                Remove
+            </button>
+       </div>
+       
+    </div>
+    <div class="auth-footer">
+        <div class="auth-footer-fields display-flex flex-gap-13 background-color-3a405a temp-height">
+        </div>
+    </div>
+</div>

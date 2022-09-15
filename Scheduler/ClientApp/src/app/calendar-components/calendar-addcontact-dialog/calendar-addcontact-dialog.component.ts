@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/auth-service/AuthService';
-import { Role } from 'src/app/calendar-models/role';
-import { UserBasic } from 'src/app/calendar-models/user-basic';
+import { MessageboxComponent } from '../messagebox/messagebox.component';
 
 @Component({
   selector: 'app-calendar-addcontact-dialog',
@@ -12,11 +11,9 @@ import { UserBasic } from 'src/app/calendar-models/user-basic';
 export class CalendarAddContactDialogComponent implements OnInit {
 
   email: string = "";
-  //roles = [Role.Member, Role.Administrator];
-  //selectedRole: string = "Member";
 
   constructor(public dialogRef: MatDialogRef<CalendarAddContactDialogComponent>,
-    private authService: AuthService) { }
+    private authService: AuthService, private dialog:MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -28,12 +25,27 @@ export class CalendarAddContactDialogComponent implements OnInit {
   add(){
     this.authService.addContact(this.email).subscribe(result => {
       if (result.Success){
-        alert("Contact Added");
+        let dialogResult =this.dialog.open(MessageboxComponent, {
+          width:'400px',
+          disableClose: true,
+          data: { title: '', message: "Contact Added!", hasNoCancel: true, icon: "ok"}
+        });
+
+        dialogResult.afterClosed().subscribe(result => {
         this.dialogRef.close("add");
+        });
       }
       else {
-        alert(result.Message);
+        this.showMessage(result.Message, "warning");
       }
+    });
+      }
+
+  showMessage(message: string, icon: string){
+    this.dialog.open(MessageboxComponent, {
+      width:'400px',
+      disableClose: true,
+      data: { title: '', message: message, hasNoCancel: true, icon: icon}
     });
   }
 }

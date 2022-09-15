@@ -1,3 +1,0 @@
-<div id="addbtn" *ngIf="isAdd" (click)="openDialog('Add')">Add Schedule</div>
-<div id="editbtn" *ngIf="!isAdd" (click)="openDialog('Edit')">Edit Schedule</div>
-<div *ngIf="!isAdd" (click)="openDialog('Delete')">Delete Schedule</div>

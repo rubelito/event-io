@@ -33,4 +33,16 @@
             <span>{{ event.appointment.Details }}</span>
         </div>
     </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields left-field-width">Invites :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <div>
+                <span class="calendar-view-invite" *ngFor="let a of attendees">
+                    <img *ngIf="a.Type == 'Member'" [src]="personImageSrc" width="15px" height="15px">
+                    <img *ngIf="a.Type == 'Group'" [src]="groupImageSrc" width="15px" height="15px">
+                    {{ a.Name }}
+                 </span>
+            </div>
+        </div>
+    </div>
 </div>

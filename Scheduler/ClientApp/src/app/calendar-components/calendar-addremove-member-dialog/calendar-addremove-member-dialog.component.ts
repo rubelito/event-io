@@ -1,20 +1,22 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { UserBasic } from 'src/app/calendar-models/user-basic';
 import { GroupService } from 'src/app/calendar-service/GroupService';
 import { AuthService } from 'src/app/auth-service/AuthService';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MembersOfGroupModel } from 'src/app/calendar-models/membersOfGroup-model';
+import { MessageboxComponent } from '../messagebox/messagebox.component';
+import { GlobalConstants } from 'src/app/common/global-constant';
 
 @Component({
   selector: 'app-calendar-addremove-member-dialog',
   templateUrl: './calendar-addremove-member-dialog.component.html',
-  styleUrls: ['./calendar-addremove-member-dialog.component.css']
+  styleUrls: ['./calendar-addremove-member-dialog.component.css', '../../styles/style.css']
 })
 export class CalendarAddremoveMemberDialogComponent implements OnInit {
 
   constructor(private groupService: GroupService, private authService: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: number, public dialogRef: MatDialogRef<CalendarAddremoveMemberDialogComponent>) { }
-
+    @Inject(MAT_DIALOG_DATA) public data: number, public dialogRef: MatDialogRef<CalendarAddremoveMemberDialogComponent>
+    , private dialog:MatDialog) { }
   members: UserBasic[] = [];
   users: UserBasic[] = [];
 
@@ -24,6 +26,11 @@ export class CalendarAddremoveMemberDialogComponent implements OnInit {
   clonedUsers: UserBasic[] = [];
 
   status: string = "no-changes";
+
+  leftArrowIcon = GlobalConstants.leftArrowIcon;
+  rightArrowIcon = GlobalConstants.rightArrowIcon;
+
+  leftOrRight: string;
 
   ngOnInit(): void {
     this.loadMembersAndUser();
@@ -45,7 +52,11 @@ export class CalendarAddremoveMemberDialogComponent implements OnInit {
       let doesExist = this.members.some(u => u.Id == this.selectedUser.Id);
 
       if (doesExist){
-        alert("User is already a member");
+        this.dialog.open(MessageboxComponent, {
+          width:'400px',
+          disableClose: true,
+          data: { title: '', message: "User is already a member", hasNoCancel: true, icon: "warning"}
+        });
         return;
       }
 
@@ -97,7 +108,11 @@ export class CalendarAddremoveMemberDialogComponent implements OnInit {
     });
   }
 
-  close(){
+  cancel(){
     this.dialogRef.close("cancel");
+  }
+
+  focusedSelect(leftRightSelected: string){
+    this.leftOrRight = leftRightSelected;
   }
 }

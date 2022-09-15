@@ -1,19 +1,32 @@
-<div class="member-selection-div">
-    <div>
-        <select class="members-select" [(ngModel)]="selectedMember" size="11">
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>Members in group</span>
+        <span class="auth-close-x" (click)="cancel()">&times;</span>
+    </div>
+    <div class="display-flex gap-10 background-color-272e48 members-select-section">
+        <div class="members-select">
+            <select (click)="focusedSelect('left')" class="auth-text" [(ngModel)]="selectedMember" size="11">
             <option *ngFor="let u of members" [ngValue]="u">{{ u.FirstName}} {{ u.LastName}}</option>
         </select>
-        <br>
-        <input type="button" value="Remove" (click)="removeMember()" [disabled]="selectedMember == undefined">
     </div>
-    <div>
-        <select class="members-select" [(ngModel)]="selectedUser" size="11">
+        <div class="middle-button-section">
+            <button mat-flat-button class="blue-button opacity-button"  (click)="addMember()"  [disabled]="!(selectedUser != undefined && leftOrRight == 'right')">
+                <img height="18" width="18" [src]="leftArrowIcon">
+            </button>
+            <button mat-flat-button class="blue-button opacity-button"  (click)="removeMember()"  [disabled]="!(selectedMember != undefined && leftOrRight == 'left')">
+                <img height="18" width="18" [src]="rightArrowIcon">
+            </button>
+        </div>
+        <div class="members-select">
+            <select (click)="focusedSelect('right')" class="auth-text" [(ngModel)]="selectedUser" size="11">
             <option *ngFor="let u of users" [ngValue]="u">{{ u.FirstName}} {{ u.LastName}}</option>
         </select>
-        <br>
-        <input type="button" value="Add" (click)="addMember()"  [disabled]="selectedUser == undefined">
     </div>
 </div>
-<div class="buttons-group">
-    <input type="button" (click)="close()" value="Close"> &nbsp;&nbsp; <input type="button" (click)="save()" value="Save">
+    <div class="auth-footer">
+        <div class="auth-footer-fields display-flex flex-gap-13 background-color-3a405a">
+            <button mat-flat-button class="blue-button opacity-button" (click)="save()">Save</button>
+            <button mat-flat-button class="transparent-button opacity-button" (click)="cancel()">Cancel</button>
+        </div>
+    </div>
 </div>

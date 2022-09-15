@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Authorization;
+using Scheduler.Entity;
 using Scheduler.Models;
 using Scheduler.Services;
 using Scheduler.SharedCode;
@@ -42,7 +44,22 @@ namespace Scheduler.Controllers
                 events = events.UnionBy(ownedEvents, e => e.Id).ToList(); //Combine and remove duplicates;
                 events = events.UnionBy(groupInvites, e => e.Id).ToList();
 
+                var ownedEventsWithRepeats = _appointmentRepository.GetAppointmentsWithRepeats(currentUser.Username);
+
+                var eventsWithRepeats = _appointmentRepository.GetMeetingsWithRepeat(currentUser.Id);
+                var groupInvitesWithRepeats = _appointmentRepository.GetMeetingsThatYoureInvitedWithRepeats(currentUser.Id);
+                eventsWithRepeats = eventsWithRepeats.UnionBy(ownedEventsWithRepeats, e => e.Id).ToList(); //Combine and remove duplicates;
+                eventsWithRepeats = eventsWithRepeats.UnionBy(groupInvitesWithRepeats, e => e.Id).ToList();
+
+                eventsWithRepeats = RemoveFutureRepeats(eventsWithRepeats, yearMonth);
+
+                ScheduleRepeater repeatGenerator = new ScheduleRepeater();
+                var repeats = repeatGenerator.HandleRepeats(eventsWithRepeats, yearMonth);
+
+                ApplyEditRepeats(repeats);
+                events.AddRange(repeats);
                 results = ClassConverter.ConvertToEventModel(events);
+                results = results.Where(r => !r.IsDeleted).ToList();
 
                 foreach (var r in results)
                 {
@@ -63,6 +80,57 @@ namespace Scheduler.Controllers
             }
 
             return Ok(results);
+        }
+
+        [HttpPost]
+        [Route("[action]", Name = "GetNumberOfRepeats")]
+        [Consumes("application/json")]
+        [CustomAuthorize]
+        public IActionResult GetNumberOfRepeats([FromBody] EventModel model)
+        {
+            int numberOfRepeats = 0;
+
+            Appointment ap = ClassConverter.ConvertToAppointment(model);
+            var originalEvent = _appointmentRepository.GetAppointmentById(model.Id);
+            ap.Date = originalEvent.Date;
+
+            ScheduleRepeater repeaGenerator = new ScheduleRepeater();
+            var repeatDates = repeaGenerator.GetDateRangeForRepeats(ap, ap.YearMonth);
+            numberOfRepeats = repeatDates.Count;
+
+            return Ok(numberOfRepeats);   
+        }
+
+
+        private List<Appointment> RemoveFutureRepeats(List<Appointment> apps, string yearMonth)
+        {
+            DateTime dateOfMonth = DateTime.ParseExact(yearMonth, "M/yyyy", CultureInfo.InvariantCulture);
+            dateOfMonth = new DateTime(dateOfMonth.Year, dateOfMonth.Month, DateTime.DaysInMonth(dateOfMonth.Year, dateOfMonth.Month));
+            return apps.Where(e => e.Date <= dateOfMonth).ToList();
+        }
+
+        private void ApplyEditRepeats(List<Appointment> apps)
+        {
+            AppointmentRepository _appointmentRepository = new AppointmentRepository();
+            var repeatEdits = new List<RepeatEdit>();
+
+            var withRepeats = apps.Where(a => a.isRepeat).Select(a => a.Id).Distinct().ToList();
+
+            foreach (var r in withRepeats)
+            {
+                var editRepeats = _appointmentRepository.GetRepeatEdits(r);
+                foreach (var er in editRepeats)
+                {
+                    var ap = apps.FirstOrDefault(wr => wr.Id == er.AppointmentId && wr.Date == er.OriginalDate);
+
+                    if (ap != null)
+                    {
+                        ap.RepeatEdit = er;
+                    }
+                }
+            }
+
+            var hello = repeatEdits;
         }
 
 
@@ -108,6 +176,8 @@ namespace Scheduler.Controllers
                 var appointment = ClassConverter.ConvertToAppointment(ev.Appointment);
 
                 _appointmentRepository.EditAppointment(appointment);
+                _appointmentRepository.DeleteRepeats(appointment.Id);
+
                 _appointmentRepository.DeleteAllUserAsignedToAppointment(ev.Appointment.Id);
                 _appointmentRepository.AssignUserToAppointments(ev.MemberIds, ev.Appointment.Id);
 
@@ -130,6 +200,61 @@ namespace Scheduler.Controllers
         }
 
         [HttpPost]
+        [Route("[action]", Name = "EditRepeat")]
+        [Consumes("application/json")]
+        [CustomAuthorize]
+        public async Task<IActionResult> EditRepeat([FromBody] AddEditModel ev)
+        {
+            try
+            {
+                bool hasDifference = hasDifferenceOnRepeatSettings(ev.Appointment);
+                if (hasDifference)
+                {
+                    _appointmentRepository.EditAppointmentRepeatSettings(ev.Appointment);
+                }
+
+                _appointmentRepository.EditAllRepeatAppointment(ev.Appointment);
+
+                _appointmentRepository.DeleteAllUserAsignedToAppointment(ev.Appointment.Id);
+                _appointmentRepository.AssignUserToAppointments(ev.MemberIds, ev.Appointment.Id);
+
+                _appointmentRepository.DeleteAllGroupAsignedToAppointment(ev.Appointment.Id);
+                _appointmentRepository.AssignGroupToAppointments(ev.GroupIds, ev.Appointment.Id);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message)
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
+            }
+            finally
+            {
+                Dispose();
+            }
+
+            return Ok("Success");
+        }
+
+        private bool hasDifferenceOnRepeatSettings(EventModel model)
+        {
+            var originalEvent = _appointmentRepository.GetAppointmentById(model.Id);
+
+            bool hasDifference = false;
+
+            if ((originalEvent.RepeatSelection != model.RepeatSelection) ||
+                (originalEvent.RepeatEnd != model.RepeatEnd) ||
+                (originalEvent.After != model.After) ||
+                 originalEvent.OnDate.ToString("MM/dd/yyyy") != model.OnDate)
+            {
+                hasDifference = true;
+            }
+
+            return hasDifference;
+
+        }
+
+        [HttpPost]
         [Route("[action]", Name = "ChangeScheduleDate")]
         [Consumes("application/json")]
         [CustomAuthorize]
@@ -137,7 +262,8 @@ namespace Scheduler.Controllers
         {
             try
             {
-                _appointmentRepository.ChangeScheduleDate(ev.Id, ev.StrDate);
+                DateTime parsedDate = DateTime.ParseExact(ev.StrDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                _appointmentRepository.ChangeScheduleDate(ev.Id, parsedDate);
             }
             catch (Exception ex)
             {
@@ -164,6 +290,32 @@ namespace Scheduler.Controllers
             {
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
                 _appointmentRepository.DeleteAppointment(currentUser.Username, id);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message)
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError
+                };
+            }
+            finally
+            {
+                Dispose();
+            }
+
+            return Ok("Success");
+        }
+
+        [HttpGet]
+        [Route("[action]", Name = "DeleteAppointmentRepeat")]
+        [CustomAuthorize]
+        public async Task<IActionResult> DeleteAppointmentRepeat(int appointmentId, string originalDateStr)
+        {
+            try
+            {
+                var currentUser = HttpContext.Items["User"] as UserIdentity;
+                DateTime originalDate = DateTime.ParseExact(originalDateStr, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                _appointmentRepository.MarkRepeatAsDeleted(appointmentId, originalDate);
             }
             catch (Exception ex)
             {

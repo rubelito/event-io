@@ -1,7 +1,9 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Globalization;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using Scheduler.Entity;
+using Scheduler.Models;
 using Scheduler.SharedCode;
 
 namespace Scheduler.Services
@@ -23,13 +25,25 @@ namespace Scheduler.Services
 
         public List<Appointment> GetAppointments(string ownerUsername, string yearMonth)
         {
-            return _dbContext.Appointments.Include("Creator").Where(a => a.Creator.UserName == ownerUsername && a.YearMonth == yearMonth).ToList();
+            return _dbContext.Appointments.Include("Creator").Where(a => a.Creator.UserName == ownerUsername && a.YearMonth == yearMonth && a.isRepeat == false).ToList();
+        }
+
+        public List<Appointment> GetAppointmentsWithRepeats(string ownerUsername)
+        {
+            return _dbContext.Appointments.Include("Creator").Where(a => a.Creator.UserName == ownerUsername && a.isRepeat == true).ToList();
         }
 
         public List<Appointment> GetMeetings(int participantId, string yearMonth)
         {
             return _dbContext.Appointments.Include("Creator")
-                .Where(a => a.YearMonth == yearMonth && a.Meetings.Any(m => m.ParticipantId == participantId))
+                .Where(a => a.isRepeat == false && a.YearMonth == yearMonth && a.Meetings.Any(m => m.ParticipantId == participantId))
+                .ToList();
+        }
+
+        public List<Appointment> GetMeetingsWithRepeat(int participantId)
+        {
+            return _dbContext.Appointments.Include("Creator")
+                .Where(a => a.isRepeat == true && a.Meetings.Any(m => m.ParticipantId == participantId))
                 .ToList();
         }
 
@@ -40,8 +54,30 @@ namespace Scheduler.Services
                          join g in _dbContext.Groups on gm.ParticipantId equals g.Id
                          join ug in _dbContext.UsersGroups on g.Id equals ug.GroupId
                          join u in _dbContext.Users on a.CreatorId equals u.Id
-                         where (ug.UserId == participantId && a.YearMonth == yearMonth)
+                         where (ug.UserId == participantId && a.YearMonth == yearMonth && a.isRepeat == false)
                          select new { appoint = a, creator = u});
+
+            var appointments = query.ToList();
+            List<Appointment> result = new List<Appointment>();
+
+            foreach (var a in appointments)
+            {
+                a.appoint.Creator = a.creator;
+                result.Add(a.appoint);
+            }
+
+            return result;
+        }
+
+        public List<Appointment> GetMeetingsThatYoureInvitedWithRepeats(int participantId)
+        {
+            var query = (from a in _dbContext.Appointments
+                         join gm in _dbContext.GroupsMeetings on a.Id equals gm.MeetingId
+                         join g in _dbContext.Groups on gm.ParticipantId equals g.Id
+                         join ug in _dbContext.UsersGroups on g.Id equals ug.GroupId
+                         join u in _dbContext.Users on a.CreatorId equals u.Id
+                         where (ug.UserId == participantId && a.isRepeat ==  true)
+                         select new { appoint = a, creator = u });
 
             var appointments = query.ToList();
             List<Appointment> result = new List<Appointment>();
@@ -95,10 +131,20 @@ namespace Scheduler.Services
                 appoint.Details = appointmentToEdit.Details;
 
                 DateTime monthYear = Convert.ToDateTime(appointmentToEdit.Date);
-                    
+
+                if (!appointmentToEdit.IsClone)
+                {
+                    appoint.Date = appointmentToEdit.Date;
+                }
+
                 appoint.YearMonth = monthYear.Month + "/" + monthYear.Year;
-                appoint.Date = appointmentToEdit.Date;
                 appoint.Time = appointmentToEdit.Time;
+                appoint.isRepeat = appointmentToEdit.isRepeat;
+                appoint.RepeatSelection = appointmentToEdit.RepeatSelection;
+                appoint.RepeatEnd = appointmentToEdit.RepeatEnd;
+                appoint.After = appointmentToEdit.After;
+                appoint.OnDate = appointmentToEdit.OnDate;
+                appoint.IsDone = appointmentToEdit.IsDone;
 
                 _dbContext.SaveChanges();
                 _dbContext.Database.CommitTransaction();
@@ -110,7 +156,115 @@ namespace Scheduler.Services
             }
         }
 
-        public void ChangeScheduleDate(int appointmentId, string strDate)
+        public void EditAllRepeatAppointment(EventModel ev)
+        {
+            try
+            {
+                var appoint = _dbContext.Appointments.FirstOrDefault(a => a.Id == ev.Id);
+                if (appoint == null)
+                {
+                    throw new ArgumentException("Cannot find existing appointment Id=" + ev.Id);
+                }
+                var originalDate = DateTime.ParseExact(ev.OriginalDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                var editRepeat = _dbContext.RepeatEdits.FirstOrDefault(r => r.AppointmentId == ev.Id && r.OriginalDate == originalDate);
+
+                if (editRepeat != null) {
+                    editRepeat.Title = ev.Title;
+                    editRepeat.Location = ev.Location;
+                    editRepeat.Details = ev.Details;
+                    editRepeat.EditedDate = DateTime.ParseExact(ev.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                    editRepeat.Time = ev.Time;
+                    editRepeat.IsDeleted = ev.IsDeleted;
+                    editRepeat.IsDone = ev.IsDone;
+
+                    _dbContext.SaveChanges();
+                }
+                else
+                {
+                    var newEditRepeat = new RepeatEdit();
+                    newEditRepeat.AppointmentId = ev.Id;
+                    newEditRepeat.Title = ev.Title;
+                    newEditRepeat.Location = ev.Location;
+                    newEditRepeat.Details = ev.Details;
+                    newEditRepeat.OriginalDate = originalDate;
+                    newEditRepeat.EditedDate = DateTime.ParseExact(ev.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                    newEditRepeat.Time = ev.Time;
+                    newEditRepeat.IsDeleted = ev.IsDeleted;
+                    newEditRepeat.IsDone = ev.IsDone;
+
+                    _dbContext.RepeatEdits.Add(newEditRepeat);
+                    _dbContext.SaveChanges();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //_dbContext.Database.RollbackTransaction();
+                throw ex;
+            }
+        }
+
+        public void MarkRepeatAsDeleted(int appointmentId, DateTime originalDate)
+        {
+            try
+            {
+                var appoint = _dbContext.Appointments.FirstOrDefault(a => a.Id == appointmentId);
+                if (appoint == null)
+                {
+                    throw new ArgumentException("Cannot find existing appointment Id=" + appointmentId);
+                }
+                var editRepeat = _dbContext.RepeatEdits.FirstOrDefault(r => r.AppointmentId == appointmentId && r.OriginalDate == originalDate);
+
+                if (editRepeat != null)
+                {
+                    editRepeat.IsDeleted = true;
+
+                    _dbContext.SaveChanges();
+                }
+                else
+                {
+                    var newEditRepeat = new RepeatEdit();
+                    newEditRepeat.AppointmentId = appointmentId;
+                    newEditRepeat.OriginalDate = originalDate;
+                    newEditRepeat.EditedDate = originalDate;
+                    newEditRepeat.IsDeleted = true;
+
+                    _dbContext.RepeatEdits.Add(newEditRepeat);
+                    _dbContext.SaveChanges();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //_dbContext.Database.RollbackTransaction();
+                throw ex;
+            }
+        }
+
+        public void EditAppointmentRepeatSettings(EventModel model)
+        {
+            var originalEvent = _dbContext.Appointments.FirstOrDefault(a => a.Id == model.Id);
+
+            originalEvent.RepeatSelection = model.RepeatSelection;
+            originalEvent.RepeatEnd = model.RepeatEnd;
+            originalEvent.After = model.After;
+            originalEvent.OnDate = DateTime.ParseExact(model.OnDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+
+            _dbContext.SaveChanges();
+        }
+
+        public void DeleteRepeats(int appointmentId)
+        {
+            var repeats = _dbContext.RepeatEdits.Where(r => r.AppointmentId == appointmentId).ToList();
+
+            if (repeats.Count > 0)
+            {
+                _dbContext.RepeatEdits.RemoveRange(repeats);
+                _dbContext.SaveChanges();
+            }
+        }
+
+        public void ChangeScheduleDate(int appointmentId, DateTime newDate)
         {
             _dbContext.Database.BeginTransaction();
             try
@@ -121,11 +275,9 @@ namespace Scheduler.Services
                     throw new ArgumentException("Cannot find existing appointment Id=" + appointmentId);
                 }
 
-                appoint.Date = strDate;
+                appoint.Date = newDate;
 
-                DateTime monthYear = Convert.ToDateTime(strDate);
-
-                appoint.YearMonth = monthYear.Month + "/" + monthYear.Year;
+                appoint.YearMonth = newDate.Month + "/" + newDate.Year;
 
                 _dbContext.SaveChanges();
                 _dbContext.Database.CommitTransaction();
@@ -246,6 +398,11 @@ namespace Scheduler.Services
         public List<Group> GetAllGroupAttendessByAppointment(int appontmentId)
         {
             return _dbContext.Groups.Where(u => u.Meetings.Any(m => m.MeetingId == appontmentId)).ToList();
+        }
+
+        public List<RepeatEdit> GetRepeatEdits(int appointmentId)
+        {
+            return _dbContext.RepeatEdits.Where(r => r.AppointmentId == appointmentId).ToList();
         }
 
         public void Dispose()

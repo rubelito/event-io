@@ -16,10 +16,18 @@ app-calendar-contextmenu {
     background-color: rgba(0,0,0,0.4);
 }
 
-#currentDate {
-    margin-left: auto;
-    margin-right: auto;
-    width: 120px;
+.Weekdays-name {
+    color: white;
+    display: flex;
+    width: 1040px;
+    margin-top: 5px;
+    margin-bottom: 7px;
+}
+
+.Weekdays-name > div {
+    flex-basis: 14.285%;
+    text-align: center;
+    font-size: 15px;
 }
 
 .calendar {

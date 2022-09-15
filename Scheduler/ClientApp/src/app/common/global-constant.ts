@@ -40,4 +40,19 @@ export class GlobalConstants {
     public static socialEmailImage = '../assets/images/social-email.png';
     public static facebookImage = '../assets/images/facebook.png';
     public static twitterImage = '../assets/images/twitter.png';
+
+    public static repeatIcon = '../assets/images/repeat.png';
+
+    public static okIcon = "../assets/images/ok-icon.png";
+    public static warningIcon = "../assets/images/warning-icon.png";
+    public static xIcon = "../assets/images/x-icon.png";
+
+    public static logoutIcon = "../assets/images/logout-icon.png";
+
+    public static addIcon = "../assets/images/add-icon.png";
+    public static uploadIcon = "../assets/images/upload-icon.png";
+    public static createIcon = "../assets/images/create-icon.png";
+    public static removeIcon = "../assets/images/remove-icon.png";
+
+    public static emptyProfileIcon = "../assets/images/empty-profileIcon.png";
 }

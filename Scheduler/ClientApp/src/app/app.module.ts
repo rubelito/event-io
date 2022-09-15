@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from './auth-service/AuthService';
 import { AppointmentService } from './calendar-service/AppointmentService';
 import { GroupService } from './calendar-service/GroupService';
+import { DataSharingService } from './calendar-service/DataSharingService';
 
 import { LinkguardGuard } from './calendar-guard/linkguard.guard';
 
@@ -45,11 +46,11 @@ import { CalendarChangedpasswordDialogComponent } from './calendar-components/ca
 import { PageGroupComponent } from './Pages/page-group/page-group.component';
 import { CalendarAddeditGroupDialogComponent } from './calendar-components/calendar-addedit-group-dialog/calendar-addedit-group-dialog.component';
 import { CalendarAddremoveMemberDialogComponent } from './calendar-components/calendar-addremove-member-dialog/calendar-addremove-member-dialog.component';
-import { PageLoginComponent } from './Pages/page-login/page-login.component';
 import { CalendarRegisterDialogComponent } from './calendar-components/calendar-register-dialog/calendar-register-dialog.component';
 import { CalendarMyprofileDialogComponent } from './calendar-components/calendar-myprofile-dialog/calendar-myprofile-dialog.component';
 import { PageHomeComponent } from './Pages/page-home/page-home.component';
 import { CalendarViewDialogComponent } from './calendar-components/calendar-view-dialog/calendar-view-dialog.component';
+import { CalendarChangeavatarDialogComponent } from './calendar-components/calendar-changeavatar-dialog/calendar-changeavatar-dialog.component';
 
 @NgModule({
   declarations: [
@@ -69,11 +70,11 @@ import { CalendarViewDialogComponent } from './calendar-components/calendar-view
     PageGroupComponent,
     CalendarAddeditGroupDialogComponent,
     CalendarAddremoveMemberDialogComponent,
-    PageLoginComponent,
     CalendarRegisterDialogComponent,
     CalendarMyprofileDialogComponent,
     PageHomeComponent,
-    CalendarViewDialogComponent
+    CalendarViewDialogComponent,
+    CalendarChangeavatarDialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -106,7 +107,8 @@ import { CalendarViewDialogComponent } from './calendar-components/calendar-view
   providers: [
     AppointmentService,
     AuthService,
-    GroupService
+    GroupService,
+    DataSharingService
   ],
   bootstrap: [AppComponent]
 })

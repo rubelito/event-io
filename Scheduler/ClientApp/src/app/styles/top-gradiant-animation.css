@@ -1,0 +1,27 @@
+/* gradient background */
+
+.gradiant-animation {
+    position: relative;
+    background: linear-gradient(92deg, #5a0b03, #0c4d01, #0d0261, #611b01, #565800, #3b0163);
+    background-size: 1200% 1200%;
+  
+    -webkit-animation: AnimationName 48s ease infinite;
+    -moz-animation: AnimationName 48s ease infinite;
+    animation: AnimationName 48s ease infinite;
+  }
+  
+  @-webkit-keyframes AnimationName {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+  }
+  @-moz-keyframes AnimationName {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+  }
+  @keyframes AnimationName { 
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+  }

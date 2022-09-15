@@ -29,6 +29,12 @@ export class AppointmentService {
         return this.http.get<EventModel[]>(this.baseUrl + "schedule/GetMeetings?yearMonth=" + yearMonth, { headers: this.headers});
     }
 
+    getNumberOfRepeats(model: EventModel): Observable<number> {
+        let cre = localStorage.getItem("accessToken");
+        this.headers = this.headers.set('Authorization', cre!);
+        return this.http.post<number>(this.baseUrl + "schedule/GetNumberOfRepeats", model, { headers: this.headers});
+    }
+
     addSchedule(model: AddEditModel): Observable<Appointment>{
         let cre = localStorage.getItem("accessToken");
         this.headers = this.headers.set('Authorization', cre!);
@@ -41,6 +47,12 @@ export class AppointmentService {
         return this.http.post<Appointment>(this.baseUrl + "schedule/EditEvent", model, { headers: this.headers});
     }
 
+    editRepeat(model: AddEditModel): Observable<string> {
+        let cre = localStorage.getItem("accessToken");
+        this.headers = this.headers.set('Authorization', cre!);
+        return this.http.post<string>(this.baseUrl + "schedule/EditRepeat", model, { headers: this.headers});
+    }
+
     changeScheduleDate(model: DateModel): Observable<string> {
         let cre = localStorage.getItem("accessToken");
         this.headers = this.headers.set('Authorization', cre!);
@@ -51,6 +63,12 @@ export class AppointmentService {
         let cre = localStorage.getItem("accessToken");
         this.headers = this.headers.set('Authorization', cre!);
         return this.http.post<string>(this.baseUrl + "schedule/DeleteAppointment", id,  { headers: this.headers});
+    }
+
+    deleteAppointmentRepeat(id: number, originalDateStr: string): Observable<string> {
+        let cre = localStorage.getItem("accessToken");
+        this.headers = this.headers.set('Authorization', cre!);
+        return this.http.get<string>(this.baseUrl + "schedule/DeleteAppointmentRepeat?appointmentId=" + id + "&originalDateStr=" + originalDateStr,  { headers: this.headers});
     }
     
    getAllAttendees(appointmentId: number): Observable<UserBasic[]> {

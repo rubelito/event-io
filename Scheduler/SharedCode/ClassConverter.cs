@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Scheduler.Entity;
 using Scheduler.Models;
 
@@ -54,11 +55,35 @@ namespace Scheduler.SharedCode
                 m.Location = a.Location;
                 m.Title = a.Title;
                 m.Details = a.Details;
+                m.ActualYearMonth = a.YearMonth;
                 m.YearMonth = a.YearMonth;
-                m.Date = a.Date;
+                m.OriginalDate = a.Date.ToString("MM/dd/yyyy");
+                m.Date = a.Date.ToString("MM/dd/yyyy");
                 m.Time = a.Time;
+                m.IsRepeat = a.isRepeat;
+                m.RepeatSelection = a.RepeatSelection;
+                m.RepeatEnd = a.RepeatEnd;
+                m.After = a.After;
+                m.OnDate = a.OnDate.ToString("MM/dd/yyyy");
                 m.CreatorId = a.Creator.Id;
                 m.CreatedBy = a.Creator.UserName;
+                m.IsDone = a.IsDone;
+                m.IsClone = a.IsClone;
+                m.NumberOfRepeats = a.NumberOfRepeats;
+
+                if (a.isRepeat && a.RepeatEdit != null)
+                {
+                    m.HasEdit = true;
+                    m.OriginalDate = a.RepeatEdit.OriginalDate.ToString("MM/dd/yyyy");
+                    m.Date = a.RepeatEdit.EditedDate.ToString("MM/dd/yyyy"); ;
+
+                    m.Title = a.RepeatEdit.Title;
+                    m.Location = a.RepeatEdit.Location;
+                    m.Details = a.RepeatEdit.Details;
+                    m.Time = a.RepeatEdit.Time;
+                    m.IsDone = a.RepeatEdit.IsDone;
+                    m.IsDeleted = a.RepeatEdit.IsDeleted;
+                }
 
                 results.Add(m);
             }
@@ -75,9 +100,17 @@ namespace Scheduler.SharedCode
             a.Title = model.Title;
             a.Details = model.Details;
             a.YearMonth = model.YearMonth;
-            a.Date = model.Date;
+            a.Date = DateTime.ParseExact(model.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
             a.Time = model.Time;
             a.CreatorId = model.CreatorId;
+            a.isRepeat = model.IsRepeat;
+            a.RepeatSelection = model.RepeatSelection;
+            a.RepeatEnd = model.RepeatEnd;
+            a.IsDone = model.IsDone;
+            a.After = model.After;
+            a.OnDate = DateTime.ParseExact(model.OnDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            a.IsClone = model.IsClone;
+            a.IsDeleted = model.IsDeleted;
 
             return a;
         }

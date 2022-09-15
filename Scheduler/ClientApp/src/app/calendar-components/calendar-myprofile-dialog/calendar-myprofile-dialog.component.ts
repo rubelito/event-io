@@ -5,6 +5,10 @@ import { AuthService } from 'src/app/auth-service/AuthService';
 import { CalendarLoginDialogComponent } from '../calendar-login-dialog/calendar-login-dialog.component';
 import { UserBasic } from 'src/app/calendar-models/user-basic';
 import { CalendarChangedpasswordDialogComponent } from '../calendar-changedpassword-dialog/calendar-changedpassword-dialog.component';
+import { GlobalFuntions } from 'src/app/common/global-functions';
+import { DomSanitizer } from '@angular/platform-browser';
+import { CalendarChangeavatarDialogComponent } from '../calendar-changeavatar-dialog/calendar-changeavatar-dialog.component';
+import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 
 @Component({
   selector: 'app-calendar-myprofile-dialog',
@@ -14,7 +18,8 @@ import { CalendarChangedpasswordDialogComponent } from '../calendar-changedpassw
 export class CalendarMyprofileDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<CalendarLoginDialogComponent>,
-    private authService: AuthService, private dialog: MatDialog) { }
+    private authService: AuthService, private dialog: MatDialog,
+     private sanitizer: DomSanitizer, private dataSharingService: DataSharingService) { }
 
   user: User;
 
@@ -26,10 +31,12 @@ export class CalendarMyprofileDialogComponent implements OnInit {
   preMiddleName: string = "";
   preLastName: string = "";
 
+  profilePic: any;
+
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(data => {
       this.user = data;
-
+      
       this.firstName = data.FirstName;
       this.middleName = data.MiddleName;
       this.lastName = data.LastName;
@@ -37,6 +44,16 @@ export class CalendarMyprofileDialogComponent implements OnInit {
       this.preFirstName = data.FirstName;
       this.preMiddleName = data.MiddleName;
       this.preLastName = data.LastName;
+
+      this.dataSharingService.isProfilePictureChange.subscribe(res => {
+        this.loadProfilePic();
+      })
+    })
+  }
+
+  loadProfilePic(){
+    this.authService.getAvatar(this.user.Id).subscribe(result => {
+      this.profilePic = GlobalFuntions.createImageFromBlob(result, this.sanitizer);
     })
   }
 
@@ -64,9 +81,28 @@ export class CalendarMyprofileDialogComponent implements OnInit {
   }
 
   changePass(){
-    this.dialog.open(CalendarChangedpasswordDialogComponent, {
+    let dialogResult = this.dialog.open(CalendarChangedpasswordDialogComponent, {
       width: '400px',
       disableClose: true
+    });
+
+    dialogResult.afterClosed().subscribe(result => {
+      if (result == 'changed'){
+        this.dialogRef.close();
+      }
+    });
+  }
+
+  avatarClick(){
+    let dialogResult = this.dialog.open(CalendarChangeavatarDialogComponent, {
+      width: '400px',
+      disableClose: true
+    });
+
+    dialogResult.afterClosed().subscribe(result => {
+      if (result == 'changed'){
+        this.dialogRef.close();
+      }
     });
   }
 

@@ -1,7 +1,19 @@
-<div class="delete-message-box">
-    <div class="message-box-title">Delete</div>
-    <div class="message-box-message">Are you sure you want to delete '{{appointment.Title}}' appointment?</div>
-    <div class="button-section">
-        <input type="button" value="Cancel" (click)="cancel()"> &nbsp;&nbsp;<input type="button" (click)="ok()" value="Ok">
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>{{ title }}</span>
+        <span class="auth-close-x" (click)="cancel()">&times;</span>
+    </div>
+    <div class="message-image">
+        <img *ngIf="icon == 'ok'" height="40" width="40" [src]="okIcon">
+        <img *ngIf="icon == 'warning'" height="40" width="40" [src]="warningIcon">
+        <img *ngIf="icon == 'x'" height="40" width="40" [src]="xIcon">
+        <img *ngIf="icon == 'logout'" height="40" width="40" [src]="logoutIcon">
+    </div>
+    <div class="message-box-message">{{ message }}</div>
+    <div class="auth-footer">
+        <div class="auth-footer-fields display-flex flex-gap-13 background-color-3a405a">
+            <button mat-flat-button class="blue-button opacity-button" (click)="ok()">Ok</button>
+            <button *ngIf="!hasNoCancel" mat-flat-button class="transparent-button opacity-button" (click)="cancel()">Cancel</button>
+        </div>
     </div>
 </div>

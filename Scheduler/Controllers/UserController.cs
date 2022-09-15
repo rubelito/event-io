@@ -1,11 +1,16 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Authorization;
 using Scheduler.Entity;
 using Scheduler.Models;
 using Scheduler.Services;
 using Scheduler.SharedCode;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -608,11 +613,98 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPost]
+    [DisableRequestSizeLimit]
+    [CustomAuthorize]
+    [Route("[action]", Name = "UploadProfilePicture")]
+    public async Task<ActionResult> UploadProfilePicture(IFormFile file)
+    {
+        var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+
+        var memoryStream = new MemoryStream();
+        file.CopyToAsync(memoryStream);
+        byte[] bytePicture = memoryStream.ToArray();
+
+        byte[] reducedImage = ReducePictureSize(bytePicture);
+
+        if (bytePicture.Length != 0)
+        {
+            UserPicture picture = new UserPicture();
+            picture.UserId = currentlyLogUser.Id;
+            picture.Picture = reducedImage;
+
+            _userRepository.InsertUserPicture(picture);
+        }
+
+
+        ResultModel result = new ResultModel();
+        result.Success = true;
+
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [Consumes("application/json")]
+    [CustomAuthorize]
+    [Route("[action]", Name = "GetAvatar")]
+    public async Task<ActionResult> GetAvatar([FromBody] int userId)
+    {
+        byte[] blobPicture;
+
+        var picture = _userRepository.GetUserPicture(userId);
+        if (picture != null)
+        {
+            blobPicture = picture.Picture;
+
+            return File(blobPicture, "image/png");
+        }
+        {
+            blobPicture = _userRepository.GetEmptyProfilePicture();
+            return File(blobPicture, "image/png"); ;
+        }
+    }
+
+    private byte[] ReducePictureSize(byte[] bytes)
+    {
+        using var memoryStream = new MemoryStream(bytes);
+        using var image = Image.Load(memoryStream);
+        image.Mutate(x => x.Resize(150, 150));
+        using var outputStream = new MemoryStream();
+        image.Save(outputStream, new PngEncoder() /*or another encoder*/);
+        return outputStream.ToArray();
+    }
+
+    [HttpGet]
+    [CustomAuthorize]
+    [Route("[action]", Name = "RemoveProfilePicture")]
+    public async Task<ActionResult> RemoveProfilePicture(int userId)
+    {
+        ResultModel result = new ResultModel();
+
+        try
+        {
+            _userRepository.DeleteProfilePicture(userId);
+            result.Success = true;
+        }
+        catch (Exception ex)
+        {
+            return new JsonResult(ex.Message)
+            {
+                StatusCode = (int)HttpStatusCode.InternalServerError
+            };
+        }
+        finally
+        {
+            dispose();
+        }
+
+        return Ok(result);
+    }
+
+
     private void dispose()
     {
         _userRepository.Dispose();
         _groupRepository.Dispose();
     }
 }
-
-

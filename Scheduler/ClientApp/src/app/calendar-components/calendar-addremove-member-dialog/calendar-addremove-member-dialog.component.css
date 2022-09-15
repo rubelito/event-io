@@ -1,8 +1,36 @@
+.members-select-section {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.middle-button-section {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.middle-button-section > button {
+    width: 50%;
+}
+
 .member-selection-div {
     display: flex;
     gap: 5px;
 }
 
 .members-select {
-    width: 150px;
+    text-align: center;
+    width: 40%;
+}
+
+.members-select > select {
+    width: 85%;
+    background-color: #2f3650;
+    color: white;
+}
+
+.members-select > div {
+    margin-top: 10px;
 }

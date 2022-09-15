@@ -32,21 +32,52 @@
     <div class="auth-fields">
         <div class="auth-left-fields left-field-width">Date & Time :</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
-            <div class="display-flex gap-10 date-time-section" [ngClass]="!isOwner ? 'field-disabled' : ''">
+            <div class="display-flex gap-10 dual-section" [ngClass]="!isOwner ? 'field-disabled' : ''">
                 <div>
                     <input readonly [matDatepicker]="picker" (click)="picker.open()" class="auth-text" type="text" [(ngModel)]="date" [disabled]="!isOwner">
                     <mat-datepicker-toggle class="mat-date-picker-location" matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </div>
                 <div>
-                <input readonly [ngxTimepicker]="timePicker" class="auth-text" type="text" [(ngModel)]="time" [disabled]="!isOwner">
-                <ngx-material-timepicker #timePicker [timepickerClass]="'custom-class'"></ngx-material-timepicker>
+                    <input readonly [ngxTimepicker]="timePicker" class="auth-text" type="text" [(ngModel)]="time" [disabled]="!isOwner">
+                    <ngx-material-timepicker #timePicker [timepickerClass]="'custom-class'"></ngx-material-timepicker>
                     <ngx-material-timepicker-toggle class="ngx-material-timepicker-toggle-location" [for]="timePicker" ></ngx-material-timepicker-toggle>
+                </div>
             </div>
-        </div>
             
             <!-- <span *ngIf="(param?.operation == 'Add' || !isOwner)">{{ date | date: 'M/dd/yyyy' }}</span>
             <span *ngIf="!isOwner">{{ time }}</span> -->
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields left-field-width">Repeat :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <select class="auth-text auth-select" [(ngModel)]="selectedRepeatSelection">
+                <option *ngFor="let r of repeatSelections" [value]="r">{{ repeatEnumToDisplay(r) }}</option>
+            </select>
+        </div>
+    </div>
+    <div class="auth-fields" *ngIf="selectedRepeatSelection != 0">
+        <div class="auth-left-fields left-field-width">Repeat End :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <div class="display-flex gap-10 dual-section">
+                <div>
+                    <select class="auth-text auth-select" [(ngModel)]="selectedRepeatEnd">
+                        <option *ngFor="let r of repeatEndSelection" [value]="r">{{ repeatEndEnumToDisplay(r) }}</option>
+                    </select>
+                </div>
+                <div>
+                    <div *ngIf="selectedRepeatEnd == 1"><!-- After -->
+                        <input *ngIf="isOwner" class="auth-text after-text" type="number" min="1" [(ngModel)]="after" (keyup)="onChangeAfter(after)" [disabled]="!isOwner">
+                        <label class="right-label margin-left-7">Times</label>
+                    </div>
+                    <div *ngIf="selectedRepeatEnd == 2"><!-- On Date -->
+                        <input readonly [matDatepicker]="picker" (click)="picker.open()" class="auth-text" type="text" [(ngModel)]="onDate" [disabled]="!isOwner">
+                        <mat-datepicker-toggle class="mat-date-picker-location" matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="auth-fields">
@@ -84,9 +115,9 @@
                     </mat-chip-list>
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                             <mat-option *ngFor="let ats of filteredAttendees | async" [value]="ats">
-                                {{ ats.Name }}
                                 <img *ngIf="ats.Type == 'Member'" [src]="personImageSrc" width="25px" height="25px">
                                 <img *ngIf="ats.Type == 'Group'" [src]="groupImageSrc" width="25px" height="25px">
+                                {{ ats.Name }} 
                             </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
@@ -104,67 +135,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-<!-- <div class="addedit-schedule-dialog" [style.grid-template-columns]="columnSize">
-    <mat-form-field class="mat-inputs" appearance="outline">
-        <mat-label>Creator</mat-label>
-        <input matInput [(ngModel)]="createdBy" disabled>
-    </mat-form-field>
-    <mat-form-field class="mat-inputs" appearance="outline">
-        <mat-label>Title</mat-label>
-        <input matInput placeholder="Enter Title..." [(ngModel)]="title" [disabled]="!isOwner">
-    </mat-form-field>
-   
-    <mat-form-field class="mat-inputs" appearance="outline">
-        <mat-label>Date</mat-label>
-        <input readonly matInput [matDatepicker]="picker" (click)="picker.open()" [(ngModel)]="date"  [disabled]="param?.operation == 'Add' || !isOwner">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    
-    <mat-form-field class="mat-inputs" appearance="outline">
-        <mat-label>Time</mat-label>
-        <input readonly [ngxTimepicker]="timePicker" matInput placeholder="Enter Time..." [(ngModel)]="time" [disabled]="!isOwner">
-        <ngx-material-timepicker #timePicker [timepickerClass]="'custom-class'"></ngx-material-timepicker>
-    </mat-form-field>
-</div>
-<div class="invites-section">
-    <mat-radio-group class="block-margin-10" [(ngModel)]="selectedRadio" *ngIf="isOwner">
-        <mat-radio-button *ngFor="let r of radioGroups" [value]="r" (change)="filterChange()" [checked]="r == 'All'">{{ r }}</mat-radio-button>
-    </mat-radio-group>
-
-    <mat-form-field class="attendees-form block-margin-10" appearance="fill">
-        <mat-chip-list #chipList [disabled]="!isOwner">
-            <mat-chip class="custom-chip" *ngFor="let at of attendees" (removed)="removeAttendees(at)">
-                {{at.Name}} &nbsp;
-                <img *ngIf="at.Type == 'Member'" [src]="personImageSrc" width="13px" height="13px">
-                <img *ngIf="at.Type == 'Group'" [src]="groupImageSrc" width="13px" height="13px">
-                <button matChipRemove>
-                    <mat-icon>cancel</mat-icon>
-                </button>
-            </mat-chip>
-            <input
-            placeholder="Invite...."
-            #attendeeInput
-            [formControl]="calendarForm"
-            [matAutocomplete]="auto"
-            [matChipInputFor]="chipList"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
-        </mat-chip-list>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let ats of filteredAttendees | async" [value]="ats">
-                    {{ ats.Name }}
-                    <img *ngIf="ats.Type == 'Member'" [src]="personImageSrc" width="25px" height="25px">
-                    <img *ngIf="ats.Type == 'Group'" [src]="groupImageSrc" width="25px" height="25px">
-                </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
-</div> -->
-<!-- <div class="buttons-group">
-    <button mat-flat-button class="blue-button opacity-button" (click)="addEditEvent()" [disabled]="title.length == 0 || time.length == 0 || !isOwner">Ok</button> &nbsp;&nbsp;
-    <button mat-flat-button class="transparent-button opacity-button" (click)="cancelAdd()">Cancel</button>
-</div> -->

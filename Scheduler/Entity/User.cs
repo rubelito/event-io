@@ -34,5 +34,7 @@ namespace Scheduler.Entity
         public ICollection<Appointment> Appointments { get; set; }
         public ICollection<UserSchedule> Meetings { get; set; }
         public ICollection<UserGroup> Groups { get; set; }
+
+        public virtual UserPicture Picture { get; set; }
     }
 }

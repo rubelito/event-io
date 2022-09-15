@@ -20,6 +20,11 @@
     gap: 1px;
 }
 
+.repeat-icon {
+    margin-top: 2.5px;
+    height: 13px;
+}
+
 .event-child-title {
     text-overflow: ellipsis;
     overflow: hidden;

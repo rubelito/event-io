@@ -3,6 +3,7 @@
     <div class="event event-block block-part" *ngFor="let ev of block?.events" matTooltip="{{ ev.Details }}"
      [style.background-color]="getEventBGColor(ev.IsOwner)" [cdkDragDisabled]="!ev.IsOwner" [matTooltipShowDelay]="0" [matTooltipHideDelay]="0"
         [cdkDragData]="ev" cdkDrag>
+        <img class="repeat-icon" [src]="repeatIcon" *ngIf="ev.IsRepeat">
         <div class="event-child event-child-title block-part" (contextmenu)="onRightClickAppointment(ev, $event); $event.stopPropagation(); false">{{ev.Title}}</div>
         <div class="event-child event-child-time block-part" (contextmenu)="onRightClickAppointment(ev, $event); $event.stopPropagation(); false">{{ev.Time}}</div>
     </div>

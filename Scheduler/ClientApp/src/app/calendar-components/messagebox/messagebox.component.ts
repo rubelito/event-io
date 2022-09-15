@@ -1,27 +1,38 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Appointment } from 'src/app/calendar-models/Appointment';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { GlobalConstants } from 'src/app/common/global-constant';
 
 @Component({
   selector: 'app-messagebox',
   templateUrl: './messagebox.component.html',
-  styleUrls: ['./messagebox.component.css']
+  styleUrls: ['./messagebox.component.css', '../../styles/style.css']
 })
 export class MessageboxComponent implements OnInit {
-  @Input() appointment: Appointment;
+  title: string = "";
+  message: string = "";
+  hasNoCancel: boolean = false;
+  icon: string = "";
 
-  @Output() onOk = new EventEmitter();
-  @Output() onCancel = new EventEmitter();
+  okIcon = GlobalConstants.okIcon;
+  warningIcon = GlobalConstants.warningIcon;
+  xIcon = GlobalConstants.xIcon;
+  logoutIcon = GlobalConstants.logoutIcon;
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<MessageboxComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-  }
-
-  cancel(){
-    this.onCancel.emit();
+    this.title = this.data.title;
+    this.message = this.data.message;
+    this.hasNoCancel = this.data.hasNoCancel;
+    this.icon = this.data.icon != undefined ? this.data.icon : "";
   }
 
   ok(){
-    this.onOk.emit();
+    this.dialogRef.close("ok");
+  }
+
+  cancel(){
+    this.dialogRef.close("cancel");
   }
 }

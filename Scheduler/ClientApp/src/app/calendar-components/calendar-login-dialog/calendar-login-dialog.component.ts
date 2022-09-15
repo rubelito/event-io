@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth-service/AuthService';
 import { UserCredential } from 'src/app/calendar-models/user-credential';
 import { GlobalConstants } from 'src/app/common/global-constant';
+import { MessageboxComponent } from '../messagebox/messagebox.component';
 
 @Component({
   selector: 'app-calendar-login-dialog',
@@ -23,7 +24,7 @@ export class CalendarLoginDialogComponent implements OnInit {
   show: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<CalendarLoginDialogComponent>, 
-    private authService: AuthService, private router: Router) { }
+    private authService: AuthService, private router: Router,  private dialog:MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -31,6 +32,7 @@ export class CalendarLoginDialogComponent implements OnInit {
   showPassword(){
     this.show = !this.show;
     this.password1Ref.nativeElement.focus();
+    
   }
 
   onAuth(){
@@ -39,6 +41,7 @@ export class CalendarLoginDialogComponent implements OnInit {
     userCredential.Password = this.password;
     this.authService.logIn(userCredential).subscribe(data => {
       if (data.IsAuthenticated){
+        localStorage.setItem("id", data.Id.toString());
         localStorage.setItem("username", this.userName);
         localStorage.setItem("isLogin", data.IsAuthenticated.toString());
         localStorage.setItem("loginStatus", data.LoginStatus);
@@ -46,10 +49,10 @@ export class CalendarLoginDialogComponent implements OnInit {
         localStorage.setItem('role', data.Role);
 
         this.dialogRef.close();
-        this.router.navigate(["/Schedules"]);
+        document.location.reload();
       }
       else {
-        alert("Invalid Username and Password");
+        this.showMessage("Invalid Username and Password", "warning");
       }
     });
   }
@@ -60,5 +63,13 @@ export class CalendarLoginDialogComponent implements OnInit {
 
   onCancel(){
     this.dialogRef.close();
+  }
+
+  showMessage(message: string, icon: string){
+    this.dialog.open(MessageboxComponent, {
+      width:'400px',
+      disableClose: true,
+      data: { title: '', message: message, hasNoCancel: true, icon: icon}
+    });
   }
 }

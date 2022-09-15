@@ -1,10 +1,12 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { AddEditModel } from 'src/app/calendar-models/addEditModel';
 import { Block } from 'src/app/calendar-models/block';
 import { ContextMenuValue } from 'src/app/calendar-models/contextMenuValue';
 import { DateModel } from 'src/app/calendar-models/dateModel';
 import { EventModel } from 'src/app/calendar-models/event-model';
 import { AppointmentService } from 'src/app/calendar-service/AppointmentService';
+import { GlobalConstants } from 'src/app/common/global-constant';
 
 @Component({
   selector: 'app-calendar-block',
@@ -17,10 +19,12 @@ export class CalendarBlockComponent implements OnInit {
   @Output() showParentContextMenu = new EventEmitter<ContextMenuValue>();
   @Output() refreshList = new EventEmitter();
 
+  repeatIcon = GlobalConstants.repeatIcon;
+
   constructor(private appointmentService: AppointmentService) {
    }
   ngOnInit(): void {
-  } 
+  }
 
   onRightClickBlock(event: any){
     if (!this.block?.isEmptyBlock){
@@ -28,6 +32,7 @@ export class CalendarBlockComponent implements OnInit {
       param.show = true;
       param.isBlock = true;
       param.isAdd = true;
+      param.isOwner = true;
       param.selectedBlock = this.block as Block;
       param.locationX = event.layerX;
       param.locationY = event.layerY;
@@ -40,6 +45,7 @@ export class CalendarBlockComponent implements OnInit {
       let param = new ContextMenuValue();
       param.show = true;
       param.isBlock = false;
+      param.isOwner = appoint.IsOwner;
       param.isAdd = false;
       param.selectedEvent = appoint;
       param.locationX = event.layerX;
@@ -69,11 +75,13 @@ export class CalendarBlockComponent implements OnInit {
 
   drop(e: CdkDragDrop<string[]>){
     let obj = document.elementFromPoint(e.dropPoint.x, e.dropPoint.y);
+    var appointment = e.item.data as EventModel;
     var dateModel = null;
+
 
     if (obj?.classList.contains("real-block")){
       dateModel = new DateModel();
-      dateModel.Id = (e.item.data as EventModel).Id;
+      dateModel.Id = appointment.Id;
       dateModel.StrDate = obj.id;
 
     }
@@ -81,23 +89,38 @@ export class CalendarBlockComponent implements OnInit {
       const blockObj = obj.closest('.real-block');
 
       dateModel = new DateModel();
-      dateModel.Id = (e.item.data as EventModel).Id;
+      dateModel.Id = appointment.Id;
       dateModel.StrDate = blockObj!.id;
     }
 
     if (dateModel != null){
-      if (dateModel.StrDate == (e.item.data as EventModel).Date){
+      if (dateModel.StrDate == appointment.Date){
         return;
       }
 
       let confirmMessage = "Are you sure you want to move this appointment to " + dateModel.StrDate + " ?";
       if (confirm(confirmMessage)){
-        this.appointmentService.changeScheduleDate(dateModel)
-          .subscribe(data => {
-            if (data == 'Success'){
+        if (appointment.IsClone){
+          var addEditModel = new AddEditModel();
+          appointment.Date = dateModel.StrDate;
+          addEditModel.Appointment = appointment;
+          addEditModel.GroupIds = [];
+          addEditModel.MemberIds = [];
+
+          this.appointmentService.editRepeat(addEditModel).subscribe(result => {
+            if (result == 'Success'){
               this.refreshList.emit();
             }
           });
+        }
+        else {
+          this.appointmentService.changeScheduleDate(dateModel)
+          .subscribe(result => {
+            if (result == 'Success'){
+              this.refreshList.emit();
+            }
+          });
+        }
       }
     }
   }

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth-service/AuthService';
 import { PasswordModel } from 'src/app/calendar-models/password-Model';
+import { MessageboxComponent } from '../messagebox/messagebox.component';
 
 @Component({
   selector: 'app-calendar-changedpassword-dialog',
@@ -16,7 +17,8 @@ export class CalendarChangedpasswordDialogComponent implements OnInit {
   newRePassword: string = "";
 
   constructor(public dialogRef: MatDialogRef<CalendarChangedpasswordDialogComponent>,
-    private authService: AuthService, private router: Router) { }
+    private authService: AuthService, private router: Router
+    , private dialog:MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -35,22 +37,34 @@ export class CalendarChangedpasswordDialogComponent implements OnInit {
         if (result.IsChanged){
           this.authService.logOut().subscribe(result1 => {
             if (result1 == "logout"){
-              alert("Password changed success, you will be logout.")
-              this.router.navigate(["/"]);
-              this.dialogRef.close("");
+              let dialogResult = this.dialog.open(MessageboxComponent, {
+                width:'400px',
+                disableClose: true,
+                data: { title: '', message: "Password changed success, you will be logout.", hasNoCancel: true, icon: "ok"}
+              });
+
+              dialogResult.afterClosed().subscribe(result => {
+                this.router.navigate(["/"]);
+                this.dialogRef.close("changed");
+              });
             }
           });
         }
         else {
-          alert(result.Message);
+          this.showMessage(result.Message, "warning");
         }
       });
     }
     else {
-      alert("The password do not match.");
+      this.showMessage("The password do not match.", "warning");
     }
   }
 
-
-    
+  showMessage(message: string, icon: string){
+    this.dialog.open(MessageboxComponent, {
+      width:'400px',
+      disableClose: true,
+      data: { title: '', message: message, hasNoCancel: true, icon: icon}
+    });
+  }
 }

@@ -4,6 +4,7 @@ import { CalendarAddeditGroupDialogComponent } from 'src/app/calendar-components
 import { CalendarAddremoveMemberDialogComponent } from 'src/app/calendar-components/calendar-addremove-member-dialog/calendar-addremove-member-dialog.component';
 import { GroupResultModel } from 'src/app/calendar-models/groupResult-Model';
 import { GroupService } from 'src/app/calendar-service/GroupService';
+import { GlobalConstants } from 'src/app/common/global-constant';
 
 @Component({
   selector: 'app-page-group',
@@ -13,6 +14,7 @@ import { GroupService } from 'src/app/calendar-service/GroupService';
 export class PageGroupComponent implements OnInit {
   constructor(private groupService: GroupService, private dialog:MatDialog) { }
 
+  createIcon = GlobalConstants.createIcon;
   displayedColumns: string[] = ['id', 'name', 'owner', 'owneremail', 'members'];
   groups: GroupResultModel[] = [];
 
@@ -28,6 +30,7 @@ export class PageGroupComponent implements OnInit {
 
   openMembersDialog(groupId: number){
     let dialogResult = this.dialog.open(CalendarAddremoveMemberDialogComponent, {
+      width: "500px",
       disableClose: true,
       data: groupId
     });

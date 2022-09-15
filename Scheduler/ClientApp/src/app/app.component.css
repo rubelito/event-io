@@ -48,6 +48,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 30px;
 }
 
 .logo {
@@ -204,34 +205,6 @@ mat-toolbar > * {
   font-size: 15px;
 }
 
-/* gradient background */
-
-.gradiant-animation {
-  position: relative;
-  background: linear-gradient(92deg, #5a0b03, #0c4d01, #0d0261, #611b01, #565800, #3b0163);
-  background-size: 1200% 1200%;
-
-  -webkit-animation: AnimationName 48s ease infinite;
-  -moz-animation: AnimationName 48s ease infinite;
-  animation: AnimationName 48s ease infinite;
-}
-
-@-webkit-keyframes AnimationName {
-  0%{background-position:0% 51%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 51%}
-}
-@-moz-keyframes AnimationName {
-  0%{background-position:0% 51%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 51%}
-}
-@keyframes AnimationName { 
-  0%{background-position:0% 51%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 51%}
-}
-
 /* Auth dialog */
 
 .padding-top {
@@ -326,9 +299,34 @@ mat-toolbar > * {
   color: white;
 }
 
+.auth-text::-webkit-scrollbar {
+  background-color: #465279;
+}
+
+.auth-text::-webkit-scrollbar-thumb {
+  background-color: #232b49;
+  border-radius: 12px;
+}
+
+.auth-text::-webkit-scrollbar-corner {
+  background-color: #465279;
+}
+
 .auth-text:focus {
   background-color: #272e48;
   border: 1px solid #737d92;
+}
+
+.auth-select {
+  background-image: url('../assets/images/select-background.svg');
+  background-repeat: no-repeat;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-position: right center;
+}
+
+.auth-select::-ms-expand {
+  display: none;
 }
 
 .auth-close-x {
@@ -428,11 +426,11 @@ mat-toolbar > * {
   width: 100%;
 }
 
-.date-time-section {
+.dual-section {
   width: 100%;
 }
 
-.date-time-section > div {
+.dual-section > div {
   width: 50%;
 }
 
@@ -450,6 +448,37 @@ mat-toolbar > * {
 .round-image-icon > img {
   height: 25px;
   width: 25px;
+}
+
+.after-text {
+  width: 65px;
+}
+
+.right-label {
+  color: #dae1f4;
+  font-weight: bold;
+}
+
+.margin-left-7 {
+  margin-left: 7px;
+}
+
+/* Scheduler Table */
+
+.mat-header-row {
+  background-color: #2c3351;
+}
+
+.scheduler-table {
+  background-color: #272e48;
+}
+
+.scheduler-table > td > button {
+  visibility: hidden;
+}
+
+.scheduler-table:hover > td > button {
+  visibility: visible;
 }
 
 /* Footer */
@@ -501,341 +530,13 @@ footer {
   background-color: #808aa3;
 }
 
-/* Bubble animation */
+/* Alert dialog */
 
-.bubble-animate {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
+.message-image {
+  display: flex;
+  justify-content: center;
 }
 
-.bubble-animate .circle {
-  background: url(https://incels.is/logo/emoji/Blackpill.png) no-repeat;
-  border-radius: 50%;
-  bottom: 0;
-  position:absolute
-}
-
-.bubble-animate .circle.small {
-  width: 20px;
-  height: 20px;
-  opacity: .7;
-  background-size:20px
-}
-
-.bubble-animate .circle.small.square1 {
-  left: 18%;
-  top: 100%;
-  animation-name: smallBubble;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  animation-delay: 1s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.small.square2 {
-  left: 36%;
-  top: 100%;
-  animation-name: smallBubble;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  animation-delay: 2s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.small.square3 {
-  left: 54%;
-  top: 100%;
-  animation-name: smallBubble;
-  animation-duration: 5s;
-  animation-iteration-count: infinite;
-  animation-delay: 1s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.small.square4 {
-  left: 72%;
-  top: 6px;
-  animation-name: smallBubble;
-  animation-duration: 6s;
-  animation-iteration-count: infinite;
-  animation-delay: 4s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.small.square5 {
-  left: 90%;
-  top: 100%;
-  animation-name: smallBubble;
-  animation-duration: 7s;
-  animation-delay: 5s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.medium {
-  width: 40px;
-  height: 40px;
-  opacity: .35;
-  background-size:40px
-}
-
-.bubble-animate .circle.medium.square1 {
-  left: 21%;
-  top: 100%;
-  animation-name: mediumBubble;
-  animation-duration: 5s;
-  animation-iteration-count: infinite;
-  animation-delay: 2s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.medium.square2 {
-  left: 42%;
-  top: 100%;
-  animation-name: mediumBubble;
-  animation-duration: 8s;
-  animation-iteration-count: infinite;
-  animation-delay: 6s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.medium.square3 {
-  left: 63%;
-  top: 100%;
-  animation-name: mediumBubble;
-  animation-duration: 12s;
-  animation-iteration-count: infinite;
-  animation-delay: 12s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.medium.square4 {
-  left: 84%;
-  top: 100%;
-  animation-name: mediumBubble;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  animation-delay: 12s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.medium.square5 {
-  left: 105%;
-  top: 100%;
-  animation-name: mediumBubble;
-  animation-duration: 18s;
-  animation-iteration-count: infinite;
-  animation-delay: 6s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.large {
-  width: 100px;
-  height: 100px;
-  opacity: .15;
-  background-size:100px
-}
-
-.bubble-animate .circle.large.square1 {
-  left: 21%;
-  top: 100%;
-  animation-name: bigBubble;
-  animation-duration: 6s;
-  animation-iteration-count: infinite;
-  animation-delay: 6s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.large.square2 {
-  left: 42%;
-  top: 100%;
-  animation-name: bigBubble;
-  animation-duration: 6s;
-  animation-iteration-count: infinite;
-  animation-delay: 3s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.large.square3 {
-  left: 63%;
-  top: 100%;
-  animation-name: bigBubble;
-  animation-duration: 6s;
-  animation-iteration-count: infinite;
-  animation-delay: 13s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.large.square4 {
-  left: 84%;
-  top: 100%;
-  animation-name: bigBubble;
-  animation-duration: 6s;
-  animation-iteration-count: infinite;
-  animation-delay: 9s;
-  animation-timing-function:ease-in
-}
-
-.bubble-animate .circle.large.square5 {
-  left: 105%;
-  top: 100%;
-  animation-name: bigBubble;
-  animation-duration: 6s;
-  animation-iteration-count: infinite;
-  animation-delay: 13s;
-  animation-timing-function:ease-in
-}
-
-@-webkit-keyframes smallBubble {
-  0% {
-      top: 100%;
-      margin-left:10px
-  }
-
-  25% {
-      margin-left:-10px
-  }
-
-  50% {
-      margin-left:10px
-  }
-
-  75% {
-      margin-left:-10px
-  }
-
-  100% {
-      top: 0%;
-      opacity: 0;
-      margin-left:0
-  }
-}
-
-@keyframes smallBubble {
-  0% {
-      top: 100%;
-      margin-left:10px
-  }
-
-  25% {
-      margin-left:-10px
-  }
-
-  50% {
-      margin-left:10px
-  }
-
-  75% {
-      margin-left:-10px
-  }
-
-  100% {
-      top: 0%;
-      opacity: 0;
-      margin-left:0
-  }
-}
-
-@-webkit-keyframes mediumBubble {
-  0% {
-      top: 100%;
-      margin-left:15px
-  }
-
-  25% {
-      margin-left:-15px
-  }
-
-  50% {
-      margin-left:15px
-  }
-
-  75% {
-      margin-left:-15px
-  }
-
-  100% {
-      top: 0%;
-      opacity: 0;
-      margin-left:0
-  }
-}
-
-@keyframes mediumBubble {
-  0% {
-      top: 100%;
-      margin-left:15px
-  }
-
-  25% {
-      margin-left:-15px
-  }
-
-  50% {
-      margin-left:15px
-  }
-
-  75% {
-      margin-left:-15px
-  }
-
-  100% {
-      top: 0%;
-      opacity: 0;
-      margin-left:0
-  }
-}
-
-@-webkit-keyframes bigBubble {
-  0% {
-      top: 100%;
-      margin-left:20px
-  }
-
-  25% {
-      margin-left:-20px
-  }
-
-  50% {
-      margin-left:20px
-  }
-
-  75% {
-      margin-left:-20px
-  }
-
-  100% {
-      top: 0%;
-      opacity: 0;
-      margin-left:0
-  }
-}
-
-@keyframes bigBubble {
-  0% {
-      top: 100%;
-      margin-left:20px
-  }
-
-  25% {
-      margin-left:-20px
-  }
-
-  50% {
-      margin-left:20px
-  }
-
-  75% {
-      margin-left:-20px
-  }
-
-  100% {
-      top: 0%;
-      opacity: 0;
-      margin-left:0
-  }
+.message-image > img {
+  margin-top: 20px;
 }

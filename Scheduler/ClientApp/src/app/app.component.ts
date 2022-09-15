@@ -1,7 +1,6 @@
 import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthService } from './auth-service/AuthService';
 import { MatDialog } from '@angular/material/dialog';
-import { CalendarLogoutDialogComponent } from './calendar-components/calendar-logout-dialog/calendar-logout-dialog.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { SlideInOutAnimation } from './animations/toolbar';
 import { SlideSideInOutAnimation } from './animations/sidetoolbar';
@@ -10,15 +9,22 @@ import { CalendarLoginDialogComponent } from './calendar-components/calendar-log
 import { CalendarRegisterDialogComponent } from './calendar-components/calendar-register-dialog/calendar-register-dialog.component';
 import { CalendarMyprofileDialogComponent } from './calendar-components/calendar-myprofile-dialog/calendar-myprofile-dialog.component';
 import { Router } from '@angular/router';
+import { MessageboxComponent } from './calendar-components/messagebox/messagebox.component';
+import { GlobalFuntions } from './common/global-functions';
+import { DomSanitizer } from '@angular/platform-browser';
+import { DataSharingService } from './calendar-service/DataSharingService';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.css',
+   '/styles/background-animation.css',
+    '/styles/top-gradiant-animation.css',
+    '/styles/top-floating-animation.css'],
   animations: [ SlideInOutAnimation, SlideSideInOutAnimation ],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit  {
   showLargeMenu: boolean;
   toggleMenu: boolean = false;
   onTop: boolean = true;
@@ -32,18 +38,37 @@ export class AppComponent implements OnInit {
   contactIcon = GlobalConstants.contactIcon;
   eventIcon = GlobalConstants.eventIcon;
   manageGroupIcon = GlobalConstants.manageGroupIcon;
+  emptyProfileIcon = GlobalConstants.emptyProfileIcon;
 
   socialEmailImage = GlobalConstants.socialEmailImage;
   facebookImage = GlobalConstants.facebookImage;
   twitterImage = GlobalConstants.twitterImage;
 
+  profilePic: any;
+
   constructor(public authService: AuthService, private dialog: MatDialog,
-     private responsive: BreakpointObserver, private router: Router) { }
+     private responsive: BreakpointObserver, private router: Router,
+      private sanitizer: DomSanitizer, private dataSharingService: DataSharingService) { }
 
   ngOnInit(): void {
     this.responsive.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
         this.showLargeMenu = !result.matches;
     });
+
+    this.loadProfilePic();
+  }
+
+  loadProfilePic(){
+    if (this.authService.isLoggedIn()){
+      var userId = this.authService.getLoggedUserId();
+    }
+
+    this.dataSharingService.isProfilePictureChange.subscribe(change => {
+      this.authService.getAvatar(userId).subscribe(result => {
+        console.log(result);
+        this.profilePic = GlobalFuntions.createImageFromBlob(result, this.sanitizer);
+      })
+    })
   }
 
   @HostListener('window:scroll', ['$event']) 
@@ -57,7 +82,7 @@ export class AppComponent implements OnInit {
 
   onLoginClick(){
     let loginDialog = this.dialog.open(CalendarLoginDialogComponent, {
-      width: '800px',
+      width: '500px',
       disableClose: true
     });
 
@@ -70,23 +95,34 @@ export class AppComponent implements OnInit {
 
   showProfile(){
     let myprofileDialog = this.dialog.open(CalendarMyprofileDialogComponent, {
-      width: '800px',
+      width: '500px',
       disableClose: true
     });
   }
 
   onRegisterClick() {
     let registerDialog = this.dialog.open(CalendarRegisterDialogComponent, {
-      width: '800px',
+      width: '500px',
       disableClose: true
     });
   }
 
   onLogoutClick() {
-    this.dialog.open(CalendarLogoutDialogComponent, {
-      width: '200px',
-      disableClose: true
+    let dialogResult = this.dialog.open(MessageboxComponent, {
+      width:'500px',
+      disableClose: true,
+      data: { title: 'Log Out', message: 'Are you sure you want to logout?', icon: 'logout'}
     })
+
+    dialogResult.afterClosed().subscribe(result => {
+      if (result == "ok"){
+        this.authService.logOut().subscribe(resultL => {
+          if (resultL == "logout"){
+            this.router.navigate(["/"]);
+          }
+        })
+      }
+    });
   }
 
   toggleSideMenu(){
