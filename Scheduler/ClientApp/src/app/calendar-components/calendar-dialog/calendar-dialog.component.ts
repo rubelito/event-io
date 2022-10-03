@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Inject, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/auth-service/AuthService';
 import { DialogOperation } from 'src/app/calendar-models/DialogOperation';
 import { EventModel } from 'src/app/calendar-models/event-model';
@@ -17,6 +17,8 @@ import { RepeatSelectionEnum } from 'src/app/calendar-models/repeatSelectionEnum
 import { RepeatEndEnum } from 'src/app/calendar-models/repeatEndEnum';
 import { AddEditModel } from 'src/app/calendar-models/addEditModel';
 import { MessageboxComponent } from '../messagebox/messagebox.component';
+import { AppointmentType } from 'src/app/calendar-models/appointmentType-enum';
+import { GlobalFuntions } from 'src/app/common/global-functions';
 
 @Component({
   selector: 'app-calendar-dialog',
@@ -27,6 +29,8 @@ import { MessageboxComponent } from '../messagebox/messagebox.component';
 export class CalendarDialogComponent implements OnInit {
   personImageSrc = GlobalConstants.personImageSrc;
   groupImageSrc = GlobalConstants.groupImageSrc;
+  slashIcon = GlobalConstants.slashIcon;
+
   separatorKeysCodes: number[] = [ENTER, COMMA];
   
   radioGroups: string[] = ['All', 'Member', 'Group'];
@@ -42,9 +46,11 @@ export class CalendarDialogComponent implements OnInit {
   @ViewChild('attendeeInput') attendeeInput: ElementRef<HTMLInputElement>;
   
   param: DialogOperation;
+  dialogTitle: string;
 
   location: string ="";
   title: string = "";
+  color: string = "";
   details: string = "";
   date: Date;
   time: string = "";
@@ -52,6 +58,9 @@ export class CalendarDialogComponent implements OnInit {
   isOwner: boolean = true;
   after: number = 1;
   onDate: Date = new Date();
+  isDone: boolean = false;
+  readonly appointmentTypeList = AppointmentType;
+  appointmentType: any;
   
   selectedToRemove: AttendeeModel;
   attendees: Array<AttendeeModel> = []; 
@@ -87,7 +96,6 @@ export class CalendarDialogComponent implements OnInit {
   }
 
   private _filter(value: any): AttendeeModel[] {
-    console.log(value);
     var newArray = this.attendeesSelections;
     if (value.Name == undefined){ // Make sure that it's not object
       newArray = this.attendeesSelections.filter(function(at) {
@@ -104,15 +112,14 @@ export class CalendarDialogComponent implements OnInit {
   ngOnInit(): void {
     this.responsiveness();
     this.param = this.data.param;
-
     let strDate = this.param?.stringDate as string;
     this.date = moment(strDate, 'MM/DD/YYYY').toDate();
     this.onDate = moment(strDate, 'MM/DD/YYYY').toDate();
-    
-    this.createdBy = this.param?.appointment.CreatedBy as string;
 
-    if (this.param?.operation == 'Edit'){
+    if (this.param?.contextOperation.Operation == 'Edit'){
+      this.createdBy = this.param.appointment.CreatedBy;
       this.title = this.param.appointment.Title;
+      this.color = this.param.appointment.Color;
       this.location = this.param.appointment.Location;
       this.details = this.param.appointment.Details;
       this.time = this.param.appointment.Time;
@@ -122,7 +129,9 @@ export class CalendarDialogComponent implements OnInit {
       this.after = this.param?.appointment.After;
       this.onDate = moment(this.param?.appointment.OnDate, 'MM/DD/YYYY').toDate();
       this.onDate = this.onDate < moment("1975-01-01").toDate() ? this.date : this.onDate;
-      
+      this.isDone = this.param?.appointment.IsDone;
+      this.dialogTitle = GlobalFuntions.ConvertAppoinmentTypeToString(this.param.appointment.Type);
+
       this.appointmentService.getAllAttendees(this.param.appointment.Id).subscribe(data => {
         data.forEach(d => {
           var am = new AttendeeModel();
@@ -145,8 +154,10 @@ export class CalendarDialogComponent implements OnInit {
         });
       });
     }
-    else if (this.param?.operation == 'Add'){
-      this.createdBy = localStorage.getItem("username") as string;
+    else if (this.param?.contextOperation.Operation == 'Add'){
+      this.dialogTitle = GlobalFuntions.ConvertAppoinmentTypeToString(this.param?.contextOperation.Type);
+      this.createdBy = this.authService.getLoggedUserName();
+      this.time = moment(new Date()).format('hh:mm A');
     }
 
     this.authService.getContacts().subscribe(data => {
@@ -246,7 +257,7 @@ export class CalendarDialogComponent implements OnInit {
   repeatEndEnumToDisplay(repeat: number){
     var returnVal = "Never";
 
-     if (repeat == RepeatEndEnum.After){
+    if (repeat == RepeatEndEnum.After){
       returnVal =  "After";
     }
     else if (repeat == RepeatEndEnum.OnDate){
@@ -264,9 +275,10 @@ export class CalendarDialogComponent implements OnInit {
     model.MemberIds = membersId;
     model.GroupIds = groupIds;
 
-    if (this.param?.operation == 'Add'){
+    if (this.param?.contextOperation.Operation == 'Add'){
       let newAppointment = new EventModel();
       newAppointment.Title = this.title;
+      newAppointment.Color = this.color;
       newAppointment.Location =  this.location;
       newAppointment.Details = this.details;
       newAppointment.Date = moment(this.date).format("MM/DD/YYYY");
@@ -277,13 +289,15 @@ export class CalendarDialogComponent implements OnInit {
       newAppointment.RepeatEnd = +this.selectedRepeatEnd;
       newAppointment.After = this.after;
       newAppointment.OnDate = moment(this.onDate).format("MM/DD/YYYY");
+      newAppointment.Type = this.param.contextOperation.Type;
 
       model.Appointment = newAppointment;
 
       this.addEvent(model);
     }
-    else if (this.param?.operation == 'Edit') {
+    else if (this.param?.contextOperation.Operation == 'Edit') {
       this.param.appointment.Title = this.title;
+      this.param.appointment.Color = this.color;
       this.param.appointment.Location = this.location;
       this.param.appointment.Details = this.details;
       this.param.appointment.Date = moment(this.date).format("MM/DD/YYYY");
@@ -293,6 +307,7 @@ export class CalendarDialogComponent implements OnInit {
       this.param.appointment.RepeatEnd = +this.selectedRepeatEnd;
       this.param.appointment.After = this.after;
       this.param.appointment.OnDate = moment(this.onDate).format("MM/DD/YYYY");
+      this.param.appointment.IsDone = this.isDone;
 
       model.Appointment = this.param.appointment;
 
@@ -304,65 +319,42 @@ export class CalendarDialogComponent implements OnInit {
   addEvent(model: AddEditModel){
     this.appointmentService.addSchedule(model)
       .subscribe(returnData => {
-        console.log(returnData);
         this.dialogRef.close('add');
       });
   }
 
   editEvent(model: AddEditModel){
-    let confirmMessage = "Some events will be disappear, do you want to continue?";
+    let confirmMessage = "Some events will disappear, do you want to continue?";
     if (model.Appointment.IsClone == false) //Edit original
-          {
-            this.editOriginalEvent(model);
-          }
-          else if (model.Appointment.IsClone && model.Appointment.RepeatSelection == 0)//Edit clone to non repeat
-          {
-            this.appointmentService.getNumberOfRepeats(model.Appointment).subscribe(numberOfRepeats => {
-              if (numberOfRepeats < model.Appointment.NumberOfRepeats){
-                let dialogResult = this.dialog.open(MessageboxComponent, {
-                  width:'500px',
-                  disableClose: true,
-                  data: { title: 'Delete', message: "Some events will be disappear, do you want to continue?", hasNoCancel: false, icon: "warning"}
-                })
-            
-                dialogResult.afterClosed().subscribe(result => {
-                  if (result == "ok"){
-                    this.editOriginalEvent(model);
-                  }
-                });
-              }
-              else {
-                this.editRepeat(model);
-              }
-            })
-          }
-          else if (model.Appointment.IsClone && model.Appointment.RepeatSelection != 0) //edit clone or edit repeat
-          {
-            this.appointmentService.getNumberOfRepeats(model.Appointment).subscribe(numberOfRepeats => {
-              if (numberOfRepeats < model.Appointment.NumberOfRepeats){
-                let dialogResult = this.dialog.open(MessageboxComponent, {
-                  width:'500px',
-                  disableClose: true,
-                  data: { title: '', message: "Some events will be disappear, do you want to continue?", hasNoCancel: false, icon: "warning"}
-                })
-            
-                dialogResult.afterClosed().subscribe(result => {
-                  if (result == "ok"){
-                    this.editOriginalEvent(model);
-                  }
-                });
-              }
-              else {
-                this.editRepeat(model);
-              }
-            })
-          }
+    {
+      this.editOriginalEvent(model);
+    }
+    else if (model.Appointment.IsClone)
+    {
+      this.appointmentService.getNumberOfRepeats(model.Appointment).subscribe(numberOfRepeats => {
+        if (numberOfRepeats < model.Appointment.NumberOfRepeats){
+          let dialogResult = this.dialog.open(MessageboxComponent, {
+            width:'500px',
+            disableClose: true,
+            data: { title: '', message: confirmMessage, hasNoCancel: false, icon: "warning"}
+          })
+      
+          dialogResult.afterClosed().subscribe(result => {
+            if (result == "ok"){
+              this.editOriginalEvent(model);
+            }
+          });
+        }
+        else {
+          this.editRepeat(model);
+        }
+      })
+    }
   }
 
   editOriginalEvent(model: AddEditModel){
     this.appointmentService.editSchedule(model)
       .subscribe(returnData => {
-          console.log(returnData);
           this.dialogRef.close('add');
         }
       );
@@ -371,12 +363,17 @@ export class CalendarDialogComponent implements OnInit {
   editRepeat(model: AddEditModel){
     this.appointmentService.editRepeat(model)
       .subscribe(returnData => {
-        console.log(returnData);
         this.dialogRef.close('add');
       })
   }
 
   onChangeAfter(val: number): void {  
-    console.log(val);
+    if (val == null){
+      this.after = 1;
+    }
+  }
+
+  changeColor(color: string){
+    this.color = color;
   }
 }

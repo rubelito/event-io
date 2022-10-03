@@ -1,9 +1,0 @@
-.avatar-button-section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.temp-height {
-    height: 50px;
-}

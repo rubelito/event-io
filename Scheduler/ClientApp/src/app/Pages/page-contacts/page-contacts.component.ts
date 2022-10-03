@@ -40,7 +40,7 @@ export class PageContactsComponent implements OnInit {
 
   openAddDialog(){
     let dialogResult = this.dialog.open(CalendarAddContactDialogComponent, {
-      width: "800px",
+      width: "500px",
       disableClose: true
     });
 

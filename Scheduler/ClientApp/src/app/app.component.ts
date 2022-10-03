@@ -45,6 +45,8 @@ export class AppComponent implements OnInit  {
   twitterImage = GlobalConstants.twitterImage;
 
   profilePic: any;
+  userId: number;
+  userName: string;
 
   constructor(public authService: AuthService, private dialog: MatDialog,
      private responsive: BreakpointObserver, private router: Router,
@@ -53,21 +55,26 @@ export class AppComponent implements OnInit  {
   ngOnInit(): void {
     this.responsive.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
         this.showLargeMenu = !result.matches;
+        let showTime = !result.matches;
+        this.dataSharingService.isShowTime.next(showTime);
     });
 
-    this.loadProfilePic();
-  }
-
-  loadProfilePic(){
     if (this.authService.isLoggedIn()){
-      var userId = this.authService.getLoggedUserId();
+      this.userName = this.authService.getLoggedUserName();
+      this.userId = this.authService.getLoggedUserId();
+      this.loadProfilePicture();
     }
 
     this.dataSharingService.isProfilePictureChange.subscribe(change => {
-      this.authService.getAvatar(userId).subscribe(result => {
-        console.log(result);
-        this.profilePic = GlobalFuntions.createImageFromBlob(result, this.sanitizer);
-      })
+      this.userName = this.authService.getLoggedUserName();
+      this.userId = this.authService.getLoggedUserId();
+      this.loadProfilePicture();
+    })
+  }
+
+  loadProfilePicture(){
+    this.authService.getAvatar(this.userId).subscribe(result => {
+      this.profilePic = GlobalFuntions.createImageFromBlob(result, this.sanitizer);
     })
   }
 
@@ -94,14 +101,14 @@ export class AppComponent implements OnInit  {
   }
 
   showProfile(){
-    let myprofileDialog = this.dialog.open(CalendarMyprofileDialogComponent, {
+    this.dialog.open(CalendarMyprofileDialogComponent, {
       width: '500px',
       disableClose: true
     });
   }
 
   onRegisterClick() {
-    let registerDialog = this.dialog.open(CalendarRegisterDialogComponent, {
+    this.dialog.open(CalendarRegisterDialogComponent, {
       width: '500px',
       disableClose: true
     });

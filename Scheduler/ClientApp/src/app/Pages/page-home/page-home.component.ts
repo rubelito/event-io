@@ -23,16 +23,16 @@ export class PageHomeComponent implements OnInit {
   windowsIcon = GlobalConstants.windowsIcon;
   tabletImage = GlobalConstants.tabletsImage;
 
-  simpleImage = GlobalConstants.simpleImage;
-  stackedImage = GlobalConstants.stackedImage;
-  tetrisImage = GlobalConstants.tetrisImage;
+  appointmentImage = GlobalConstants.appointmentImageSrc;
+  taskImage = GlobalConstants.taskImageSrc;
+  reminderImage = GlobalConstants.reminderImageSrc;
 
-  brushImage = GlobalConstants.brushImage;
-  chatImage = GlobalConstants.chatImage;
+  colorImage = GlobalConstants.colorImage;
+  contactImage = GlobalConstants.contactImage;
   responsiveImage = GlobalConstants.responsiveImage;
-  seeImage = GlobalConstants.seeImage;
-  stylesImage = GlobalConstants.stylesImage;
-  videoImage = GlobalConstants.videoImage;
+  privacyImage = GlobalConstants.privacyImage;
+  groupImage = GlobalConstants.groupImage;
+  reoccurImage = GlobalConstants.reoccurImage;
 
   constructor(private responsive: BreakpointObserver) { }
 

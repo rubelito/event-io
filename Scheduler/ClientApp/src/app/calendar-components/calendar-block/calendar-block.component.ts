@@ -6,6 +6,7 @@ import { ContextMenuValue } from 'src/app/calendar-models/contextMenuValue';
 import { DateModel } from 'src/app/calendar-models/dateModel';
 import { EventModel } from 'src/app/calendar-models/event-model';
 import { AppointmentService } from 'src/app/calendar-service/AppointmentService';
+import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 import { GlobalConstants } from 'src/app/common/global-constant';
 
 @Component({
@@ -20,10 +21,15 @@ export class CalendarBlockComponent implements OnInit {
   @Output() refreshList = new EventEmitter();
 
   repeatIcon = GlobalConstants.repeatIcon;
+  showTime: boolean;
 
-  constructor(private appointmentService: AppointmentService) {
+  constructor(private appointmentService: AppointmentService
+    , private dataSharingService: DataSharingService) {
    }
   ngOnInit(): void {
+    this.dataSharingService.isShowTime.subscribe(change => {
+      this.showTime = change;
+    })
   }
 
   onRightClickBlock(event: any){
@@ -46,22 +52,13 @@ export class CalendarBlockComponent implements OnInit {
       param.show = true;
       param.isBlock = false;
       param.isOwner = appoint.IsOwner;
+      param.type = appoint.Type;
       param.isAdd = false;
       param.selectedEvent = appoint;
       param.locationX = event.layerX;
       param.locationY = event.layerY;
-
     this.showParentContextMenu.emit(param);
     }
-  }
-
-  getEventBGColor(isOwner: boolean){
-    let color = "#3f8b3f";
-    if (!isOwner){
-      color = "#475386";
-    }
-
-    return color;
   }
 
   getBGColor(){

@@ -63,10 +63,6 @@ namespace Scheduler.Services
 
         private List<DateTime> GenerateDateRange(DateTime startDate, DateTime toDate, RepeatSelectionEnum repeatSelection)
         {
-           // DateTime dateOfMonth = DateTime.ParseExact(yearMonth, "M/yyyy", CultureInfo.InvariantCulture);
-           // int daysInAMonth = DateTime.DaysInMonth(dateOfMonth.Year, dateOfMonth.Month);
-           // DateTime fullMonth = new DateTime(dateOfMonth.Year, dateOfMonth.Month, daysInAMonth);
-
             List<DateTime> repeatDates = new List<DateTime>();
 
             if (repeatSelection == RepeatSelectionEnum.EveryDay)
@@ -95,10 +91,6 @@ namespace Scheduler.Services
 
         private List<DateTime> GenerateDateRangeForAfter(DateTime startDate, RepeatSelectionEnum repeatSelection, int after)
         {
-            // DateTime dateOfMonth = DateTime.ParseExact(yearMonth, "M/yyyy", CultureInfo.InvariantCulture);
-            // int daysInAMonth = DateTime.DaysInMonth(dateOfMonth.Year, dateOfMonth.Month);
-            // DateTime fullMonth = new DateTime(dateOfMonth.Year, dateOfMonth.Month, daysInAMonth);
-
             List<DateTime> repeatDates = new List<DateTime>();
 
             if (repeatSelection == RepeatSelectionEnum.EveryDay)
@@ -131,12 +123,15 @@ namespace Scheduler.Services
             cloned.Id = appointment.Id;
             cloned.Location = appointment.Location;
             cloned.Title = appointment.Title;
+            cloned.Color = appointment.Color;
             cloned.Details = appointment.Details;
             cloned.YearMonth = appointment.YearMonth;
             cloned.Date = new DateTime(cloneDate.Year, cloneDate.Month, cloneDate.Day);
             cloned.Time = appointment.Time;
             cloned.CreatorId = appointment.CreatorId;
             cloned.Creator = appointment.Creator;
+            cloned.Type = appointment.Type;
+            cloned.IsDone = appointment.IsDone;
 
             cloned.isRepeat = appointment.isRepeat;
             cloned.RepeatSelection = appointment.RepeatSelection;

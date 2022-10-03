@@ -11,6 +11,7 @@ namespace Scheduler.Entity
             Title = "";
             Location = "";
             Details = "";
+            Color = "";
             Time = "";
             IsDeleted = false;
             IsDone = false;
@@ -25,6 +26,7 @@ namespace Scheduler.Entity
 
         public string Title { get; set; }
         public string Location { get; set; }
+        public string Color { get; set; }
         public string Details { get; set; }
         public string Time { get; set; }
 

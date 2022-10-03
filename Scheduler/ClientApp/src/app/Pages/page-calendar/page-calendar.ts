@@ -10,6 +10,8 @@ import { CalendarDialogComponent } from 'src/app/calendar-components/calendar-di
 import { GlobalConstants } from 'src/app/common/global-constant';
 import { CalendarViewDialogComponent } from 'src/app/calendar-components/calendar-view-dialog/calendar-view-dialog.component';
 import { MessageboxComponent } from 'src/app/calendar-components/messagebox/messagebox.component';
+import { ContextOperationModel } from 'src/app/calendar-models/contextOperation-Model';
+import { AppointmentType } from 'src/app/calendar-models/appointmentType-enum';
 
 @Component({
   selector: 'page-calendar',
@@ -34,6 +36,7 @@ export class PageCalendarComponent {
   contextMenuX: string = "";
   contextMenuY: string = "";
   contextMenuAdd: any;
+  contextMenuType: AppointmentType;
   contextMenuOwner: any;
   shouldShowDialog: boolean = false;
   dialogParam: DialogOperation = new DialogOperation();
@@ -48,8 +51,8 @@ export class PageCalendarComponent {
 
   dialogResult: MatDialogRef<any>;
 
-  constructor(private eventService: AppointmentService, private dialog:MatDialog){
-
+  constructor(private eventService: AppointmentService,
+     private dialog:MatDialog){
   }
 
   ngOnInit(){
@@ -163,32 +166,33 @@ export class PageCalendarComponent {
     this.contextMenuX = menu.locationX.toString();
     this.contextMenuY = menu.locationY.toString();
     this.contextMenuAdd = menu.isAdd;
+    this.contextMenuType = menu.type;
     this.contextMenuOwner = menu.isOwner;
   }
 
-  openDialog(operation: string){
+  openDialog(operation: ContextOperationModel){
     let param = new DialogOperation();
-    param.operation = operation;
+    param.contextOperation = operation;
     param.appointment = this.menuParam.selectedEvent;
     param.yearMonth = this.yearMonth;
 
-    if (operation == 'Add'){
+    if (operation.Operation == "Add"){
       this.shouldShowDialog = true;
       param.stringDate = this.menuParam.selectedBlock.stringDate;
     }
-    else if (operation == 'Edit'){
+    else if (operation.Operation == 'Edit'){
       this.shouldShowDialog = true;
       param.stringDate = this.menuParam.selectedEvent.Date;
     }
-    else if (operation == 'Delete'){
+    else if (operation.Operation == 'Delete'){
       this.appointmentToDelete = param.appointment;
       this.OnDelete();
     }
-    else if (operation == "View"){
+    else if (operation.Operation == "View"){
       this.showViewDialog(param);
     }
 
-    if (operation == "Add" || operation == "Edit"){
+    if (operation.Operation == "Add" || operation.Operation == "Edit"){
       this.showAddEditMatDialog(param);
     }
   }

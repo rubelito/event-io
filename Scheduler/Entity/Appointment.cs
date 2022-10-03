@@ -11,10 +11,12 @@ namespace Scheduler.Entity
 		{
 			Location = "";
 			Title = "";
+			Color = "";
 			Details = "";
 			YearMonth = "";
 			Time = "";
 			After = 0;
+			Type = AppointmentType.Appointment;
 
 			Meetings = new List<UserSchedule>();
 			GroupsParticipants = new List<GroupSchedule>();
@@ -25,6 +27,7 @@ namespace Scheduler.Entity
 		public int Id { get; set; }
 		public string Location { get; set; }
 		public string Title { get; set; }
+		public string Color { get; set; }
 		public string Details { get; set; }
 		public string YearMonth { get; set; }
 		public DateTime Date { get; set; }
@@ -41,11 +44,13 @@ namespace Scheduler.Entity
 		public RepeatEndEnum RepeatEnd { get; set; }
 		public int After { get; set; }
 		public DateTime OnDate { get; set; }
+		public AppointmentType Type { get; set; }
+		public bool IsDone { get; set; }
+
 
         [NotMapped]
 		public RepeatEdit RepeatEdit { get; set; }
 
-		public bool IsDone { get; set; }
         [NotMapped]
 		public bool IsClone { get; set; }
         [NotMapped]

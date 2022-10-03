@@ -128,6 +128,7 @@ namespace Scheduler.Services
 
                 appoint.Location = appointmentToEdit.Location;
                 appoint.Title = appointmentToEdit.Title;
+                appoint.Color = appointmentToEdit.Color;
                 appoint.Details = appointmentToEdit.Details;
 
                 DateTime monthYear = Convert.ToDateTime(appointmentToEdit.Date);
@@ -172,6 +173,7 @@ namespace Scheduler.Services
                     editRepeat.Title = ev.Title;
                     editRepeat.Location = ev.Location;
                     editRepeat.Details = ev.Details;
+                    editRepeat.Color = ev.Color;
                     editRepeat.EditedDate = DateTime.ParseExact(ev.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     editRepeat.Time = ev.Time;
                     editRepeat.IsDeleted = ev.IsDeleted;
@@ -185,6 +187,7 @@ namespace Scheduler.Services
                     newEditRepeat.AppointmentId = ev.Id;
                     newEditRepeat.Title = ev.Title;
                     newEditRepeat.Location = ev.Location;
+                    newEditRepeat.Color = ev.Color;
                     newEditRepeat.Details = ev.Details;
                     newEditRepeat.OriginalDate = originalDate;
                     newEditRepeat.EditedDate = DateTime.ParseExact(ev.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);

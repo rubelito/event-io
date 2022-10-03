@@ -3,14 +3,13 @@
 
 <div class="auth-dialog">
     <div class="auth-dialog-title">
-        <span>{{param?.operation}} Appointment</span>
+        <span>{{ param?.contextOperation?.Operation }} {{ dialogTitle }}</span>
         <span class="auth-close-x" (click)="cancelAdd()">&times;</span>
     </div>
-    <div class="auth-fields">
+    <div class="auth-fields" *ngIf="param?.contextOperation?.Type == appointmentTypeList.Appointment">
         <div class="auth-left-fields left-field-width">Created By :</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
-            <!-- <input class="auth-text" type="text" [(ngModel)]="createdBy"> -->
-            <span>{{createdBy}}</span>
+            <span>{{ createdBy }}</span>
         </div>
     </div>
     <div class="auth-fields">
@@ -21,6 +20,53 @@
         </div>
     </div>
     <div class="auth-fields">
+        <div class="auth-left-fields left-field-width">Color :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">   
+            <div class="color-selection">
+                <div class="color-container">
+                    <div class="color-sligthly-none" [ngClass]="color == '' ? 'color-selected' : ''" (click)="changeColor('')">
+                        <span>/</span>
+                    </div>
+                </div>
+                <div class="color-container">
+                    <div class="color-red" [ngClass]="color == 'red' ? 'color-selected' : ''" (click)="changeColor('red')">
+                        <span *ngIf="color == 'red'">&#x2714;</span>
+                    </div>
+                </div>
+                <div class="color-container">
+                    <div class="color-orange" [ngClass]="color == 'orange' ? 'color-selected' : ''" (click)="changeColor('orange')">
+                        <span *ngIf="color == 'orange'">&#x2714;</span>
+                    </div>
+                </div>
+                <div class="color-container">
+                    <div class="color-yellow" [ngClass]="color == 'yellow' ? 'color-selected' : ''" (click)="changeColor('yellow')">
+                        <span *ngIf="color == 'yellow'">&#x2714;</span>
+                    </div>
+                </div>
+                <div class="color-container">
+                    <div class="color-green" [ngClass]="color == 'green' ? 'color-selected' : ''" (click)="changeColor('green')">
+                        <span *ngIf="color == 'green'">&#x2714;</span>
+                    </div>
+                </div>
+                <div class="color-container">
+                    <div class="color-blue" [ngClass]="color == 'blue' ? 'color-selected' : ''" (click)="changeColor('blue')">
+                        <span *ngIf="color == 'blue'">&#x2714;</span>
+                    </div>
+                </div>
+                <div class="color-container">
+                    <div class="color-purple" [ngClass]="color == 'purple' ? 'color-selected' : ''" (click)="changeColor('purple')">
+                        <span *ngIf="color == 'purple'">&#x2714;</span>
+                    </div>
+                </div>
+                <div class="color-container">
+                    <div class="color-gray" [ngClass]="color == 'gray' ? 'color-selected' : ''" (click)="changeColor('gray')">
+                        <span *ngIf="color == 'gray'">&#x2714;</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="auth-fields"  *ngIf="param?.contextOperation?.Type == appointmentTypeList.Appointment">
         <div class="auth-left-fields left-field-width">Location :</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
             <div class="full-section">
@@ -80,14 +126,20 @@
             </div>
         </div>
     </div>
-    <div class="auth-fields">
+    <div class="auth-fields"  *ngIf="param?.contextOperation?.Type != appointmentTypeList.Reminder">
         <div class="auth-left-fields left-field-width">Detail :</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
             <textarea *ngIf="isOwner" class="auth-text" rows="8" [(ngModel)]="details" [disabled]="!isOwner"></textarea>
             <div class="schedule-details" *ngIf="!isOwner">{{ details }}</div>
         </div>
     </div>
-    <div class="auth-fields">
+    <div class="auth-fields"  *ngIf="param?.contextOperation?.Type == appointmentTypeList.Task && param?.contextOperation?.Operation == 'Edit'">
+        <div class="auth-left-fields left-field-width">Status :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <mat-checkbox [(ngModel)]="isDone">Mark as Done</mat-checkbox>
+        </div>
+    </div>
+    <div class="auth-fields" *ngIf="param?.contextOperation?.Type == appointmentTypeList.Appointment">
         <div class="auth-left-fields left-field-width">Invites :</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
             <!-- <input class="auth-text" type="text" [(ngModel)]="title" [disabled]="!isOwner"> -->

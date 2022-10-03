@@ -1,3 +1,4 @@
+import { ContextOperationModel } from "./contextOperation-Model";
 import { EventModel } from "./event-model";
 
 export class DialogOperation {
@@ -5,7 +6,7 @@ export class DialogOperation {
     membersIds: Array<number> = [];
     groupIds: Array<number> = [];
 
-    operation: string = "";
+    contextOperation: ContextOperationModel = new ContextOperationModel();
     stringDate: string = "";
     yearMonth: string = "";
 }

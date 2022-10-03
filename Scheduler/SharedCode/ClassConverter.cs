@@ -54,6 +54,7 @@ namespace Scheduler.SharedCode
                 m.Id = a.Id;
                 m.Location = a.Location;
                 m.Title = a.Title;
+                m.Color = a.Color;
                 m.Details = a.Details;
                 m.ActualYearMonth = a.YearMonth;
                 m.YearMonth = a.YearMonth;
@@ -67,6 +68,7 @@ namespace Scheduler.SharedCode
                 m.OnDate = a.OnDate.ToString("MM/dd/yyyy");
                 m.CreatorId = a.Creator.Id;
                 m.CreatedBy = a.Creator.UserName;
+                m.Type = a.Type;
                 m.IsDone = a.IsDone;
                 m.IsClone = a.IsClone;
                 m.NumberOfRepeats = a.NumberOfRepeats;
@@ -79,6 +81,7 @@ namespace Scheduler.SharedCode
 
                     m.Title = a.RepeatEdit.Title;
                     m.Location = a.RepeatEdit.Location;
+                    m.Color = a.RepeatEdit.Color;
                     m.Details = a.RepeatEdit.Details;
                     m.Time = a.RepeatEdit.Time;
                     m.IsDone = a.RepeatEdit.IsDone;
@@ -98,6 +101,7 @@ namespace Scheduler.SharedCode
             a.Id = model.Id;
             a.Location = model.Location;
             a.Title = model.Title;
+            a.Color = model.Color;
             a.Details = model.Details;
             a.YearMonth = model.YearMonth;
             a.Date = DateTime.ParseExact(model.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
@@ -106,6 +110,7 @@ namespace Scheduler.SharedCode
             a.isRepeat = model.IsRepeat;
             a.RepeatSelection = model.RepeatSelection;
             a.RepeatEnd = model.RepeatEnd;
+            a.Type = model.Type;
             a.IsDone = model.IsDone;
             a.After = model.After;
             a.OnDate = DateTime.ParseExact(model.OnDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);

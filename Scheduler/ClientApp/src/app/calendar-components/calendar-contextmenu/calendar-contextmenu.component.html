@@ -1,8 +1,12 @@
 <div *ngIf="isOwner">
-<div id="addbtn" *ngIf="isAdd" (click)="openDialog('Add')">Add Schedule</div>
-<div id="editbtn" *ngIf="!isAdd" (click)="openDialog('Edit')">Edit Schedule</div>
-    <div *ngIf="!isAdd" (click)="openDialog('Delete')">Delete Schedule</div>
+    <div class="context-row shake" id="addbtn" *ngIf="isAdd" (click)="openDialog('Add', 'Appointment')"><img height="15" width="15" [src]="appointmentSmallImg"> Add Appointment</div>
+    <div class="context-row shake" id="addbtn" *ngIf="isAdd" (click)="openDialog('Add', 'Task')"><img height="15" width="15" [src]="taskSmallImg"> Add Task</div>
+    <div class="context-row shake" id="addbtn" *ngIf="isAdd" (click)="openDialog('Add', 'Reminder')"><img height="15" width="15" [src]="reminderSmallImg"> Add Reminder</div>
+    <div class="context-row shake" id="editbtn" *ngIf="!isAdd && type == appointmentTypeList.Appointment" (click)="openDialog('Edit', 'Appointment')"><img height="15" width="15" [src]="appointmentSmallImg"> Edit Appointment</div>
+    <div class="context-row shake" id="editbtn" *ngIf="!isAdd && type == appointmentTypeList.Task" (click)="openDialog('Edit', 'Task')"><img height="15" width="15" [src]="taskSmallImg"> Edit Task</div>
+    <div class="context-row shake" id="editbtn" *ngIf="!isAdd && type == appointmentTypeList.Reminder" (click)="openDialog('Edit', 'Reminder')"><img height="15" width="15" [src]="reminderSmallImg"> Edit Reminder</div>
+    <div class="context-row shake" *ngIf="!isAdd" (click)="openDialog('Delete', '')"><img height="15" width="15" [src]="redRemoveIcon"> Delete Event</div>
 </div>
 <div *ngIf="!isOwner">
-    <div (click)="openDialog('View')">View</div>
+    <div class="context-row shake" (click)="openDialog('View', '')"><img height="15" width="15" [src]="viewIcon"> View</div>
 </div>

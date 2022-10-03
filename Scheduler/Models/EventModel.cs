@@ -8,6 +8,7 @@ namespace Scheduler.Models
 		public int Id { get; set; }
 		public string Location { get; set; }
 		public string Title { get; set; }
+		public string Color { get; set; }
 		public string Details { get; set; }
 
 		public string ActualYearMonth { get; set; }
@@ -23,6 +24,7 @@ namespace Scheduler.Models
 		public bool IsOwner { get; set; }
 
 		public bool IsDeleted { get; set; }
+		public AppointmentType Type { get; set; }
 		public bool IsDone { get; set; }
 
 		public bool HasEdit { get; set; }

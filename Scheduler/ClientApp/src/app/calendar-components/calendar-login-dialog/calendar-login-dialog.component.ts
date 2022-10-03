@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth-service/AuthService';
 import { UserCredential } from 'src/app/calendar-models/user-credential';
+import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 import { GlobalConstants } from 'src/app/common/global-constant';
 import { MessageboxComponent } from '../messagebox/messagebox.component';
 
@@ -24,7 +25,8 @@ export class CalendarLoginDialogComponent implements OnInit {
   show: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<CalendarLoginDialogComponent>, 
-    private authService: AuthService, private router: Router,  private dialog:MatDialog) { }
+    private authService: AuthService, private router: Router, 
+    private dialog:MatDialog, private dataSharingService: DataSharingService) { }
 
   ngOnInit(): void {
   }
@@ -48,8 +50,9 @@ export class CalendarLoginDialogComponent implements OnInit {
         localStorage.setItem('accessToken', "basic " + data.Credential);
         localStorage.setItem('role', data.Role);
 
+        this.dataSharingService.isProfilePictureChange.next(true);
         this.dialogRef.close();
-        document.location.reload();
+        this.router.navigate(["/Schedules"]);
       }
       else {
         this.showMessage("Invalid Username and Password", "warning");

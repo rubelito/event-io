@@ -26,16 +26,19 @@ export class GlobalConstants {
     public static windowsIcon ='../assets/images/windows.png';
     public static tabletsImage = '../assets/images/tablets.png';
 
-    public static simpleImage = "../assets/images/simple.png";
-    public static stackedImage = "../assets/images/stacked.png";
-    public static tetrisImage = "../assets/images/tetris.png";
+    public static appointmentImageSrc = "../assets/images/appointment.png";
+    public static taskImageSrc = "../assets/images/task.png";
+    public static reminderImageSrc = "../assets/images/reminder.png";
+    public static appointmentSmallImageSrc = "../assets/images/appointment-small.png";
+    public static taskSmallImageSrc = "../assets/images/task-small.png";
+    public static reminderSmallImageSrc = "../assets/images/reminder-small.png";
 
-    public static brushImage = '../assets/images/brush.png';
-    public static chatImage = '../assets/images/chat.png';
+    public static colorImage = '../assets/images/color.png';
+    public static contactImage = '../assets/images/contact.png';
     public static responsiveImage = '../assets/images/responsive.png';
-    public static seeImage = '../assets/images/see.png';
-    public static stylesImage = '../assets/images/styles.png';
-    public static videoImage = '../assets/images/videos.png';
+    public static privacyImage = '../assets/images/privacy.png';
+    public static groupImage = '../assets/images/group.png';
+    public static reoccurImage = '../assets/images/reoccur.png';
 
     public static socialEmailImage = '../assets/images/social-email.png';
     public static facebookImage = '../assets/images/facebook.png';
@@ -53,6 +56,9 @@ export class GlobalConstants {
     public static uploadIcon = "../assets/images/upload-icon.png";
     public static createIcon = "../assets/images/create-icon.png";
     public static removeIcon = "../assets/images/remove-icon.png";
+    public static redRemoveIcon = "../assets/images/redRemoveIcon.png";
+    public static slashIcon = "..assets/images/slash.png";
+    public static viewIcon = "../assets/images/viewIcon.png";
 
     public static emptyProfileIcon = "../assets/images/empty-profileIcon.png";
 }

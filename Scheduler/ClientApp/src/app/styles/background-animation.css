@@ -4,7 +4,7 @@
 .xtr_shape .shape1{
     position:absolute;
     left:0;
-    top:30%;
+    top:35%;
     z-index:-1;
     -webkit-animation:5s linear infinite movebounce;
     animation:5s linear infinite movebounce;
@@ -49,8 +49,8 @@
 }
 .xtr_shape .shape7{
     position:absolute;
-    left:2%;
-    top:17%;
+    right:20%;
+    top:65%;
     z-index:-1;
     -webkit-animation:20s linear infinite animationFramesOne;
     animation:20s linear infinite animationFramesOne

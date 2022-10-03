@@ -36,6 +36,7 @@ export class AppointmentService {
     }
 
     addSchedule(model: AddEditModel): Observable<Appointment>{
+        model.Appointment.After = model.Appointment.RepeatEnd != 1  ? 1 : model.Appointment.After;
         let cre = localStorage.getItem("accessToken");
         this.headers = this.headers.set('Authorization', cre!);
         return this.http.post<Appointment>(this.baseUrl + "schedule/CreateEvent", model, { headers: this.headers});

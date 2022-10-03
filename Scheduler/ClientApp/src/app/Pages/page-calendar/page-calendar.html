@@ -1,4 +1,4 @@
-<div>
+<div> 
   <div class="flex-other-side">
     <div class="buttons-group flex-center">
       <span class="calendar-month">{{ monthStr }}</span>
@@ -17,7 +17,7 @@
   </div>
   <div class="calendar-container">
     <app-calendar-contextmenu class="contextMenu" *ngIf="showContextMenu" (showDialog)="openDialog($event)"
-    [isAdd]="contextMenuAdd" [isOwner]="contextMenuOwner" [ngStyle]="{'left': contextMenuX + 'px', 'top': contextMenuY + 'px'}">
+    [isAdd]="contextMenuAdd" [type]="contextMenuType" [isOwner]="contextMenuOwner" [ngStyle]="{'left': contextMenuX + 'px', 'top': contextMenuY + 'px'}">
       
     </app-calendar-contextmenu>
     <div class="Weekdays-name">
@@ -35,7 +35,4 @@
       </app-calendar-block>
     </div>
   </div>
-
-  <!-- <app-messagebox *ngIf="showDeleteDialog" [appointment]="appointmentToDelete" (onCancel)="onDeleteCancel()" (onOk)="onOkDelete()">
-  </app-messagebox> -->
 </div>

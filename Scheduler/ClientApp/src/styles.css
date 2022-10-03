@@ -28,6 +28,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
 body {
   background-color: #182139;
 }
+
+body::-webkit-scrollbar {
+  background-color: #333952;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #999da8;
+  border-radius: 12px
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

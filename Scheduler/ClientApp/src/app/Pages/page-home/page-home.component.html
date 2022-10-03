@@ -2,9 +2,9 @@
     <div class="screenshot-section" [ngClass]="big ? 'screenshot-section-large' : 'screenshot-section-small'">
         <img [src]="screenshotImage">
     </div>
-    <div class="home-section first-section grey-text">
+    <div id="mobile-part" class="home-section first-section grey-text">
         <div class="home-content-width">
-            <div class="section-title">
+            <div class="section-title"> 
                 <h1 class="color-333333 ">Your Calenday Scheduler will be beautiful everywhere.</h1>
                 <p>Send it to your best friends and your grandma. It’ll work on their computers and phones.</p>
             </div>
@@ -15,66 +15,80 @@
                 <div>
                     <div>
                         <div class="layout-images">
-                            <img height="37px" width="37px" [src]="chromeBrowserIcon">
-                            <img height="37px" width="37px" [src]="firefoxIcon">
-                            <img height="37px" width="37px" [src]="ieIcon">
-                            <img height="37px" width="37px" [src]="safaryIcon">
+                            <div class="shake">
+                                <img height="37px" width="37px" [src]="chromeBrowserIcon">
+                            </div>
+                            <div class="shake">
+                                <img height="37px" width="37px" [src]="firefoxIcon">
+                            </div>
+                            <div class="shake">
+                                <img height="37px" width="37px" [src]="ieIcon">
+                            </div>
+                            <div class="shake">
+                                <img height="37px" width="37px" [src]="safaryIcon">
+                            </div>
                         </div>
                         <div class="browser-os-title color-333333 ">Broad browser support, baby.</div>
                         <div>
-                            All major browsers are supported including Internet Explorer. Send it to your best friends and your grandma. It’ll work on their computers and phones. Send it to your best friends and your grandma. It’ll work on their computers and phones.
+                            All major browsers are supported including Internet Explorer. Send it to your best friends and colleagues. 
                         </div>
                     </div>
                     <div>
                         <div class="layout-images">
-                            <img height="37px" width="37px" [src]="appleIcon">
-                            <img height="37px" width="37px" [src]="androidIcon">
-                            <img height="37px" width="37px" [src]="windowsIcon">
+                            <div class="shake">
+                                <img height="37px" width="37px" [src]="appleIcon">
+                            </div>
+                            <div class="shake">
+                                <img height="37px" width="37px" [src]="androidIcon">
+                            </div>
+                            <div class="shake">
+                                <img height="37px" width="37px" [src]="windowsIcon">
+                            </div>
                         </div>
-                        <div class="browser-os-title color-333333 ">It’s gonna look good on all devices.</div>
+                        <div class="browser-os-title color-333333">It’s gonna look good on all devices.</div>
                         <div>
-                            Send it to your best friends and your grandma. It’ll work on their computers and phones. Send it to your best friends and your grandma. It’ll work on their computers and phones.
+                            Anyone can access the Event-IO using a computer or a mobile device- no special knowledge or equipment is required.
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="home-section second-section grey-text">
+    <div id="feature-part" class="home-section second-section grey-text">
         <div class="home-content-width">
             <div class="section-title">
-                <h1 class="color-333333">Your Calenday Scheduler will be beautiful everywhere.</h1>
-                <p>Send it to your best friends and your grandma. It’ll work on their computers and phones.</p>
+                <h1 class="color-333333">Your Calendar Scheduler will be always at your service.</h1>
+                <p>Schedule your Appointments, Classes, and Interviews with Event-IO. Easily manage your Task and Reminder with a few clicks.</p>
             </div>
             <div [ngClass]="secondSectionLayout">
                 <div class="second-square-container">
-                    <div class="circle-container">
+                    <div class="circle-container shake">
                         <span class="circle-number">1</span>
-                        <img class="circle-image" [src]="simpleImage">
+                        <img class="circle-image" [src]="appointmentImage">
                     </div>
                     <div class="second-square-desc">
-                        <h2 class="color-333333">Simple</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+                        <h2 class="color-333333">Appointment</h2>
+                        <p>Setup appointmetns, meetings, events and invite your friends, families, and collegues to join in. Collaboration has never been easier with Appointment scheduler</p>
                     </div>
                 </div>
                 <div class="second-square-container">
-                    <div class="circle-container">
+                    <div class="circle-container shake">
                         <span class="circle-number">2</span>
-                        <img class="circle-image" [src]="stackedImage">
+                        <img class="circle-image" [src]="taskImage">
                     </div>
                     <div class="second-square-desc">
-                        <h2 class="color-333333">Stacked</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla.</p>
+                        <h2 class="color-333333">Task</h2>
+                        <p>Manage your days, weeks, month, and entire year with "Task" scheduler. Planning and keeping track of your task has never been easier.</p>
                     </div>
                 </div>
                 <div class="second-square-container">
-                    <div class="circle-container">
+                    <div class="circle-container shake">
                         <span class="circle-number">3</span>
-                        <img class="circle-image" [src]="tetrisImage">
+                        <img class="circle-image" [src]="reminderImage">
                     </div>
                     <div class="second-square-desc">
-                        <h2 class="color-333333">Tetris</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor.</p>
+                        <h2 class="color-333333">Reminder</h2>
+                        <p>Never miss any important event, task, and appointments with "Reminder" scheduler. If you forget things a lot, this feature will definitely helps you.</p>
                     </div>
                 </div>
             </div>
@@ -84,63 +98,63 @@
         <div class="home-content-width">
             <div class="section-title">
                 <h1 class="color-333333 ">Here’s some more things you’ll love.</h1>
-                <p>Send it to your best friends and your grandma. It’ll work on their computers and phones.</p>
+               
             </div>
             <div class="third-section-layout-row">
                 <div>
-                    <div class="round-image-icon">
-                        <img [src]="brushImage">
+                    <div class="round-image-icon shake">
+                        <img [src]="privacyImage">
                     </div>
                     <div class="second-square-desc">
-                        <h2 class="color-333333">Brush</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+                        <h2 class="color-333333">Privacy</h2>
+                        <p>Built for privacy, only you and your invited friends could see your events.</p>
                     </div>
                 </div>
                 <div>
-                    <div class="round-image-icon">
-                        <img [src]="chatImage">
+                    <div class="round-image-icon shake">
+                        <img [src]="contactImage">
                     </div>
                     <div class="second-square-desc">
-                        <h2 class="color-333333">Chat</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor</p>
+                        <h2 class="color-333333">Contact</h2>
+                        <p>Add people to your contact list so you can invite them to your "Appointments". Your cantacts can be managed through 'Groups'</p>
                     </div>
                 </div>
                 <div>
-                    <div class="round-image-icon">
+                    <div class="round-image-icon shake">
+                        <img [src]="groupImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Group</h2>
+                        <p>Create and manage groups. Event-IO has the ability to invite groups to your "Appointments"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="third-section-layout-row">
+                <div>
+                    <div class="round-image-icon shake">
+                        <img [src]="colorImage">
+                    </div>
+                    <div class="second-square-desc">
+                        <h2 class="color-333333">Color</h2>
+                        <p>Add custom color to event for easier viewing.</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="round-image-icon shake">
                         <img [src]="responsiveImage">
                     </div>
                     <div class="second-square-desc">
-                        <h2 class="color-333333">Styles</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="third-section-layout-row">
-                <div>
-                    <div class="round-image-icon">
-                        <img [src]="seeImage">
-                    </div>
-                    <div class="second-square-desc">
-                        <h2 class="color-333333">See</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor</p>
-                    </div>
-                </div>
-                <div>
-                    <div class="round-image-icon">
-                        <img [src]="stylesImage">
-                    </div>
-                    <div class="second-square-desc">
                         <h2 class="color-333333">Responsive</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor</p>
+                        <p>Enjoy your event in any screen sizer. Responsive UI makes this app looks good on any devices, browser, and screensizes.</p>
                     </div>
                 </div>
                 <div>
-                    <div class="round-image-icon">
-                        <img [src]="videoImage">
+                    <div class="round-image-icon shake">
+                        <img [src]="reoccurImage">
                     </div>
                     <div class="second-square-desc">
-                        <h2 class="color-333333">Videos</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+                        <h2 class="color-333333">Repeat</h2>
+                       <p>Create repeating events for your reoccuring schedules. Event-IO has the ability to manage reoccuring events.</p>
                     </div>
                 </div>
             </div>

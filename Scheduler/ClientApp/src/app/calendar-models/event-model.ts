@@ -1,9 +1,10 @@
-import { RepeatEditModel } from "./repeatEditModel";
+import { AppointmentType } from "./appointmentType-enum";
 
 export class EventModel {
     Id: number = 0;
     Location: string = "";
     Title: string ='';
+    Color: string = '';
     Details: string = '';
     OriginalDate: string = '01/01/0001';
     Date: string = '';
@@ -13,6 +14,7 @@ export class EventModel {
     IsOwner: boolean = false;
     CreatedBy: string = '';
     CreatorId: number = 0;
+    Type: AppointmentType;
 
     IsDone: boolean = false;
     IsDeleted: boolean = false;

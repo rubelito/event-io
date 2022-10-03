@@ -44,7 +44,7 @@ export class PageGroupComponent implements OnInit {
 
   openAddDialog(){
     let dialogResult = this.dialog.open(CalendarAddeditGroupDialogComponent, {
-      width: "800px",
+      width: "500px",
       disableClose: true
     });
 

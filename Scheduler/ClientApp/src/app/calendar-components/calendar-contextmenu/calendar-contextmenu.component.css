@@ -1,4 +1,18 @@
-div:hover {
+.context-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px; 
+
     cursor: default;
-    background-color: #cccbcd;
+    background-color: #b0b2bb;
+
+    box-shadow: 9px 9px 24px 1px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 9px 9px 24px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 9px 9px 24px 1px rgba(0,0,0,0.75);
+}
+
+.context-row:hover {
+    background-color: #989799;
+    cursor: pointer;
 }
