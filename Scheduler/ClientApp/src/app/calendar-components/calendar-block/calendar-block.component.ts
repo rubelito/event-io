@@ -1,10 +1,11 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectorRef} from '@angular/core';
 import { AddEditModel } from 'src/app/calendar-models/addEditModel';
 import { Block } from 'src/app/calendar-models/block';
 import { ContextMenuValue } from 'src/app/calendar-models/contextMenuValue';
 import { DateModel } from 'src/app/calendar-models/dateModel';
 import { EventModel } from 'src/app/calendar-models/event-model';
+import { RangeType } from 'src/app/calendar-models/rangeType-enum';
 import { AppointmentService } from 'src/app/calendar-service/AppointmentService';
 import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 import { GlobalConstants } from 'src/app/common/global-constant';
@@ -16,20 +17,95 @@ import { GlobalConstants } from 'src/app/common/global-constant';
 })
 export class CalendarBlockComponent implements OnInit {
 
-  @Input() block?: Block;
+  @Input() block: Block;
   @Output() showParentContextMenu = new EventEmitter<ContextMenuValue>();
   @Output() refreshList = new EventEmitter();
 
+  readonly rangeType = RangeType;
   repeatIcon = GlobalConstants.repeatIcon;
   showTime: boolean;
+  showEventsNow: boolean = false;
 
   constructor(private appointmentService: AppointmentService
-    , private dataSharingService: DataSharingService) {
+    , private dataSharingService: DataSharingService, private changeDetector : ChangeDetectorRef) {
    }
+   
   ngOnInit(): void {
     this.dataSharingService.isShowTime.subscribe(change => {
       this.showTime = change;
     })
+    
+    if (this.block.events.length >= 1){
+      this.arrangeEvent();
+      this.showEventsNow = true;
+    }
+  }
+
+  arrangeEvent(){
+    if (this.block?.previousBlock != undefined){
+        var tempEventsBlocks: EventModel[] = [];
+
+      let midsAndEnd = this.block.events.filter((ev) => {
+        return ev.RangeType == RangeType.Middle || ev.RangeType == RangeType.End
+      });
+
+      let starts = this.block.events.filter((ev) => {
+        return ev.RangeType == RangeType.Start
+      });
+
+      let noRange = this.block.events.filter((ev) => {
+        return ev.RangeType == RangeType.NoRange
+      });
+
+      let previosStartAndMids= this.block?.previousBlock.events.filter((ev) => {
+        return ev.RangeType == RangeType.Middle || ev.RangeType == RangeType.Start;
+      });
+
+      let previousEmptySpaceOnly = this.block?.previousBlock.events.filter((ev) => {
+        return ev.IsEmptyEvent;
+      });
+
+      if (previosStartAndMids.length >= 1){
+        tempEventsBlocks = this.createEmptyEventBlocks(previosStartAndMids.length + previousEmptySpaceOnly.length);
+
+        midsAndEnd.forEach(me => {
+          let previousIndex = this.block?.previousBlock.events.findIndex(e => e.Id == me.Id);
+            tempEventsBlocks[previousIndex] = me;
+        });
+
+        starts.forEach(me => {
+          tempEventsBlocks.push(me);
+        })
+
+        this.block.events = tempEventsBlocks;
+        this.removeTrailingEmptyEvents();
+
+        noRange.forEach(rs => {
+          this.block.events.push(rs);
+        });
+      }
+    }
+  }
+  removeTrailingEmptyEvents(){
+    for(let i = this.block.events.length - 1; i >= 0; i--){
+      if (this.block.events[i].IsEmptyEvent){
+        this.block.events.pop();
+      }
+      else {
+        break;
+      }
+    }
+  }
+  createEmptyEventBlocks(num: number){
+    let tempEvent = [];
+    for(let i = 1; i <= num; i++){
+      var emptyEvent = new EventModel();
+      emptyEvent.Title = "empty";
+      emptyEvent.IsEmptyEvent = true;
+      tempEvent.push(emptyEvent);
+    }
+
+    return tempEvent;
   }
 
   onRightClickBlock(event: any){
@@ -52,9 +128,9 @@ export class CalendarBlockComponent implements OnInit {
       param.show = true;
       param.isBlock = false;
       param.isOwner = appoint.IsOwner;
-      param.type = appoint.Type;
+      param.type = appoint.IsRange ? appoint.MainEventReference.Type : appoint.Type;
       param.isAdd = false;
-      param.selectedEvent = appoint;
+      param.selectedEvent = appoint.IsRange ? appoint.MainEventReference : appoint;
       param.locationX = event.layerX;
       param.locationY = event.layerY;
     this.showParentContextMenu.emit(param);
@@ -74,7 +150,6 @@ export class CalendarBlockComponent implements OnInit {
     let obj = document.elementFromPoint(e.dropPoint.x, e.dropPoint.y);
     var appointment = e.item.data as EventModel;
     var dateModel = null;
-
 
     if (obj?.classList.contains("real-block")){
       dateModel = new DateModel();
@@ -99,10 +174,12 @@ export class CalendarBlockComponent implements OnInit {
       if (confirm(confirmMessage)){
         if (appointment.IsClone){
           var addEditModel = new AddEditModel();
-          appointment.Date = dateModel.StrDate;
-          addEditModel.Appointment = appointment;
+          addEditModel.Appointment = appointment.RangeType != RangeType.NoRange ? appointment.MainEventReference : appointment;
+          addEditModel.Appointment.Date = dateModel.StrDate;;
           addEditModel.GroupIds = [];
           addEditModel.MemberIds = [];
+
+          addEditModel.Appointment.MainEventReference = new EventModel();
 
           this.appointmentService.editRepeat(addEditModel).subscribe(result => {
             if (result == 'Success'){
@@ -120,5 +197,23 @@ export class CalendarBlockComponent implements OnInit {
         }
       }
     }
+  }
+
+  getStyleForRangeType(rangeType: RangeType): string {
+    let rangeStyle = "";
+    if (rangeType == RangeType.NoRange){
+      rangeStyle = "norange-event";
+    }
+    else if (rangeType == RangeType.Start){
+      rangeStyle = "start-event";
+    }
+    else if (rangeType == RangeType.Middle) {
+      rangeStyle = "middle-event";
+    }
+    else if (rangeType == RangeType.End){
+      rangeStyle = "end-event";
+    }
+
+    return rangeStyle;
   }
 }

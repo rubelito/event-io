@@ -5,6 +5,11 @@ namespace Scheduler.Models
 {
 	public class EventModel
 	{
+		public EventModel()
+        {
+			IsRange = false;
+        }
+
 		public int Id { get; set; }
 		public string Location { get; set; }
 		public string Title { get; set; }
@@ -17,7 +22,10 @@ namespace Scheduler.Models
 		public string OriginalDate { get; set; }
 		public string Date { get; set; }
 
-		public string Time { get; set; }
+        public int EndDateSpan { get; set; }
+        public string EndTime { get; set; }
+
+        public string Time { get; set; }
 		public bool IsRepeat { get; set; }
         public int CreatorId { get; set; }
 		public string CreatedBy { get; set; }
@@ -36,5 +44,7 @@ namespace Scheduler.Models
 		public string OnDate { get; set; }
 		public bool IsClone { get; set; }
 		public int NumberOfRepeats { get; set; }
+
+		public bool IsRange { get; set; }
     }
 }

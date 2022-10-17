@@ -606,3 +606,8 @@ footer {
 .color-gray {
   background-color: #adadb0;
 }
+
+.component-center + :not(app-page-home) {
+  display: block;
+  margin-bottom: 100px;
+}

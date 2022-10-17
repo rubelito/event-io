@@ -29,7 +29,7 @@
       <div>Fri</div>
       <div>Sat</div>
     </div>
-    <div id="calendar" class="calendar">
+    <div id="calendar" class="calendar" *ngIf="showCalendar">
       <app-calendar-block (showParentContextMenu)="showThisContextMenu($event)" *ngFor="let b of daysBlock" [block]="b" (refreshList)="refreshEvents()">
 
       </app-calendar-block>

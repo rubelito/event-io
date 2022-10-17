@@ -51,6 +51,7 @@ import { CalendarMyprofileDialogComponent } from './calendar-components/calendar
 import { PageHomeComponent } from './Pages/page-home/page-home.component';
 import { CalendarViewDialogComponent } from './calendar-components/calendar-view-dialog/calendar-view-dialog.component';
 import { CalendarChangeavatarDialogComponent } from './calendar-components/calendar-changeavatar-dialog/calendar-changeavatar-dialog.component';
+import { CalendarDeleteDialogComponent } from './calendar-components/calendar-delete-dialog/calendar-delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { CalendarChangeavatarDialogComponent } from './calendar-components/calen
     CalendarMyprofileDialogComponent,
     PageHomeComponent,
     CalendarViewDialogComponent,
-    CalendarChangeavatarDialogComponent
+    CalendarChangeavatarDialogComponent,
+    CalendarDeleteDialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

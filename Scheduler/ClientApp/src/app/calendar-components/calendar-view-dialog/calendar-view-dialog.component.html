@@ -22,9 +22,15 @@
         </div>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields left-field-width">Date & Time :</div>
+        <div class="auth-left-fields left-field-width">Start :</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
             <span>{{ event.appointment.Date | date:'MMM dd, yyyy' }} - {{ event.appointment.Time }}</span>
+        </div>
+    </div>
+    <div class="auth-fields">
+        <div class="auth-left-fields left-field-width">End :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <span>{{ endDate | date:'MMM dd, yyyy' }} - {{ event.appointment.EndTime }}</span>
         </div>
     </div>
     <div class="auth-fields">

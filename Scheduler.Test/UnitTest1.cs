@@ -45,12 +45,12 @@ public class Tests
         dbContext.Database.EnsureCreated();
 
         User u = new User();
-        u.UserName = "rube";
-        u.FirstName = "Rubelito";
-        u.LastName = "Isiderio";
-        u.MiddleName = "Reyes";
-        u.Email = "rube@gmail.com";
-        u.Password = "rube1030";
+        u.UserName = "kimb";
+        u.FirstName = "Kimberly";
+        u.LastName = "Pangan";
+        u.MiddleName = "Padua";
+        u.Email = "Kimb@gmail.com";
+        u.Password = "kimb1030";
         u.Active = true;
 
         User u1 = new User();
@@ -98,8 +98,18 @@ public class Tests
         UserGroup ug = new UserGroup();
         ug.User = u;
         ug.Group = g;
-        
+
+        UserGroup ug1 = new UserGroup();
+        ug1.User = u1;
+        ug1.Group = g;
+
+        UserGroup ug2 = new UserGroup();
+        ug2.User = u2;
+        ug2.Group = g;
+
         dbContext.UsersGroups.Add(ug);
+        dbContext.UsersGroups.Add(ug1);
+        dbContext.UsersGroups.Add(ug2);
         dbContext.SaveChanges();
 
         //con.Close();
@@ -408,9 +418,11 @@ public class Tests
         ap0.Title = "Macbook pro applecare appointment";
         ap0.Color = "gray";
         ap0.Details = "In hac habitasse platea dictumst. Suspendisse laoreet porta sem non maximus. Pellentesque ante felis, feugiat sit amet congue sed, dignissim consectetur orci. Vestibulum a euismod felis, ac dapibus leo. Maecenas odio leo, imperdiet congue tortor a, aliquam tristique massa. Curabitur vehicula tellus ut est dictum pharetra. Nullam id arcu id justo faucibus ultrices id vitae dui. Integer luctus, ligula nec dignissim ornare, nisi erat pretium quam, sed dapibus justo justo sed nibh. Donec et quam arcu. In hac habitasse platea dictumst. Mauris at nulla dignissim velit elementum euismod";
-        ap0.YearMonth = "9/2022";
-        ap0.Date = DateTime.ParseExact("09/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap0.YearMonth = "10/2022";
+        ap0.Date = DateTime.ParseExact("10/01/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap0.Time = "11:00 AM";
+        //ap0.EndDate = DateTime.ParseExact("10/01/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap0.EndTime = "12:01 PM";
         ap0.CreatorId = 2;
 
         UserSchedule us01 = new UserSchedule();
@@ -437,9 +449,11 @@ public class Tests
         ap1.Title = "Discuss UI related changes";
         ap1.Color = "yellow";
         ap1.Details = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sed mattis velit, quis laoreet arcu. Sed convallis lacus libero, ac rutrum arcu sollicitudin sed.";
-        ap1.YearMonth = "9/2022";
-        ap1.Date = DateTime.ParseExact("09/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap1.YearMonth = "10/2022";
+        ap1.Date = DateTime.ParseExact("10/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap1.Time = "1:30 PM";
+        //ap1.EndDate = DateTime.ParseExact("10/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap1.EndTime = "2:30 PM";
         ap1.CreatorId = 4;
 
         UserSchedule us1 = new UserSchedule();
@@ -464,12 +478,14 @@ public class Tests
 
         Appointment ap2 = new Appointment();
         ap2.Location = "https://zoom.us/j/55511135232";
-        ap2.Title = "Meetig with Business and Users";
+        ap2.Title = "Meeting with Business and Users";
         ap2.Color = "red";
         ap2.Details = "Praesent ac justo nisl. Aenean eu purus dictum, faucibus purus nec, sagittis nunc. Aliquam ultrices blandit sem vitae sollicitudin. In bibendum ligula eget condimentum ullamcorper. Nam ut ante sagittis, luctus odio et, aliquet leo. Phasellus eu felis aliquet, iaculis lectus ut, facilisis est. Duis sagittis quam a nulla pulvinar, ut luctus ligula dapibus. Duis consequat tortor dolor, sed dapibus nisl volutpat eget.  Etiam vitae vehicula urna, eu maximus nisi. Phasellus blandit, sapien a gravida elementum, lectus massa pellentesque ipsum, et fringilla lorem risus quis est. Cras sit amet dui sapien. In a felis sodales, mattis metus vitae, imperdiet ante. Sed elementum odio id fermentum rhoncus. Ut tincidunt bibendum ex feugiat interdum. Aliquam rhoncus dolor leo, ac sagittis enim dictum tincidunt.";
-        ap2.YearMonth = "9/2022";
-        ap2.Date = DateTime.ParseExact("09/08/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap2.YearMonth = "10/2022";
+        ap2.Date = DateTime.ParseExact("10/06/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap2.Time = "9:10 AM";
+        //ap2.EndDate = DateTime.ParseExact("10/06/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap2.EndTime = "10:10 AM";
         ap2.CreatorId = 4;
 
         UserSchedule us6 = new UserSchedule();
@@ -496,9 +512,11 @@ public class Tests
         ap3.Title = "Lunch Meeting";
         ap3.Color = "green";
         ap3.Details = "Aliquam cursus congue arcu at consequat. Suspendisse potenti. Nunc vestibulum, ante sit amet luctus porta, velit neque vehicula nunc, sed dapibus arcu dui id est. Fusce feugiat ligula id ullamcorper dapibus. Nam interdum justo metus, nec aliquet nisi mattis at. Phasellus aliquam interdum neque et malesuada. Pellentesque ac nisi sit amet lorem rutrum tristique nec sed lorem. Morbi euismod maximus ullamcorper. Pellentesque non laoreet justo. Pellentesque viverra nisi placerat urna facilisis, nec facilisis felis accumsan. Curabitur id turpis urna. Fusce elementum urna vitae leo pharetra iaculis. Sed nec nisl at eros tristique condimentum. Fusce ultricies dolor eu porta volutpat.";
-        ap3.YearMonth = "9/2022";
-        ap3.Date = DateTime.ParseExact("09/09/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap3.YearMonth = "10/2022";
+        ap3.Date = DateTime.ParseExact("10/07/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap3.Time = "12:10 PM";
+       // ap3.EndDate = DateTime.ParseExact("10/07/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap3.EndTime = "1:10 PM";
         ap3.CreatorId = 4;
 
         UserSchedule us7 = new UserSchedule();
@@ -521,13 +539,16 @@ public class Tests
         dbContext.SaveChanges();
 
         Appointment ap4 = new Appointment();
-        ap4.Location = "Katsu Ora - Eastwood Mall, Orchard Rd, Bagumbayan, Quezon City, 1110 Metro Manila";
-        ap4.Title = "Dinner Meeting";
+        ap4.Location = "KDR Adventure Camp, Orani, Bataan";
+        ap4.Title = "Team Building";
         ap4.Color = "blue";
         ap4.Details = "Nullam eget sapien imperdiet, pretium neque in, facilisis ex. Nam quis mollis felis. Aenean malesuada lacinia nulla ut aliquet. Praesent ex purus, pharetra non euismod quis, facilisis quis tortor. Ut malesuada quis lacus id efficitur. Aliquam egestas tortor vel urna scelerisque gravida. Phasellus eget quam magna. Cras metus libero, convallis in mattis eget, feugiat ac ligula. Pellentesque feugiat eget ligula ac euismod.  Integer condimentum dolor quis lobortis ornare. Integer odio lorem, mattis id dapibus eget, facilisis et eros. Vivamus in tristique dolor. Morbi posuere faucibus tellus, eget venenatis urna consectetur et. Maecenas interdum neque et scelerisque egestas. Proin faucibus, ex ut varius tristique, arcu elit luctus ligula, eget hendrerit nibh dui sed ipsum. Donec gravida condimentum massa, ultricies dignissim risus vehicula quis. Morbi tortor arcu, luctus facilisis scelerisque varius, suscipit a ante. Praesent convallis velit nec lobortis venenatis.";
-        ap4.YearMonth = "9/2022";
-        ap4.Date = DateTime.ParseExact("09/09/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap4.YearMonth = "10/2022";
+        ap4.Date = DateTime.ParseExact("10/10/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap4.Time = "6:05 PM";
+        //ap4.EndDate = DateTime.ParseExact("10/07/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap4.EndDateSpan = 2;
+        ap4.EndTime = "7:05 PM";
         ap4.CreatorId = 4;
 
         UserSchedule us10 = new UserSchedule();
@@ -554,9 +575,11 @@ public class Tests
         ap5.Title = "Pest Control";
         ap5.Color = "red";
         ap5.Details = "Cras laoreet interdum fermentum. In gravida nulla eget lacus tincidunt interdum. In sed sapien sed neque rhoncus egestas maximus tincidunt tortor. Nullam ut leo eros. In vitae odio id ante consequat gravida et sed orci. Phasellus in aliquet enim, non sagittis massa. Curabitur sit amet maximus erat. Aliquam tempus nunc sit amet blandit rhoncus. Etiam at urna vitae neque eleifend condimentum in eu ante. Integer non justo feugiat, imperdiet tellus sit amet, porttitor lectus. Donec at tincidunt enim, at varius orci. Donec dapibus elit vel ullamcorper pretium. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum id dolor nisl. Aenean et gravida quam. In ac arcu urna.";
-        ap5.YearMonth = "9/2022";
-        ap5.Date = DateTime.ParseExact("09/20/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap5.YearMonth = "10/2022";
+        ap5.Date = DateTime.ParseExact("10/25/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap5.Time = "6:00 PM";
+        ap5.EndDateSpan = 2;
+        ap5.EndTime = "7:00 PM";
         ap5.CreatorId = 2;
 
         UserSchedule us13 = new UserSchedule();
@@ -583,9 +606,11 @@ public class Tests
         ap6.Title = "Deployment stratetegy";
         ap6.Color = "blue";
         ap6.Details = "turpis at, eleifend massa. Curabitur ac elit eros. Vivamus nulla ipsum, tristique sed ultricies a, fermentum et orci. Sed odio magna, posuere eget orci at, dictum finibus est. Nam eleifend nunc velit, et maximus mauris hendrerit at. Etiam aliquam et mauris a egestas. Aliquam nisl augue, efficitur ut dolor eu, volutpat dapibus eros. In fringilla ipsum ac blandit auctor. Pellentesque malesuada dui sit amet tincidunt aliquam. Sed eu tristique ligula, nec auctor leo.";
-        ap6.YearMonth = "9/2022";
-        ap6.Date = DateTime.ParseExact("09/26/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap6.YearMonth = "10/2022";
+        ap6.Date = DateTime.ParseExact("10/31/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap6.Time = "3:30 PM";
+        //ap6.EndDate = DateTime.ParseExact("10/31/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap6.EndTime = "4:30 PM";
         ap6.CreatorId = 4;
 
         UserSchedule us16 = new UserSchedule();
@@ -609,12 +634,14 @@ public class Tests
 
         Appointment ap7 = new Appointment();
         ap7.Location = "https://zoom.us/j/555113223523";
-        ap7.Title = "Team Building - 1st meeting";
+        ap7.Title = "Discuss team building";
         ap7.Color = "gray";
         ap7.Details = "efficitur vulputate mauris. Etiam convallis lacus mattis enim gravida dapibus. Cras ut mauris enim. Aliquam nec lorem risus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vitae placerat massa. Quisque pulvinar rutrum erat vitae fringilla. Nunc fringilla vulputate diam nec aliquet. Pellentesque sed facilisis tellus, eu varius neque. Suspendisse tincidunt vestibulum justo, a porta est maximus at. Nullam at laoreet est. Interdum";
-        ap7.YearMonth = "9/2022";
-        ap7.Date = DateTime.ParseExact("09/30/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap7.YearMonth = "10/2022";
+        ap7.Date = DateTime.ParseExact("10/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap7.Time = "2:00 PM";
+        //ap7.EndDate = DateTime.ParseExact("10/31/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap7.EndTime = "3:00 PM";
         ap7.CreatorId = 7;
 
         UserSchedule us19 = new UserSchedule();
@@ -642,9 +669,11 @@ public class Tests
         ap8.Title = "Onboarding Meeting";
         ap8.Color = "orange";
         ap8.Details = "Ut gravida a nisl in tincidunt. In pretium velit urna, quis placerat nisl lacinia a. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum ultrices enim eget elit fringilla eleifend. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Donec egestas justo placerat lorem tincidunt volutpat.";
-        ap8.YearMonth = "8/2022";
-        ap8.Date = DateTime.ParseExact("08/17/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap8.YearMonth = "9/2022";
+        ap8.Date = DateTime.ParseExact("09/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap8.Time = "8:30 AM";
+        //ap8.EndDate = DateTime.ParseExact("09/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap8.EndTime = "9:30 AM";
         ap8.CreatorId = 4;
 
         UserSchedule us22 = new UserSchedule();
@@ -672,9 +701,11 @@ public class Tests
         ap9.Title = "Transition discussion";
         ap9.Color = "yellow";
         ap9.Details = "Viverra efficitur, ligula elit maximus arcu, eu dignissim tortor libero eget massa. Duis gravida consequat elit. Praesent non enim et nibh luctus vestibulum id eget ante. Nunc ullamcorper auctor sapien, eget pharetra urna volutpat aliquet. Donec est augue, suscipit at bibendum sed, porta ac ante. Vivamu";
-        ap9.YearMonth = "10/2022";
-        ap9.Date = DateTime.ParseExact("10/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap9.YearMonth = "11/2022";
+        ap9.Date = DateTime.ParseExact("11/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap9.Time = "9:30 AM";
+        //ap9.EndDate = DateTime.ParseExact("11/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap9.EndTime = "10:30 AM";
         ap9.CreatorId = 4;
 
         UserSchedule us25 = new UserSchedule();
@@ -706,9 +737,11 @@ public class Tests
         task1.Title = "Upper body";
         task1.Color = "yellow";
         task1.Details = "Use dumbbells and resistance band";
-        task1.Date = DateTime.ParseExact("09/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        task1.YearMonth = "9/2022";
+        task1.Date = DateTime.ParseExact("10/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        task1.YearMonth = "10/2022";
         task1.Time = "7:30 AM";
+        //task1.EndDate = DateTime.ParseExact("10/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        task1.EndTime = "8:30 AM";
         task1.isRepeat = true;
         task1.RepeatSelection = RepeatSelectionEnum.EveryWeek;
         task1.RepeatEnd = RepeatEndEnum.After;
@@ -723,9 +756,11 @@ public class Tests
         task2.Title = "Lower body";
         task2.Color = "yellow";
         task2.Details = "Use dumbbells and resistance band";
-        task2.Date = DateTime.ParseExact("09/06/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        task2.YearMonth = "9/2022";
+        task2.Date = DateTime.ParseExact("10/04/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        task2.YearMonth = "10/2022";
         task2.Time = "7:30 AM";
+        //task2.EndDate = DateTime.ParseExact("10/04/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        task2.EndTime = "8:30 AM";
         task2.isRepeat = true;
         task2.RepeatSelection = RepeatSelectionEnum.EveryWeek;
         task2.RepeatEnd = RepeatEndEnum.After;
@@ -739,9 +774,12 @@ public class Tests
         var reminder1 = new Appointment();
         reminder1.Title = "Pay electric bill";
         reminder1.Color = "orange";
-        reminder1.Date = DateTime.ParseExact("09/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        reminder1.YearMonth = "9/2022";
+        reminder1.Date = DateTime.ParseExact("10/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        reminder1.YearMonth = "10/2022";
         reminder1.Time = "9:30 AM";
+        //reminder1.EndDate = DateTime.ParseExact("10/03/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        reminder1.EndTime = "9:30 AM";
+
         reminder1.isRepeat = false;
         reminder1.CreatorId = 4;
         reminder1.Type = AppointmentType.Reminder;
@@ -750,11 +788,13 @@ public class Tests
         dbContext.SaveChanges();
 
         var reminder2 = new Appointment();
-        reminder2.Title = "Pay internel bill";
+        reminder2.Title = "Pay internet bill";
         reminder2.Color = "orange";
-        reminder2.Date = DateTime.ParseExact("09/06/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        reminder2.YearMonth = "9/2022";
+        reminder2.Date = DateTime.ParseExact("10/04/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        reminder2.YearMonth = "10/2022";
         reminder2.Time = "10:00 AM";
+        //reminder2.EndDate = DateTime.ParseExact("10/04/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        reminder2.EndTime = "10:00 AM";
         reminder2.isRepeat = false;
         reminder2.CreatorId = 4;
         reminder2.Type = AppointmentType.Reminder;
@@ -765,9 +805,11 @@ public class Tests
         var reminder3 = new Appointment();
         reminder3.Title = "Rest Day";
         reminder3.Color = "green";
-        reminder3.Date = DateTime.ParseExact("09/07/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        reminder3.YearMonth = "9/2022";
+        reminder3.Date = DateTime.ParseExact("10/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        reminder3.YearMonth = "10/2022";
         reminder3.Time = "10:00 AM";
+        //reminder3.EndDate = DateTime.ParseExact("10/05/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        reminder3.EndTime = "10:00 AM";
         reminder3.isRepeat = true;
         reminder3.RepeatSelection = RepeatSelectionEnum.EveryWeek;
         reminder3.RepeatEnd = RepeatEndEnum.After;
@@ -782,9 +824,11 @@ public class Tests
         task3.Title = "Upper Legs";
         task3.Color = "purple";
         task3.Details = "Use dumbbells and resistance band";
-        task3.Date = DateTime.ParseExact("09/08/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        task3.YearMonth = "9/2022";
+        task3.Date = DateTime.ParseExact("10/06/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        task3.YearMonth = "10/2022";
         task3.Time = "7:30 AM";
+        //task3.EndDate = DateTime.ParseExact("10/06/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        task3.EndTime = "8:30 AM";
         task3.isRepeat = true;
         task3.RepeatSelection = RepeatSelectionEnum.EveryWeek;
         task3.RepeatEnd = RepeatEndEnum.After;
@@ -799,9 +843,11 @@ public class Tests
         task4.Title = "Lower Legs";
         task4.Color = "purple";
         task4.Details = "Use dumbbells and resistance band";
-        task4.Date = DateTime.ParseExact("09/09/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        task4.YearMonth = "9/2022";
+        task4.Date = DateTime.ParseExact("10/07/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        task4.YearMonth = "10/2022";
         task4.Time = "7:30 AM";
+        //task4.EndDate = DateTime.ParseExact("10/07/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        task4.EndTime = "8:30 AM";
         task4.isRepeat = true;
         task4.RepeatSelection = RepeatSelectionEnum.EveryWeek;
         task4.RepeatEnd = RepeatEndEnum.After;
@@ -932,7 +978,7 @@ public class Tests
         ap5.Color = "orange";
         ap5.Details = "greetings and meetups";
         ap5.YearMonth = "9/2022";
-        ap5.Date = DateTime.ParseExact("09/02/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        ap5.Date = DateTime.ParseExact("09/07/2022", "MM/dd/yyyy", CultureInfo.InvariantCulture);
         ap5.Time = "12:01 PM";
         ap5.isRepeat = true;
         ap5.RepeatSelection = RepeatSelectionEnum.EveryMonth;

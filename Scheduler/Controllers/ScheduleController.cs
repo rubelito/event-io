@@ -290,6 +290,7 @@ namespace Scheduler.Controllers
             {
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
                 _appointmentRepository.DeleteAppointment(currentUser.Username, id);
+                _appointmentRepository.DeleteRepeats(id);
             }
             catch (Exception ex)
             {

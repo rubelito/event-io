@@ -61,6 +61,8 @@ namespace Scheduler.SharedCode
                 m.OriginalDate = a.Date.ToString("MM/dd/yyyy");
                 m.Date = a.Date.ToString("MM/dd/yyyy");
                 m.Time = a.Time;
+                m.EndDateSpan = a.EndDateSpan;
+                m.EndTime = a.EndTime;
                 m.IsRepeat = a.isRepeat;
                 m.RepeatSelection = a.RepeatSelection;
                 m.RepeatEnd = a.RepeatEnd;
@@ -84,6 +86,8 @@ namespace Scheduler.SharedCode
                     m.Color = a.RepeatEdit.Color;
                     m.Details = a.RepeatEdit.Details;
                     m.Time = a.RepeatEdit.Time;
+                    m.EndDateSpan = a.RepeatEdit.EndDateSpan;
+                    m.EndTime = a.RepeatEdit.EndTime;
                     m.IsDone = a.RepeatEdit.IsDone;
                     m.IsDeleted = a.RepeatEdit.IsDeleted;
                 }
@@ -105,7 +109,9 @@ namespace Scheduler.SharedCode
             a.Details = model.Details;
             a.YearMonth = model.YearMonth;
             a.Date = DateTime.ParseExact(model.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            a.EndDateSpan = model.EndDateSpan;
             a.Time = model.Time;
+            a.EndTime = model.EndTime;
             a.CreatorId = model.CreatorId;
             a.isRepeat = model.IsRepeat;
             a.RepeatSelection = model.RepeatSelection;

@@ -89,8 +89,12 @@ namespace Scheduler.SharedCode
 
             for (int i = 1; i <= after; i++)
             {
-                var newDate = new DateTime(from.Year, from.Month, monthDay);
-                result.Add(newDate);
+                if (IsValidDateValues(from.Year, from.Month, monthDay))
+                {
+                    var newDate = new DateTime(from.Year, from.Month, monthDay);
+                    result.Add(newDate);
+                }
+
                 from = from.AddMonths(1);
             }
 
@@ -123,6 +127,22 @@ namespace Scheduler.SharedCode
             }
 
             return result;
+        }
+
+        public static bool IsValidDateValues(int year, int month, int day)
+        {
+            if (month < 1 || month > 12)
+                return false;
+
+            if (year < DateTime.MinValue.Year || year > DateTime.MaxValue.Year)
+                return false;
+
+            var days = DateTime.DaysInMonth(year, month);
+
+            if (day < 1 || day > days)
+                return false;
+
+            return true;
         }
     }
 }

@@ -13,6 +13,8 @@ namespace Scheduler.Entity
             Details = "";
             Color = "";
             Time = "";
+            EndDateSpan = 0;
+            EndTime = "";
             IsDeleted = false;
             IsDone = false;
         }
@@ -29,6 +31,8 @@ namespace Scheduler.Entity
         public string Color { get; set; }
         public string Details { get; set; }
         public string Time { get; set; }
+        public int EndDateSpan { get; set; }
+        public string EndTime { get; set; }
 
         public bool IsDeleted { get; set; }
         public bool IsDone { get; set; }

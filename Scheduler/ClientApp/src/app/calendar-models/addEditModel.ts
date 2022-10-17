@@ -1,4 +1,3 @@
-import { Appointment } from "./Appointment";
 import { EventModel } from "./event-model";
 
 export class AddEditModel {

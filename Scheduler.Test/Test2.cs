@@ -175,6 +175,25 @@ namespace Scheduler.Test
 
             var userPicture = userRepository.GetUserPicture(4);
         }
+
+        [Test]
+        public void TestRange()
+        {
+            AppointmentRepository _appointmentRepository = new AppointmentRepository();
+            UserRepository _userRepository = new UserRepository();
+            var ap = _appointmentRepository.GetAppointmentById(5);
+            ap.Creator = _userRepository.GetUserById(ap.CreatorId);
+            List<Appointment> aps = new List<Appointment>();
+            aps.Add(ap);
+
+            var models = ClassConverter.ConvertToEventModel(aps);
+            var m = models.FirstOrDefault();
+
+            if (ap.EndDateSpan >= 1)
+            {
+                
+            }
+        }
     }
 }
 

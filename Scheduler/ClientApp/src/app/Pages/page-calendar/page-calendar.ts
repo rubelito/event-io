@@ -12,6 +12,8 @@ import { CalendarViewDialogComponent } from 'src/app/calendar-components/calenda
 import { MessageboxComponent } from 'src/app/calendar-components/messagebox/messagebox.component';
 import { ContextOperationModel } from 'src/app/calendar-models/contextOperation-Model';
 import { AppointmentType } from 'src/app/calendar-models/appointmentType-enum';
+import { RangeType } from 'src/app/calendar-models/rangeType-enum';
+import { CalendarDeleteDialogComponent } from 'src/app/calendar-components/calendar-delete-dialog/calendar-delete-dialog.component';
 
 @Component({
   selector: 'page-calendar',
@@ -25,6 +27,7 @@ export class PageCalendarComponent {
   rightArrowIcon = GlobalConstants.rightArrowIcon;
 
   title = 'scheduler-app';
+  showCalendar: boolean = false;
   currentMonth: Date = new Date();
   daysInMonth = 0;
   daysBlock: Block[] = [];
@@ -50,6 +53,8 @@ export class PageCalendarComponent {
   currentYear: number = 0;
 
   dialogResult: MatDialogRef<any>;
+
+  eventRanges: EventModel[] = [];
 
   constructor(private eventService: AppointmentService,
      private dialog:MatDialog){
@@ -109,6 +114,7 @@ export class PageCalendarComponent {
     //////Create Days block
     for (let i = 1; i <= this.daysInMonth; i++) {
       let block = new Block();
+      block.isEmptyBlock = false;
 
       if (this.dayToday == i && this.monthToday == this.currentMonth.getMonth() && this.yearToday == this.currentMonth.getFullYear()){
         block.isToday = true;
@@ -131,6 +137,15 @@ export class PageCalendarComponent {
       this.daysBlock.push(b);
     }
 
+    //Make reference to previous and next Block
+
+    for (let i = 0; i <= this.daysBlock.length - 1; i++){
+      if (i != 0 && i != this.daysBlock.length - 1){
+        this.daysBlock[i].previousBlock = this.daysBlock[i - 1];
+        this.daysBlock[i].nextBlock = this.daysBlock[i + 1];
+      }
+    }
+
     this.getEvents();
   }
 
@@ -138,19 +153,73 @@ export class PageCalendarComponent {
     this.eventService.getAppointments(this.yearMonth)
       .subscribe((data: EventModel[]) =>
         {
-          this.daysBlock.forEach(b => {
-            let tempEvent = data.filter((ev) => {
-              return ev.Date == b.stringDate;
-            })
-            //Sort events by time
-            tempEvent.sort(function(a, b) {
-              return Date.parse('1970/01/01 ' + a.Time.slice(0, -2) + ' ' + a.Time.slice(-2)) - Date.parse('1970/01/01 ' + b.Time.slice(0, -2) + ' ' + b.Time.slice(-2))
-            });
-            
-            b.events = tempEvent;
-          })
+          this.determineRange(data);
+          data = data.concat(this.eventRanges);
+          this.putToBlocks(data);
         } 
       );
+  }
+
+  determineRange(event:EventModel[]){
+    event.forEach(d => {
+      d.IsEmptyEvent = false;
+      if (d.EndDateSpan == 0){
+        d.IsRange = false;
+        d.RangeType = RangeType.NoRange;
+      }
+      else {
+        var tempRangeList: EventModel[] = [];
+        d.IsRange = true;
+        d.RangeType = RangeType.Start;
+        d.MainEventReference = d;
+        
+        for (let i = 1; i <= d.EndDateSpan; i++) {
+          var tempRange = new EventModel();
+          tempRange.IsRange = true;
+          tempRange.Id = d.Id;
+          tempRange.Date = moment(d.Date).add(i, 'days').format("MM/DD/YYYY");
+          tempRange.Time = d.Time;
+          tempRange.YearMonth = d.YearMonth;
+          tempRange.Color = d.Color;
+          tempRange.IsOwner = d.IsOwner;
+          tempRange.MainEventReference = d;
+          tempRange.RangeType = RangeType.Middle;
+          tempRange.IsClone = d.IsClone;
+          tempRange.IsDone = d.IsDone;
+          
+          tempRangeList.push(tempRange);
+        }
+        tempRangeList[tempRangeList.length - 1].RangeType = RangeType.End
+        this.eventRanges = this.eventRanges.concat(tempRangeList);
+
+      }
+    });
+  }
+
+  putToBlocks(event: EventModel[]){
+    this.daysBlock.forEach(b => {
+      let tempEvent = event.filter((ev) => {
+        return ev.Date == b.stringDate;
+      })
+      
+      let eventWithRange = tempEvent.filter((ev) => {
+        return ev.IsRange;
+      });
+      eventWithRange.sort(function(a, b) {
+        return Date.parse('1970/01/01 ' + a.Time.slice(0, -2) + ' ' + a.Time.slice(-2)) - Date.parse('1970/01/01 ' + b.Time.slice(0, -2) + ' ' + b.Time.slice(-2))
+      });
+
+      //Sort events by time
+      let eventWithoutRange = tempEvent.filter((ev) => {
+        return ev.IsRange == false;
+      });
+      eventWithoutRange.sort(function(a, b) {
+        return Date.parse('1970/01/01 ' + a.Time.slice(0, -2) + ' ' + a.Time.slice(-2)) - Date.parse('1970/01/01 ' + b.Time.slice(0, -2) + ' ' + b.Time.slice(-2))
+      });
+
+      b.events = eventWithRange.concat(eventWithoutRange);
+    })
+    this.showCalendar = true;
   }
 
   @HostListener("click", ["$event"])  
@@ -221,29 +290,44 @@ export class PageCalendarComponent {
   }
 
   OnDelete(){
-    this.dialogResult = this.dialog.open(MessageboxComponent, {
-      width:'500px',
-      disableClose: true,
-      data: { title: 'Delete', message: 'Are you sure you want to delete "' + this.appointmentToDelete.Title + '" appointment?'}
-    })
-
-    this.dialogResult.afterClosed().subscribe(result => {
-      if (result == "ok"){
-        if (this.appointmentToDelete.IsClone){
-          this.eventService.deleteAppointmentRepeat(this.appointmentToDelete.Id, this.appointmentToDelete.OriginalDate).subscribe(returnData => {
-            this.refreshEvents();
-          });
-        }
-        else {
+    if (this.appointmentToDelete.IsClone){
+      this.dialogResult = this.dialog.open(CalendarDeleteDialogComponent, {
+        width: '400px'
+      });
+  
+      this.dialogResult.afterClosed().subscribe(result => {
+        if (result == "deleteAll"){
           this.eventService.deleteSchedule(this.appointmentToDelete.Id).subscribe(returnData => {
             this.refreshEvents();
           });
         }
-      }
-    });
+        else if (result = "deleteOne"){
+          this.eventService.deleteAppointmentRepeat(this.appointmentToDelete.Id, this.appointmentToDelete.OriginalDate).subscribe(returnData => {
+            this.refreshEvents();
+          });
+        }
+      });
+    }
+    else {
+      this.dialogResult = this.dialog.open(MessageboxComponent, {
+        width:'400px',
+        disableClose: true,
+        data: { title: 'Delete', message: 'Are you sure you want to delete "' + this.appointmentToDelete.Title + '" appointment?'}
+      })
+
+      this.dialogResult.afterClosed().subscribe(result => {
+        if (result == "ok"){
+          this.eventService.deleteSchedule(this.appointmentToDelete.Id).subscribe(returnData => {
+            this.refreshEvents();
+          });
+        }
+      });
+    }
   }
 
   refreshEvents(){
+    this.eventRanges = [];
+    this.showCalendar = false;
     this.generateMonth();
   }
 }

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { AttendeeModel, AttendeeType } from 'src/app/calendar-models/AttendeeModel';
 import { DialogOperation } from 'src/app/calendar-models/DialogOperation';
 import { AppointmentService } from 'src/app/calendar-service/AppointmentService';
@@ -18,7 +19,8 @@ export class CalendarViewDialogComponent implements OnInit {
   groupImageSrc: string = GlobalConstants.groupImageSrc;
 
   event: any;
-  attendees: Array<AttendeeModel> = []; 
+  attendees: Array<AttendeeModel> = [];
+  endDate: Date;
 
   constructor(public dialogRef: MatDialogRef<CalendarDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {param: DialogOperation},
@@ -26,6 +28,7 @@ export class CalendarViewDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.event = this.data.param;
+    this.endDate = moment(this.event.appointment.Date).add(this.event.appointment.EndDateSpan, 'days').toDate();
 
     this.appointmentService.getAllAttendees(this.event.appointment.Id).subscribe(data => {
       data.forEach(d => {

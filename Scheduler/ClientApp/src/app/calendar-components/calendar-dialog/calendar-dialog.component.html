@@ -1,6 +1,3 @@
-<!-- <span><h3 id="dialog-title">{{param?.operation}} Appointment</h3></span> -->
-
-
 <div class="auth-dialog">
     <div class="auth-dialog-title">
         <span>{{ param?.contextOperation?.Operation }} {{ dialogTitle }}</span>
@@ -76,23 +73,37 @@
         </div>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields left-field-width">Date & Time :</div>
+        <div class="auth-left-fields left-field-width">Start :</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
             <div class="display-flex gap-10 dual-section" [ngClass]="!isOwner ? 'field-disabled' : ''">
                 <div>
-                    <input readonly [matDatepicker]="picker" (click)="picker.open()" class="auth-text" type="text" [(ngModel)]="date" [disabled]="!isOwner">
-                    <mat-datepicker-toggle class="mat-date-picker-location" matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <input readonly [matDatepicker]="pickerStart" (click)="pickerStart.open()" class="auth-text" type="text" [(ngModel)]="date" [disabled]="!isOwner" (dateChange)="onDateChange($event)">
+                    <mat-datepicker-toggle class="mat-date-picker-location" matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerStart></mat-datepicker>
                 </div>
                 <div>
-                    <input readonly [ngxTimepicker]="timePicker" class="auth-text" type="text" [(ngModel)]="time" [disabled]="!isOwner">
-                    <ngx-material-timepicker #timePicker [timepickerClass]="'custom-class'"></ngx-material-timepicker>
-                    <ngx-material-timepicker-toggle class="ngx-material-timepicker-toggle-location" [for]="timePicker" ></ngx-material-timepicker-toggle>
+                    <input readonly [ngxTimepicker]="timePickerStart" class="auth-text" type="text" [(ngModel)]="time" [disabled]="!isOwner">
+                    <ngx-material-timepicker #timePickerStart [timepickerClass]="'custom-class'"></ngx-material-timepicker>
+                    <ngx-material-timepicker-toggle class="ngx-material-timepicker-toggle-location" [for]="timePickerStart" ></ngx-material-timepicker-toggle>
                 </div>
             </div>
-            
-            <!-- <span *ngIf="(param?.operation == 'Add' || !isOwner)">{{ date | date: 'M/dd/yyyy' }}</span>
-            <span *ngIf="!isOwner">{{ time }}</span> -->
+        </div>
+    </div>
+    <div class="auth-fields" *ngIf="param?.contextOperation?.Type == appointmentTypeList.Appointment">
+        <div class="auth-left-fields left-field-width">End :</div>
+        <div class="auth-right-fields right-field-width background-color-272e48">
+            <div class="display-flex gap-10 dual-section" [ngClass]="!isOwner ? 'field-disabled' : ''">
+                <div>
+                    <input readonly [matDatepicker]="pickerEnd" (click)="pickerEnd.open()" class="auth-text" type="text" [(ngModel)]="endDate" [disabled]="!isOwner" (dateChange)="onEndDateChange()">
+                    <mat-datepicker-toggle class="mat-date-picker-location" matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerEnd></mat-datepicker>
+                </div>
+                <div>
+                    <input readonly [ngxTimepicker]="timePickerEnd" class="auth-text" type="text" [(ngModel)]="endTime" [disabled]="!isOwner">
+                    <ngx-material-timepicker #timePickerEnd [timepickerClass]="'custom-class'"></ngx-material-timepicker>
+                    <ngx-material-timepicker-toggle class="ngx-material-timepicker-toggle-location" [for]="timePickerEnd" ></ngx-material-timepicker-toggle>
+                </div>
+            </div>
         </div>
     </div>
     <div class="auth-fields">
@@ -126,7 +137,7 @@
             </div>
         </div>
     </div>
-    <div class="auth-fields"  *ngIf="param?.contextOperation?.Type != appointmentTypeList.Reminder">
+    <div class="auth-fields" *ngIf="param?.contextOperation?.Type != appointmentTypeList.Reminder">
         <div class="auth-left-fields left-field-width">Detail :</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
             <textarea *ngIf="isOwner" class="auth-text" rows="8" [(ngModel)]="details" [disabled]="!isOwner"></textarea>
@@ -142,7 +153,6 @@
     <div class="auth-fields" *ngIf="param?.contextOperation?.Type == appointmentTypeList.Appointment">
         <div class="auth-left-fields left-field-width">Invites :</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
-            <!-- <input class="auth-text" type="text" [(ngModel)]="title" [disabled]="!isOwner"> -->
             <div class="invites-section">
                 <mat-radio-group class="block-margin-10" [(ngModel)]="selectedRadio" *ngIf="isOwner">
                     <mat-radio-button *ngFor="let r of radioGroups" [value]="r" (change)="filterChange()" [checked]="r == 'All'">{{ r }}</mat-radio-button>

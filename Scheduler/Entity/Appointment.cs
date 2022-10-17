@@ -15,6 +15,8 @@ namespace Scheduler.Entity
 			Details = "";
 			YearMonth = "";
 			Time = "";
+			EndDateSpan = 0;
+			EndTime = "";
 			After = 0;
 			Type = AppointmentType.Appointment;
 
@@ -30,8 +32,12 @@ namespace Scheduler.Entity
 		public string Color { get; set; }
 		public string Details { get; set; }
 		public string YearMonth { get; set; }
+
 		public DateTime Date { get; set; }
-		public string Time { get; set; }
+        public string Time { get; set; }
+		public int EndDateSpan { get; set; }
+		public string EndTime { get; set; }
+
 		public int CreatorId { get; set; }
 		public User Creator { get; set; }
 

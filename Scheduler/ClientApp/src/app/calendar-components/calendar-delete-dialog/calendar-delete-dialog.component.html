@@ -1,0 +1,23 @@
+<div class="auth-dialog">
+    <div class="auth-dialog-title">
+        <span>Delete Event</span>
+        <span class="auth-close-x" (click)="onCancel()">&times;</span>
+    </div>
+    <div class="message-box-message">Do you want to delete this and all future <br>
+         occurrences of this event, or only the <br>
+         selected occurrence?
+    </div>
+    <div class="delete-buttons">
+        <div>
+            <button mat-flat-button class="blue-button opacity-button" (click)="onDeleteOne()">Delete Only This Event</button>
+        </div>
+        <div>
+            <button mat-flat-button class="red-button opacity-button" (click)="onDeleteAll()">Delete All Events</button>
+        </div>
+    </div>
+    <div class="auth-footer">
+        <div class="auth-footer-fields display-flex flex-gap-13 background-color-3a405a">
+            <button mat-flat-button class="transparent-button opacity-button" (click)="onCancel()">Cancel</button>
+        </div>
+    </div>
+</div>

@@ -1,10 +1,18 @@
-<div id="{{ block?.stringDate }}" class="block" [className]="!block?.isEmptyBlock ? 'block real-block' : 'block'" (contextmenu)="onRightClickBlock($event); false" cdkDropList (cdkDropListDropped)="drop($event)" [style.background-color]="getBGColor()">
-    <span [className]="block?.isToday ? 'today' : ''" *ngIf="!block?.isEmptyBlock">{{block?.day}}</span>
-    <div class="event event-block block-part" *ngFor="let ev of block?.events"
-     [ngClass]="ev.Color != '' ? 'color-' + ev.Color : ''" [cdkDragDisabled]="!ev.IsOwner"
-        [cdkDragData]="ev" cdkDrag>
-        <img class="repeat-icon" [src]="repeatIcon" *ngIf="ev.IsRepeat">
-        <div class="event-child event-child-title block-part" (contextmenu)="onRightClickAppointment(ev, $event); $event.stopPropagation(); false">{{ev.Title}} </div>
-        <div *ngIf="showTime" class="event-child event-child-time block-part" (contextmenu)="onRightClickAppointment(ev, $event); $event.stopPropagation(); false">{{ev.Time}} </div>
+<div id="{{ block.stringDate }}" class="block" [className]="!block.isEmptyBlock ? 'block real-block' : 'block'" (contextmenu)="onRightClickBlock($event); false" cdkDropList (cdkDropListDropped)="drop($event)" [style.background-color]="getBGColor()">
+    <div class="day-number">
+        <span [className]="block.isToday ? 'today' : ''" *ngIf="!block.isEmptyBlock">{{block.day}}</span>
+    </div>
+    <div [ngClass]="getStyleForRangeType(ev.RangeType)" *ngFor="let ev of block.events">
+        <div class="event-block" *ngIf="ev != undefined && ev.IsEmptyEvent == false">
+            <div class="event event-block block-part"
+            [ngClass]="ev.Color != '' ? 'color-' + ev.Color : ''" [cdkDragDisabled]="!ev.IsOwner"
+            [cdkDragData]="ev" cdkDrag (contextmenu)="onRightClickAppointment(ev, $event); $event.stopPropagation(); false">
+            <img class="repeat-icon" [src]="repeatIcon" *ngIf="ev.IsRepeat">
+            <div *ngIf="ev.RangeType == rangeType.NoRange || ev.RangeType == rangeType.Start" [ngClass]="ev.IsDone ? 'done-task event-child event-child-title block-part' : 'event-child event-child-title block-part'" (contextmenu)="onRightClickAppointment(ev, $event); $event.stopPropagation(); false">{{ev.Title}}</div>
+            <div *ngIf="(showTime && ev.RangeType == rangeType.NoRange) || ev.RangeType == rangeType.End" [ngClass]="ev.IsDone ? 'done-task event-child event-child-time block-part' : 'event-child event-child-time block-part'" (contextmenu)="onRightClickAppointment(ev, $event); $event.stopPropagation(); false">{{ev.Time}}</div>
+            </div>
+        </div>
+        <div *ngIf="ev != undefined && ev.IsEmptyEvent" class="emptyEventBlock">
+        </div>
     </div>
 </div>

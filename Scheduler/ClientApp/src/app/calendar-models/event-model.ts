@@ -1,4 +1,5 @@
 import { AppointmentType } from "./appointmentType-enum";
+import { RangeType } from "./rangeType-enum";
 
 export class EventModel {
     Id: number = 0;
@@ -9,6 +10,8 @@ export class EventModel {
     OriginalDate: string = '01/01/0001';
     Date: string = '';
     Time: string = '';
+    EndDateSpan: number = 0;
+    EndTime: string = '';
     YearMonth: string ='';
     IsRepeat: boolean = false;
     IsOwner: boolean = false;
@@ -27,4 +30,10 @@ export class EventModel {
     OnDate: string = '01/01/0001';
     IsClone: boolean = false;
     NumberOfRepeats: number = 0;
+
+    IsRange: boolean = false;
+    RangeType: RangeType;
+
+    MainEventReference: EventModel;
+    IsEmptyEvent: boolean = false;
 }

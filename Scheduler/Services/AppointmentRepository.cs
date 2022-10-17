@@ -23,9 +23,18 @@ namespace Scheduler.Services
             _dbContext = new SchedulerDbContext();
         }
 
+        private string GetPreviousYearMonth(string yearMonth)
+        {
+            DateTime dateOfMonth = DateTime.ParseExact(yearMonth, "M/yyyy", CultureInfo.InvariantCulture);
+            DateTime previousDateOfMonth = dateOfMonth.AddMonths(-1);
+
+            return previousDateOfMonth.Month + "/" + previousDateOfMonth.Year;
+        }
+
         public List<Appointment> GetAppointments(string ownerUsername, string yearMonth)
         {
-            return _dbContext.Appointments.Include("Creator").Where(a => a.Creator.UserName == ownerUsername && a.YearMonth == yearMonth && a.isRepeat == false).ToList();
+            string previousMonthYear = GetPreviousYearMonth(yearMonth);
+            return _dbContext.Appointments.Include("Creator").Where(a => a.Creator.UserName == ownerUsername && (a.YearMonth == previousMonthYear || a.YearMonth == yearMonth) && a.isRepeat == false).ToList();
         }
 
         public List<Appointment> GetAppointmentsWithRepeats(string ownerUsername)
@@ -35,8 +44,9 @@ namespace Scheduler.Services
 
         public List<Appointment> GetMeetings(int participantId, string yearMonth)
         {
+            string previousMonthYear = GetPreviousYearMonth(yearMonth);
             return _dbContext.Appointments.Include("Creator")
-                .Where(a => a.isRepeat == false && a.YearMonth == yearMonth && a.Meetings.Any(m => m.ParticipantId == participantId))
+                .Where(a => a.isRepeat == false && (a.YearMonth == previousMonthYear || a.YearMonth == yearMonth) && a.Meetings.Any(m => m.ParticipantId == participantId))
                 .ToList();
         }
 
@@ -49,12 +59,13 @@ namespace Scheduler.Services
 
         public List<Appointment> GetMeetingsThatYoureInvited(int participantId, string yearMonth)
         {
+            string previousMonthYear = GetPreviousYearMonth(yearMonth);
             var query = (from a in _dbContext.Appointments
                          join gm in _dbContext.GroupsMeetings on a.Id equals gm.MeetingId
                          join g in _dbContext.Groups on gm.ParticipantId equals g.Id
                          join ug in _dbContext.UsersGroups on g.Id equals ug.GroupId
                          join u in _dbContext.Users on a.CreatorId equals u.Id
-                         where (ug.UserId == participantId && a.YearMonth == yearMonth && a.isRepeat == false)
+                         where (ug.UserId == participantId && (a.YearMonth == previousMonthYear || a.YearMonth == yearMonth) && a.isRepeat == false)
                          select new { appoint = a, creator = u});
 
             var appointments = query.ToList();
@@ -140,6 +151,8 @@ namespace Scheduler.Services
 
                 appoint.YearMonth = monthYear.Month + "/" + monthYear.Year;
                 appoint.Time = appointmentToEdit.Time;
+                appoint.EndDateSpan = appointmentToEdit.EndDateSpan;
+                appoint.EndTime = appointmentToEdit.EndTime;
                 appoint.isRepeat = appointmentToEdit.isRepeat;
                 appoint.RepeatSelection = appointmentToEdit.RepeatSelection;
                 appoint.RepeatEnd = appointmentToEdit.RepeatEnd;
@@ -176,6 +189,8 @@ namespace Scheduler.Services
                     editRepeat.Color = ev.Color;
                     editRepeat.EditedDate = DateTime.ParseExact(ev.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     editRepeat.Time = ev.Time;
+                    editRepeat.EndDateSpan = ev.EndDateSpan;
+                    editRepeat.EndTime = ev.EndTime;
                     editRepeat.IsDeleted = ev.IsDeleted;
                     editRepeat.IsDone = ev.IsDone;
 
@@ -192,6 +207,8 @@ namespace Scheduler.Services
                     newEditRepeat.OriginalDate = originalDate;
                     newEditRepeat.EditedDate = DateTime.ParseExact(ev.Date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                     newEditRepeat.Time = ev.Time;
+                    newEditRepeat.EndDateSpan = ev.EndDateSpan;
+                    newEditRepeat.EndTime = ev.EndTime;
                     newEditRepeat.IsDeleted = ev.IsDeleted;
                     newEditRepeat.IsDone = ev.IsDone;
 

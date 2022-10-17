@@ -19,6 +19,10 @@ namespace Scheduler.Services
 
             foreach (var re in withRepeats)
             {
+                if (re.Title == "next month")
+                {
+
+                }
                 var repeatDates = GetDateRangeForRepeats(re, yearMonth);
 
                 foreach (var rDate in repeatDates)
@@ -128,6 +132,8 @@ namespace Scheduler.Services
             cloned.YearMonth = appointment.YearMonth;
             cloned.Date = new DateTime(cloneDate.Year, cloneDate.Month, cloneDate.Day);
             cloned.Time = appointment.Time;
+            cloned.EndDateSpan = appointment.EndDateSpan;
+            cloned.EndTime = appointment.EndTime;
             cloned.CreatorId = appointment.CreatorId;
             cloned.Creator = appointment.Creator;
             cloned.Type = appointment.Type;
