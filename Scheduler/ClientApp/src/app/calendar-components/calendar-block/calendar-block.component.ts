@@ -27,18 +27,20 @@ export class CalendarBlockComponent implements OnInit {
   showEventsNow: boolean = false;
 
   constructor(private appointmentService: AppointmentService
-    , private dataSharingService: DataSharingService, private changeDetector : ChangeDetectorRef) {
+    , private dataSharingService: DataSharingService) {
    }
    
   ngOnInit(): void {
     this.dataSharingService.isShowTime.subscribe(change => {
       this.showTime = change;
     })
-    
-    if (this.block.events.length >= 1){
-      this.arrangeEvent();
-      this.showEventsNow = true;
-    }
+
+    this.dataSharingService.eventProcess.subscribe(change => {
+      if (this.block.events.length >= 1){
+        this.arrangeEvent();
+        this.showEventsNow = true;
+      }
+    });
   }
 
   arrangeEvent(){
