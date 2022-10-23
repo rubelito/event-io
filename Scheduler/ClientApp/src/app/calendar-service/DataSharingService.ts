@@ -5,4 +5,5 @@ import { BehaviorSubject } from "rxjs";
 export class DataSharingService {
     public isProfilePictureChange: BehaviorSubject<boolean> =new BehaviorSubject<boolean>(false);
     public isShowTime: BehaviorSubject<boolean> =new BehaviorSubject<boolean>(false);
+    public eventProcess: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 }

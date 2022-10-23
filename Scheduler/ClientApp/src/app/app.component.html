@@ -1,5 +1,5 @@
 <div class="gradiant-animation">
-    <div class="bubble-animate">
+    <!-- <div class="bubble-animate">
         <div class="circle small square1"></div>
         <div class="circle small square2"></div>
         <div class="circle small square3"></div>
@@ -14,7 +14,7 @@
         <div class="circle large square2"></div>
         <div class="circle large square3"></div>
         <div class="circle large square4"></div>
-    </div>
+    </div> -->
 
     <mat-toolbar class="scheduler-toolbar" [ngClass]="(onTop && showLargeMenu) ? 'scheduler-toolbar-top' : 'scheduler-toolbar-down'">
         <div>
@@ -93,20 +93,27 @@
 <footer>
     <div class="footer-content" [ngClass]="showLargeMenu ? 'footer-content-large' : 'footer-content-small'">
         <div class="footer-left">
-          <span class="footer-title">Event-IO</span>
+          <span class="footer-title">
+            <img height="50" width="170" [src]="logoIcon">
+          </span>
         </div>
         <div class="footer-right">
-          <span class="footer-social-media">
-            <a href="" class="round-image-icon footer-icon-link shake">
-                <img [src]="socialEmailImage">
-            </a>
-            <a href="" class="round-image-icon footer-icon-link shake">
-                <img [src]="facebookImage">
-            </a>
-            <a href="" class="round-image-icon footer-icon-link shake">
-                <img [src]="twitterImage"> 
-            </a>
-          </span>
+          <div class="footer-social-media-company">
+            <a class="footer-icon-link twitter-sprite" href="https://twitter.com/Event_IO_Dev"></a>
+            <a class="footer-icon-link facebook-sprite" href="https://www.facebook.com/profile.php?id=100087255240513" ></a>
+            <a class="footer-icon-link instagram-sprite" href="https://www.instagram.com/eventiodev/"></a>
+            <a class="footer-icon-link github-sprite" href="https://github.com/rubelito"></a>
+            <a class="footer-icon-link linkedin-sprite" href="https://www.linkedin.com/in/rubelito-isiderio-8522a8149/"></a>
+            <a class="footer-icon-link youtube-sprite" href="https://www.youtube.com/channel/UCLdK3BAH4lwH4jaIwyelXZw"></a>
+          </div>
+          <div class="footer-social-media-company">
+            <a href="\">event.io</a>
+            <a href="\">Terms of Service</a>
+            <a href="\">Privacy</a>
+            <a href="\">Cookies</a>
+            <a href="\">Cookie Preferences</a>
+          </div>
+          <span>© 2022 event-me.herokuapp.com</span>
         </div>
     </div>
 </footer>

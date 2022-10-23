@@ -14,6 +14,7 @@ import { ContextOperationModel } from 'src/app/calendar-models/contextOperation-
 import { AppointmentType } from 'src/app/calendar-models/appointmentType-enum';
 import { RangeType } from 'src/app/calendar-models/rangeType-enum';
 import { CalendarDeleteDialogComponent } from 'src/app/calendar-components/calendar-delete-dialog/calendar-delete-dialog.component';
+import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 
 @Component({
   selector: 'page-calendar',
@@ -27,7 +28,6 @@ export class PageCalendarComponent {
   rightArrowIcon = GlobalConstants.rightArrowIcon;
 
   title = 'scheduler-app';
-  showCalendar: boolean = false;
   currentMonth: Date = new Date();
   daysInMonth = 0;
   daysBlock: Block[] = [];
@@ -57,7 +57,7 @@ export class PageCalendarComponent {
   eventRanges: EventModel[] = [];
 
   constructor(private eventService: AppointmentService,
-     private dialog:MatDialog){
+     private dialog:MatDialog, private dataSharingService: DataSharingService){
   }
 
   ngOnInit(){
@@ -219,7 +219,7 @@ export class PageCalendarComponent {
 
       b.events = eventWithRange.concat(eventWithoutRange);
     })
-    this.showCalendar = true;
+    this.dataSharingService.eventProcess.next(true);
   }
 
   @HostListener("click", ["$event"])  
@@ -327,7 +327,6 @@ export class PageCalendarComponent {
 
   refreshEvents(){
     this.eventRanges = [];
-    this.showCalendar = false;
     this.generateMonth();
   }
 }
