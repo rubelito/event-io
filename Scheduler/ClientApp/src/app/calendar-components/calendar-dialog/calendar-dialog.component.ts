@@ -353,7 +353,6 @@ export class CalendarDialogComponent implements OnInit {
 
       this.editEvent(model);
     }
-    //this.dialogRef.close(this.param);
   }
 
   addEvent(model: AddEditModel){

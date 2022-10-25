@@ -16,6 +16,7 @@ export class MessageboxComponent implements OnInit {
   okIcon = GlobalConstants.okIcon;
   warningIcon = GlobalConstants.warningIcon;
   xIcon = GlobalConstants.xIcon;
+  moveIcon = GlobalConstants.moveIcon;
   logoutIcon = GlobalConstants.logoutIcon;
 
   constructor(public dialogRef: MatDialogRef<MessageboxComponent>,

@@ -6,18 +6,17 @@
     <div class="auth-fields">
         <div class="auth-left-fields auth-left-fields-width">Your username:</div>
         <div class="auth-right-fields auth-right-fields-width background-color-272e48 padding-top">
-            <input class="auth-text" type="text" [(ngModel)]="userName">
+            <input class="auth-text" type="text" [(ngModel)]="userName" (keyup.enter)="onAuth()">
         </div>
     </div>
     <div class="auth-fields">
         <div class="auth-left-fields auth-left-fields-width">Password:</div>
         <div class="auth-right-fields auth-right-fields-width background-color-272e48 padding-bottom">
-            <input #password1Ref class="auth-text auth-password-text" [type]="show ? 'text' : 'password'" [(ngModel)]="password">
+            <input #password1Ref class="auth-text auth-password-text" [type]="show ? 'text' : 'password'" [(ngModel)]="password" (keyup.enter)="onAuth()">
             <button class="auth-text show-password-button" (click)="showPassword()">
                 <img *ngIf="!show" height="18" width="18" [src]="showPasswordIcon">
                 <img *ngIf="show" height="18" width="18" [src]="hidePasswordIcon">
                 {{ show ? 'Hide' : 'Show' }}
-               
             </button>
         </div>
     </div>
@@ -41,15 +40,3 @@
         </div>
     </div>
 </div>
-
-
-
-<!-- <p>Log In</p>
-<div>
-    <span>User name: </span><input type="text" [(ngModel)]="userName">
-</div>
-<div>
-    <span>Password : </span><input type="password" [(ngModel)]="password">
-</div>
-<input type="button" value="Cancel" (click)="onCancel()"> 
-&nbsp;&nbsp; <input type="button" value="Login" (click)="onAuth()"> -->

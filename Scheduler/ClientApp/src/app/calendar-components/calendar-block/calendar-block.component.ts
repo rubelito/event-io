@@ -1,6 +1,8 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { AddEditModel } from 'src/app/calendar-models/addEditModel';
+import { Appointment } from 'src/app/calendar-models/Appointment';
 import { Block } from 'src/app/calendar-models/block';
 import { ContextMenuValue } from 'src/app/calendar-models/contextMenuValue';
 import { DateModel } from 'src/app/calendar-models/dateModel';
@@ -9,6 +11,7 @@ import { RangeType } from 'src/app/calendar-models/rangeType-enum';
 import { AppointmentService } from 'src/app/calendar-service/AppointmentService';
 import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 import { GlobalConstants } from 'src/app/common/global-constant';
+import { MessageboxComponent } from '../messagebox/messagebox.component';
 
 @Component({
   selector: 'app-calendar-block',
@@ -26,7 +29,7 @@ export class CalendarBlockComponent implements OnInit {
   showTime: boolean;
   showEventsNow: boolean = false;
 
-  constructor(private appointmentService: AppointmentService
+  constructor(private dialog:MatDialog, private appointmentService: AppointmentService
     , private dataSharingService: DataSharingService) {
    }
    
@@ -151,10 +154,9 @@ export class CalendarBlockComponent implements OnInit {
   drop(e: CdkDragDrop<string[]>){
     let obj = document.elementFromPoint(e.dropPoint.x, e.dropPoint.y);
     var appointment = e.item.data as EventModel;
-    var dateModel = null;
+    var dateModel = new DateModel();
 
     if (obj?.classList.contains("real-block")){
-      dateModel = new DateModel();
       dateModel.Id = appointment.Id;
       dateModel.StrDate = obj.id;
 
@@ -162,7 +164,6 @@ export class CalendarBlockComponent implements OnInit {
     else if (obj?.classList.contains("block-part")){
       const blockObj = obj.closest('.real-block');
 
-      dateModel = new DateModel();
       dateModel.Id = appointment.Id;
       dateModel.StrDate = blockObj!.id;
     }
@@ -173,31 +174,43 @@ export class CalendarBlockComponent implements OnInit {
       }
 
       let confirmMessage = "Are you sure you want to move this appointment to " + dateModel.StrDate + " ?";
-      if (confirm(confirmMessage)){
-        if (appointment.IsClone){
-          var addEditModel = new AddEditModel();
-          addEditModel.Appointment = appointment.RangeType != RangeType.NoRange ? appointment.MainEventReference : appointment;
-          addEditModel.Appointment.Date = dateModel.StrDate;;
-          addEditModel.GroupIds = [];
-          addEditModel.MemberIds = [];
-
-          addEditModel.Appointment.MainEventReference = new EventModel();
-
-          this.appointmentService.editRepeat(addEditModel).subscribe(result => {
-            if (result == 'Success'){
-              this.refreshList.emit();
-            }
-          });
+      let dialogResult = this.dialog.open(MessageboxComponent, {
+        width:'500px',
+            disableClose: true,
+            data: { title: 'Move', message: confirmMessage, hasNoCancel: false, icon: "move"}
+      });
+      
+      dialogResult.afterClosed().subscribe(result => {
+        if (result == "ok"){
+          this.moveEvent(appointment, dateModel);
         }
-        else {
-          this.appointmentService.changeScheduleDate(dateModel)
-          .subscribe(result => {
-            if (result == 'Success'){
-              this.refreshList.emit();
-            }
-          });
+      });
+    }
+  }
+
+  moveEvent(appointment: EventModel, dateModel: DateModel) {
+    if (appointment.IsClone) {
+      var addEditModel = new AddEditModel();
+      addEditModel.Appointment = appointment.RangeType != RangeType.NoRange ? appointment.MainEventReference : appointment;
+      addEditModel.Appointment.Date = dateModel.StrDate;;
+      addEditModel.GroupIds = [];
+      addEditModel.MemberIds = [];
+
+      addEditModel.Appointment.MainEventReference = new EventModel();
+
+      this.appointmentService.editRepeat(addEditModel).subscribe(result => {
+        if (result == 'Success') {
+          this.refreshList.emit();
         }
-      }
+      });
+    }
+    else {
+      this.appointmentService.changeScheduleDate(dateModel)
+        .subscribe(result => {
+          if (result == 'Success') {
+            this.refreshList.emit();
+          }
+      });
     }
   }
 

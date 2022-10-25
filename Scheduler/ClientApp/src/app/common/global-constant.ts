@@ -49,7 +49,7 @@ export class GlobalConstants {
     public static okIcon = "../assets/images/ok-icon.png";
     public static warningIcon = "../assets/images/warning-icon.png";
     public static xIcon = "../assets/images/x-icon.png";
-
+    public static moveIcon = "../assets/images/move-icon.png";
     public static logoutIcon = "../assets/images/logout-icon.png";
 
     public static addIcon = "../assets/images/add-icon.png";
