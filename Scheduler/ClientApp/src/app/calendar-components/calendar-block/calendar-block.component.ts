@@ -1,8 +1,7 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEditModel } from 'src/app/calendar-models/addEditModel';
-import { Appointment } from 'src/app/calendar-models/Appointment';
 import { Block } from 'src/app/calendar-models/block';
 import { ContextMenuValue } from 'src/app/calendar-models/contextMenuValue';
 import { DateModel } from 'src/app/calendar-models/dateModel';

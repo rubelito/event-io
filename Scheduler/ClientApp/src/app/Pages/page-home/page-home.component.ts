@@ -14,6 +14,7 @@ export class PageHomeComponent implements OnInit {
   big: boolean;
 
   screenshotImage = GlobalConstants.screenshotImage;
+  addeditImage = GlobalConstants.addeditImage;
   chromeBrowserIcon = GlobalConstants.chromeBrowserIcon;
   firefoxIcon = GlobalConstants.firefoxIcon;
   ieIcon = GlobalConstants.ieIcon;

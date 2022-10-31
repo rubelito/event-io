@@ -17,6 +17,7 @@ export class GlobalConstants {
     public static manageGroupIcon = '../assets/images/manage-group-icon.png';
 
     public static screenshotImage = '../assets/images/screenshot-v1.png';
+    public static addeditImage = '../assets/images/addedit.png';
     public static chromeBrowserIcon = '../assets/images/googlechrome.png';
     public static firefoxIcon = '../assets/images/firefox.png';
     public static ieIcon = '../assets/images/ie.png';
