@@ -44,6 +44,7 @@
     <None Remove="Certificate\" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
     <None Remove="Db\" />
+    <None Remove="Db\testDatabase.db" />
     <None Remove="SixLabors.ImageSharp" />
   </ItemGroup>
 
@@ -67,6 +68,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Db\testDatabase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Update="Db\testDatabase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
