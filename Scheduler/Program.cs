@@ -11,10 +11,10 @@ using Scheduler.SharedCode;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var port = builder.Configuration["PORT"];
- 
-//set listening urls
-builder.WebHost.UseUrls($"http://*:{port};http://localhost:3000");
+builder.WebHost.ConfigureKestrel(serverOptions =>
+    {
+        serverOptions.ListenAnyIP(5010);
+    });
 
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
     {
