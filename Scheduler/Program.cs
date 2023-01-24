@@ -11,8 +11,11 @@ using Scheduler.SharedCode;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = builder.Configuration["PORT"];
+ 
+//set listening urls
+builder.WebHost.UseUrls($"http://*:{port};http://localhost:3000");
 
-    builder.WebHost.UseUrls($"http://*:3000;http://localhost:3000");
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
     {
         options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
