@@ -12,7 +12,7 @@ using Scheduler.SharedCode;
 var builder = WebApplication.CreateBuilder(args);
 
 //Terminal command: ASPNETCORE_ENVIRONMENT=Staging dotnet Scheduler.dll
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsDevelopment())
 {
     builder.WebHost.ConfigureKestrel(serverOptions =>
     {
