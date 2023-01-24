@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 var port = builder.Configuration["PORT"];
  
 //set listening urls
-builder.WebHost.UseUrls($"http://*:{port};http://localhost:5000");
+builder.WebHost.UseUrls($"http://*:{port};http://localhost:80");
 
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
     {
