@@ -11,9 +11,7 @@ using Scheduler.SharedCode;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Terminal command: ASPNETCORE_ENVIRONMENT=Staging dotnet Scheduler.dll
-if (builder.Environment.IsDevelopment())
-{
+
     builder.WebHost.ConfigureKestrel(serverOptions =>
     {
         serverOptions.ListenAnyIP(5010);
@@ -22,7 +20,6 @@ if (builder.Environment.IsDevelopment())
     {
         options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
     });
-}
 
 // Add services to the container.
 
