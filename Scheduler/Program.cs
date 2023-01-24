@@ -15,13 +15,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
-    {
-        serverOptions.ListenAnyIP(5010, listenOptions =>
-        {
-            listenOptions.UseHttps();
-        });
-    });
+builder.WebHost.UseUrls("https://0.0.0.0:5010");
+
+//builder.WebHost.ConfigureKestrel(serverOptions =>
+   // {
+      //  serverOptions.ListenAnyIP(5010, listenOptions =>
+      //  {
+      //      listenOptions.UseHttps();
+     //   });
+  //  });
 
 
 builder.Services.AddMvc(setupAction =>
