@@ -16,9 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //retrieve port from environment variables
-var port = builder.Configuration["PORT"];
+//var port = builder.Configuration["PORT"];
  	
-builder.WebHost.UseUrls($"http://0.0.0.0:{port};http://localhost:3000");
+//builder.WebHost.UseUrls($"http://0.0.0.0:{port};http://localhost:3000");
 //set listening urls
 
 //builder.WebHost.UseUrls("https://0.0.0.0:5010");
