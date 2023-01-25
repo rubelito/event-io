@@ -19,7 +19,7 @@ builder.Services.AddControllersWithViews();
 var port = builder.Configuration["PORT"];
  
 //set listening urls
-builder.WebHost.UseUrls($"https://*:{port};https://localhost:3000");
+builder.WebHost.UseUrls($"https://*:{port};https://0.0.0.0:5010");
 
 //builder.WebHost.UseUrls("https://0.0.0.0:5010");
 
