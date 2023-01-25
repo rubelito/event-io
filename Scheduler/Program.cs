@@ -15,7 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.WebHost.UseUrls("https://0.0.0.0:5010");
+//retrieve port from environment variables
+var port = builder.Configuration["PORT"];
+ 
+//set listening urls
+builder.WebHost.UseUrls($"https://*:{port};https://localhost:3000");
+
+//builder.WebHost.UseUrls("https://0.0.0.0:5010");
 
 //builder.WebHost.ConfigureKestrel(serverOptions =>
    // {
