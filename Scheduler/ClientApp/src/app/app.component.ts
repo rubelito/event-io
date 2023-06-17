@@ -63,13 +63,13 @@ export class AppComponent implements OnInit  {
       this.userName = this.authService.getLoggedUserName();
       this.userId = this.authService.getLoggedUserId();
       this.loadProfilePicture();
+    }
 
-      this.dataSharingService.isProfilePictureChange.subscribe(change => {
+    this.dataSharingService.isProfilePictureChange.subscribe(change => {
       this.userName = this.authService.getLoggedUserName();
       this.userId = this.authService.getLoggedUserId();
       this.loadProfilePicture();
       })
-    }
   }
 
   loadProfilePicture(){
