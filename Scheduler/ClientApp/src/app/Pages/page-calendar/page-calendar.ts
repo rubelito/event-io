@@ -116,7 +116,7 @@ export class PageCalendarComponent {
       let block = new Block();
       block.isEmptyBlock = false;
 
-      if (this.dayToday == i && this.monthToday == this.currentMonth.getMonth() && this.yearToday == this.currentMonth.getFullYear()){
+      if (this.IsDayToday(i)){
         block.isToday = true;
       }
       block.day = i;
@@ -149,6 +149,11 @@ export class PageCalendarComponent {
     this.getEvents();
   }
 
+  private IsDayToday(day: number) {
+    return this.dayToday == day && this.monthToday == this.currentMonth.getMonth()
+      && this.yearToday == this.currentMonth.getFullYear();
+  }
+  
   getEvents(){
     this.eventService.getAppointments(this.yearMonth)
       .subscribe((data: EventModel[]) =>
