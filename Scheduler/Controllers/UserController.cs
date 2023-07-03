@@ -1,11 +1,10 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Net;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Authorization;
 using Scheduler.Entity;
 using Scheduler.Models;
+using Scheduler.Interfaces;
 using Scheduler.Services;
 using Scheduler.SharedCode;
 using SixLabors.ImageSharp;
@@ -20,15 +19,15 @@ namespace Scheduler.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    private UserService _userService;
-    private UserRepository _userRepository;
-    private GroupRepository _groupRepository;
+    private IUserService _userService;
+    private IUserRepository _userRepository;
+    private IGroupRepository _groupRepository;
 
-    public UserController()
+    public UserController(IGroupRepository groupRepository, IUserRepository userRepository, IUserService userService)
     {
-        _userService = new UserService();
-        _userRepository = new UserRepository();
-        _groupRepository = new GroupRepository();
+        _userService = userService;
+        _userRepository = userRepository;
+        _groupRepository = groupRepository;
     }
 
     // GET: api/values

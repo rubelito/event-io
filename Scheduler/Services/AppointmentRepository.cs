@@ -1,25 +1,17 @@
 ﻿using System.Globalization;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
 using Scheduler.Entity;
 using Scheduler.Models;
-using Scheduler.SharedCode;
+using Scheduler.Interfaces;
 
 namespace Scheduler.Services
 {
-    public class AppointmentRepository
+    public class AppointmentRepository : IAppointmentRepository
     {
-        private MySqlConnection _conn;
         private SchedulerDbContext _dbContext;
 
         public AppointmentRepository()
         {
-            //_conn = new MySqlConnection(StaticConfig.ConStr);
-            //_dbContext = new SchedulerDbContext(_conn, false);
-            //_dbContext.Database.CreateIfNotExists();
-            //_conn.Open();
-
             _dbContext = new SchedulerDbContext();
         }
 
@@ -66,7 +58,7 @@ namespace Scheduler.Services
                          join ug in _dbContext.UsersGroups on g.Id equals ug.GroupId
                          join u in _dbContext.Users on a.CreatorId equals u.Id
                          where (ug.UserId == participantId && (a.YearMonth == previousMonthYear || a.YearMonth == yearMonth) && a.isRepeat == false)
-                         select new { appoint = a, creator = u});
+                         select new { appoint = a, creator = u });
 
             var appointments = query.ToList();
             List<Appointment> result = new List<Appointment>();
@@ -87,7 +79,7 @@ namespace Scheduler.Services
                          join g in _dbContext.Groups on gm.ParticipantId equals g.Id
                          join ug in _dbContext.UsersGroups on g.Id equals ug.GroupId
                          join u in _dbContext.Users on a.CreatorId equals u.Id
-                         where (ug.UserId == participantId && a.isRepeat ==  true)
+                         where (ug.UserId == participantId && a.isRepeat == true)
                          select new { appoint = a, creator = u });
 
             var appointments = query.ToList();
@@ -182,7 +174,8 @@ namespace Scheduler.Services
                 var originalDate = DateTime.ParseExact(ev.OriginalDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 var editRepeat = _dbContext.RepeatEdits.FirstOrDefault(r => r.AppointmentId == ev.Id && r.OriginalDate == originalDate);
 
-                if (editRepeat != null) {
+                if (editRepeat != null)
+                {
                     editRepeat.Title = ev.Title;
                     editRepeat.Location = ev.Location;
                     editRepeat.Details = ev.Details;
@@ -219,7 +212,6 @@ namespace Scheduler.Services
             }
             catch (Exception ex)
             {
-                //_dbContext.Database.RollbackTransaction();
                 throw ex;
             }
         }
@@ -256,7 +248,6 @@ namespace Scheduler.Services
             }
             catch (Exception ex)
             {
-                //_dbContext.Database.RollbackTransaction();
                 throw ex;
             }
         }
@@ -273,7 +264,7 @@ namespace Scheduler.Services
             _dbContext.SaveChanges();
         }
 
-        public void DeleteRepeats(int appointmentId)
+        public void DeleteAllRepeats(int appointmentId)
         {
             var repeats = _dbContext.RepeatEdits.Where(r => r.AppointmentId == appointmentId).ToList();
 
@@ -427,8 +418,12 @@ namespace Scheduler.Services
 
         public void Dispose()
         {
-            //_conn.Close();
-            //_conn.Dispose();
+           
+        }
+
+        public void DeleteRepeat(int appointmentId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

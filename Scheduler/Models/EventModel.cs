@@ -7,6 +7,7 @@ namespace Scheduler.Models
 	{
 		public EventModel()
         {
+			HasNoWeekEnds = false;
 			IsRange = false;
         }
 
@@ -40,7 +41,8 @@ namespace Scheduler.Models
 		public RepeatSelectionEnum RepeatSelection { get; set; }
 		public RepeatEndEnum RepeatEnd { get; set; }
 
-		public int After { get; set; }
+		public bool HasNoWeekEnds { get; set; }
+        public int After { get; set; }
 		public string OnDate { get; set; }
 		public bool IsClone { get; set; }
 		public int NumberOfRepeats { get; set; }

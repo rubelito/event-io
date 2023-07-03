@@ -7,6 +7,7 @@ export class ContextMenuValue {
     isAdd: boolean = false;
     type: AppointmentType;
     show: boolean = false;
+    fullScreenLocationX: number = 0;
     locationX: number = 0;
     locationY: number = 0;
     selectedBlock: Block = new Block();

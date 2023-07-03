@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "X8ixQY8e/8BkTh+ehCl9GobPX9agxQtPUWBX6Tt1qBXRqwGZ6TMnz42yduhwGQLIaNTz3dkJx19YdFgxh8wNJw==",
+  "dgSpecHash": "6YdkDyhq5amgDBy4SN8rp0qX5kwCIbX+PET/dSOaT+d5d6DsYPSVhouV4Ap+YZIhEeoPPuID99DQEIoQgsERBw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Rubelito\\Documents\\2nd enhancement\\Scheduler.Test\\Scheduler.Test.csproj",
+  "projectFilePath": "C:\\Users\\Rubelito\\Source\\Repos\\rubelito\\event-io\\Scheduler.Test\\Scheduler.Test.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

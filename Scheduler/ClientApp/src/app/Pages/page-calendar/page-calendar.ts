@@ -1,4 +1,5 @@
-import { Component, HostListener } from '@angular/core';
+import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Block } from 'src/app/calendar-models/block';
 import { ContextMenuValue } from 'src/app/calendar-models/contextMenuValue';
 import { DialogOperation } from 'src/app/calendar-models/DialogOperation';
@@ -22,7 +23,7 @@ import { DataSharingService } from 'src/app/calendar-service/DataSharingService'
   styleUrls: ['./page-calendar.css',
   '../../styles/style.css']
 })
-export class PageCalendarComponent {
+export class PageCalendarComponent implements AfterViewInit {
 
   leftArrowIcon = GlobalConstants.leftArrowIcon;
   rightArrowIcon = GlobalConstants.rightArrowIcon;
@@ -36,6 +37,7 @@ export class PageCalendarComponent {
   yearToday: number = 0;
   showContextMenu: boolean = false;
 
+  totalWindowWidth: number = 0;
   contextMenuX: string = "";
   contextMenuY: string = "";
   contextMenuAdd: any;
@@ -56,17 +58,46 @@ export class PageCalendarComponent {
 
   eventRanges: EventModel[] = [];
 
+  matButtonSize: string;
+  
   constructor(private eventService: AppointmentService,
-     private dialog:MatDialog, private dataSharingService: DataSharingService){
+     private dialog:MatDialog,
+      private dataSharingService: DataSharingService,
+      private responsive: BreakpointObserver){
   }
 
   ngOnInit(){
+    this.totalWindowWidth = window.innerWidth;
     /* This code is to mark the current day(red mark)  */
     this.dayToday = moment().date();
     this.monthToday = moment().month();
     this.yearToday = moment().year();
     ////////////////////////////////////////
     this.incrementMonth(0);
+    this.initiateLayoutResponsiveness();
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSharingService.toggleMenu.next();
+  }
+
+  initiateLayoutResponsiveness(){
+    this.responsive.observe([
+      Breakpoints.XLarge,
+      Breakpoints.Large,
+      Breakpoints.Medium,
+      Breakpoints.Small,
+      Breakpoints.XSmall
+    ]).subscribe(result => {
+      if (result.breakpoints[Breakpoints.XLarge] || result.breakpoints[Breakpoints.Large]
+         || result.breakpoints[Breakpoints.Medium]){
+        this.matButtonSize = "matButtonSize-large";
+
+      }
+      else if (result.breakpoints[Breakpoints.Small] || result.breakpoints[Breakpoints.XSmall]){
+        this.matButtonSize = "matButtonSize-small";
+      }
+    });
   }
 
   incrementMonth(num: number){
@@ -119,6 +150,7 @@ export class PageCalendarComponent {
       if (this.IsDayToday(i)){
         block.isToday = true;
       }
+      
       block.day = i;
       block.blockDate = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth(), i);
       block.stringDate = moment(this.currentMonth).add(i - 1, "days").format("MM/DD/YYYY");
@@ -177,6 +209,7 @@ export class PageCalendarComponent {
         d.IsRange = true;
         d.RangeType = RangeType.Start;
         d.MainEventReference = d;
+        d.DateId = d.Id + d.Date;
         
         for (let i = 1; i <= d.EndDateSpan; i++) {
           var tempRange = new EventModel();
@@ -191,6 +224,7 @@ export class PageCalendarComponent {
           tempRange.RangeType = RangeType.Middle;
           tempRange.IsClone = d.IsClone;
           tempRange.IsDone = d.IsDone;
+          tempRange.DateId = d.Id + d.Date;
           
           tempRangeList.push(tempRange);
         }
@@ -234,10 +268,24 @@ export class PageCalendarComponent {
     }
   }
 
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.totalWindowWidth = window.innerWidth;
+  }
+
   showThisContextMenu(menu: ContextMenuValue){
     this.menuParam = menu;
     this.showContextMenu = true;
+
+    var contextMenuSize = 170;
+    var contextMenuLocation = menu.fullScreenLocationX + contextMenuSize;
+    if (contextMenuLocation > this.totalWindowWidth){
+      this.contextMenuX = (menu.locationX - 150).toString();
+    }
+    else {
     this.contextMenuX = menu.locationX.toString();
+    }
+
     this.contextMenuY = menu.locationY.toString();
     this.contextMenuAdd = menu.isAdd;
     this.contextMenuType = menu.type;

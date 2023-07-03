@@ -74,6 +74,7 @@ namespace Scheduler.SharedCode
                 m.IsDone = a.IsDone;
                 m.IsClone = a.IsClone;
                 m.NumberOfRepeats = a.NumberOfRepeats;
+                m.HasNoWeekEnds = a.HasNoWeekEnds;
 
                 if (a.isRepeat && a.RepeatEdit != null)
                 {
@@ -118,6 +119,7 @@ namespace Scheduler.SharedCode
             a.RepeatEnd = model.RepeatEnd;
             a.Type = model.Type;
             a.IsDone = model.IsDone;
+            a.HasNoWeekEnds = model.HasNoWeekEnds;
             a.After = model.After;
             a.OnDate = DateTime.ParseExact(model.OnDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
             a.IsClone = model.IsClone;

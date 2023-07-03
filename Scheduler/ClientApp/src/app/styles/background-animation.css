@@ -13,8 +13,8 @@
 .xtr_shape .shape2{
     position:absolute;
     z-index:-1;
-    top:60%;
-    left:2%
+    top: 50%;
+    right: 15%;
 }
 .xtr_shape .shape3{
     position:absolute;
@@ -49,7 +49,7 @@
 }
 .xtr_shape .shape7{
     position:absolute;
-    right:20%;
+    left: 10%;
     top:65%;
     z-index:-1;
     -webkit-animation:20s linear infinite animationFramesOne;

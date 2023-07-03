@@ -49,16 +49,22 @@ export class AppComponent implements OnInit  {
   userName: string;
 
   constructor(public authService: AuthService, private dialog: MatDialog,
-     private responsive: BreakpointObserver, private router: Router,
-      private sanitizer: DomSanitizer, private dataSharingService: DataSharingService) { }
+    private responsive: BreakpointObserver, private router: Router,
+    private sanitizer: DomSanitizer,
+    private dataSharingService: DataSharingService) { }
 
   ngOnInit(): void {
-    this.responsive.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe(result => {
-        this.showLargeMenu = !result.matches;
-        let showTime = !result.matches;
+    this.responsive.observe(['(min-width: 700px)']).subscribe(result => {
+        this.showLargeMenu = result.matches;
+        let showTime = result.matches;
         this.dataSharingService.isShowTime.next(showTime);
+        this.dataSharingService.tableSize.next(result.matches);
     });
 
+    this.responsive.observe(['(min-width: 570px)']).subscribe(result =>{
+      this.dataSharingService.calendarDialogLayout.next(result.matches);
+    });
+    
     if (this.authService.isLoggedIn()){
       this.userName = this.authService.getLoggedUserName();
       this.userId = this.authService.getLoggedUserId();
@@ -69,7 +75,11 @@ export class AppComponent implements OnInit  {
       this.userName = this.authService.getLoggedUserName();
       this.userId = this.authService.getLoggedUserId();
       this.loadProfilePicture();
-      })
+    })
+
+    this.dataSharingService.toggleMenu.subscribe(undefined => {
+      setTimeout(() => this.toggleMenu = false, 1); 
+     });
   }
 
   loadProfilePicture(){

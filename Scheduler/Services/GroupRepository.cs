@@ -1,24 +1,16 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
+﻿using Microsoft.EntityFrameworkCore;
 using Scheduler.Entity;
 using Scheduler.Models;
-using Scheduler.SharedCode;
+using Scheduler.Interfaces;
 
 namespace Scheduler.Services
 {
-    public class GroupRepository
+    public class GroupRepository : IGroupRepository
     {
-        private MySqlConnection _conn;
         private SchedulerDbContext _dbContext;
 
         public GroupRepository()
         {
-            //_conn = new MySqlConnection(StaticConfig.ConStr);
-            //_dbContext = new SchedulerDbContext(_conn, false);
-            //_dbContext.Database.CreateIfNotExists();
-            //_conn.Open();
-
             _dbContext = new SchedulerDbContext();
         }
 
@@ -86,7 +78,8 @@ namespace Scheduler.Services
             {
                 var ugToRemove = _dbContext.UsersGroups.FirstOrDefault(f => f.GroupId == groupId && f.UserId == userId);
 
-                if (ugToRemove != null) {
+                if (ugToRemove != null)
+                {
                     _dbContext.UsersGroups.Remove(ugToRemove);
                     _dbContext.SaveChanges();
                 }
@@ -116,7 +109,7 @@ namespace Scheduler.Services
         {
             List<GroupResult> results = new List<GroupResult>();
 
-            List <Group> groups = _dbContext.Groups
+            List<Group> groups = _dbContext.Groups
                 .Include("Owner")
                 .Include("Members")
                 .Include("Members.User")
@@ -188,7 +181,8 @@ namespace Scheduler.Services
         {
             ResultModel result = new ResultModel();
 
-            try {
+            try
+            {
                 List<UserGroup> uGroups = new List<UserGroup>();
 
                 foreach (var id in membersId)
@@ -221,7 +215,7 @@ namespace Scheduler.Services
 
             try
             {
-                var currentUg = _dbContext.UsersGroups.Where(u => u.GroupId == groupId &&  membersId.Any(id => id == u.UserId)).ToList();
+                var currentUg = _dbContext.UsersGroups.Where(u => u.GroupId == groupId && membersId.Any(id => id == u.UserId)).ToList();
 
                 _dbContext.UsersGroups.RemoveRange(currentUg);
 
@@ -240,7 +234,6 @@ namespace Scheduler.Services
 
         public void Dispose()
         {
-            //_dbContext.Database.Connection.Close();
         }
     }
 }

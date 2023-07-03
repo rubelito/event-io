@@ -141,7 +141,7 @@
 .feature-top-small > .second-square-container > .circle-container {
     max-width: 488px;
     width: 100%;
-    min-width: 436px;
+    /* min-width: 436px; */
     margin-left: auto;
     margin-right: auto;
     border-radius: 0;

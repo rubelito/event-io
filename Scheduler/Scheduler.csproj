@@ -46,6 +46,7 @@
     <None Remove="Db\" />
     <None Remove="Db\testDatabase.db" />
     <None Remove="SixLabors.ImageSharp" />
+    <None Remove="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +57,7 @@
     <Folder Include="SharedCode\" />
     <Folder Include="Certificate\" />
     <Folder Include="Db\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\favicon.ico">

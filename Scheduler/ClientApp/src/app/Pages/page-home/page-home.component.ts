@@ -1,5 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 import { GlobalConstants } from 'src/app/common/global-constant';
 
 @Component({
@@ -7,7 +8,7 @@ import { GlobalConstants } from 'src/app/common/global-constant';
   templateUrl: './page-home.component.html',
   styleUrls: ['./page-home.component.css']
 })
-export class PageHomeComponent implements OnInit {
+export class PageHomeComponent implements OnInit, AfterViewInit {
 
   firstSectionLayout: string;
   secondSectionLayout: string;
@@ -35,10 +36,15 @@ export class PageHomeComponent implements OnInit {
   groupImage = GlobalConstants.groupImage;
   reoccurImage = GlobalConstants.reoccurImage;
 
-  constructor(private responsive: BreakpointObserver) { }
+  constructor(private responsive: BreakpointObserver,
+    private dataSharingService: DataSharingService) { }
 
   ngOnInit(): void {
     this.initiateLayoutResponsiveness();
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSharingService.toggleMenu.next();
   }
 
   initiateLayoutResponsiveness(){
@@ -59,22 +65,6 @@ export class PageHomeComponent implements OnInit {
         this.firstSectionLayout = "browser-small";
         this.secondSectionLayout = "feature-top-small";
         this.big = false; 
-      }
-
-      if (result.breakpoints[Breakpoints.XLarge]){
-        console.log("XLarge");
-      }
-      else if (result.breakpoints[Breakpoints.Large]){
-        console.log("Large");
-      }
-      else if (result.breakpoints[Breakpoints.Medium]){
-        console.log("Medium");
-      }
-      else if (result.breakpoints[Breakpoints.Small]){
-        console.log("Small");
-      }
-      else if (result.breakpoints[Breakpoints.XSmall]){
-        console.log("XSmall");
       }
     });
   }

@@ -1,10 +1,11 @@
+<mat-dialog-content>
 <div class="auth-dialog">
     <div class="auth-dialog-title">
         <span>Schedule</span>
         <span class="auth-close-x" (click)="close()">&times;</span>
     </div>
     <div class="auth-fields">
-        <div class="auth-left-fields left-field-width">Created By :</div>
+            <div class="auth-left-fields left-field-width">Owner:</div>
         <div class="auth-right-fields right-field-width background-color-272e48">
             <span>{{ event.appointment.CreatedBy }}</span>
         </div>
@@ -51,4 +52,5 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
+</mat-dialog-content>

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Scheduler.Entity;
-using Scheduler.Models;
 using Scheduler.SharedCode;
 
 namespace Scheduler.Services
@@ -46,35 +44,42 @@ namespace Scheduler.Services
                 int daysInAMonth = DateTime.DaysInMonth(dateOfMonth.Year, dateOfMonth.Month);
                 DateTime fullDaysOfCurrentMonth = new DateTime(dateOfMonth.Year, dateOfMonth.Month, daysInAMonth);
 
-                var repeatDates = GenerateDateRange(re.Date, fullDaysOfCurrentMonth, re.RepeatSelection);
+                var repeatDates = GenerateDateRange(re.Date, fullDaysOfCurrentMonth, re.RepeatSelection, re.HasNoWeekEnds);
                 dates.AddRange(repeatDates);
 
             }
             else if (re.RepeatEnd == RepeatEndEnum.After)
             {
-                var repeatDates = GenerateDateRangeForAfter(re.Date, re.RepeatSelection, re.After);
+                var repeatDates = GenerateDateRangeForAfter(re.Date, re.RepeatSelection, re.After, re.HasNoWeekEnds);
                 dates.AddRange(repeatDates);
 
             }
             else if (re.RepeatEnd == RepeatEndEnum.OnDate)
             {
-                var repeatDates = GenerateDateRange(re.Date, re.OnDate, re.RepeatSelection);
+                var repeatDates = GenerateDateRange(re.Date, re.OnDate, re.RepeatSelection, re.HasNoWeekEnds);
                 dates.AddRange(repeatDates);
             }
 
             return dates;
         }
 
-        private List<DateTime> GenerateDateRange(DateTime startDate, DateTime toDate, RepeatSelectionEnum repeatSelection)
+        private List<DateTime> GenerateDateRange(DateTime startDate, DateTime toDate, RepeatSelectionEnum repeatSelection, bool hasNoWeekEnds)
         {
             List<DateTime> repeatDates = new List<DateTime>();
 
-            if (repeatSelection == RepeatSelectionEnum.EveryDay)
+            if (repeatSelection == RepeatSelectionEnum.EveryDay && hasNoWeekEnds)
+            {
+                var daysDate = DateUtils.GetDaysInRange(startDate, toDate);
+                daysDate = DateUtils.RemoveWeekEnds(daysDate);
+                repeatDates.AddRange(daysDate);
+            }
+            else if (repeatSelection == RepeatSelectionEnum.EveryDay && !hasNoWeekEnds)
             {
                 var daysDate = DateUtils.GetDaysInRange(startDate, toDate);
                 repeatDates.AddRange(daysDate);
             }
-            else if (repeatSelection == RepeatSelectionEnum.EveryWeek)
+
+            if (repeatSelection == RepeatSelectionEnum.EveryWeek)
             {
                 var weeklyDates = DateUtils.GetWeekdayInRange(startDate, toDate, startDate.DayOfWeek);
                 repeatDates = weeklyDates;
@@ -93,16 +98,22 @@ namespace Scheduler.Services
             return repeatDates;
         }
 
-        private List<DateTime> GenerateDateRangeForAfter(DateTime startDate, RepeatSelectionEnum repeatSelection, int after)
+        private List<DateTime> GenerateDateRangeForAfter(DateTime startDate, RepeatSelectionEnum repeatSelection, int after, bool hasNoWeekEnds)
         {
             List<DateTime> repeatDates = new List<DateTime>();
 
-            if (repeatSelection == RepeatSelectionEnum.EveryDay)
+            if (repeatSelection == RepeatSelectionEnum.EveryDay && hasNoWeekEnds)
+            {
+                var daysDate = DateUtils.GetDaysInRangeForAfter_NoWeekEnds(startDate, after);
+                repeatDates.AddRange(daysDate);
+            }
+            else if (repeatSelection == RepeatSelectionEnum.EveryDay && !hasNoWeekEnds)
             {
                 var daysDate = DateUtils.GetDaysInRangeForAfter(startDate, after);
                 repeatDates.AddRange(daysDate);
             }
-            else if (repeatSelection == RepeatSelectionEnum.EveryWeek)
+
+            if (repeatSelection == RepeatSelectionEnum.EveryWeek)
             {
                 var weeklyDates = DateUtils.GetWeekdayInRangeForAfter(startDate, startDate.DayOfWeek, after);
                 repeatDates = weeklyDates;
@@ -146,6 +157,7 @@ namespace Scheduler.Services
             cloned.OnDate = appointment.OnDate;
             cloned.IsClone = true;
             cloned.IsDeleted = appointment.IsDeleted;
+            cloned.HasNoWeekEnds = appointment.HasNoWeekEnds;
 
             return cloned;
         }

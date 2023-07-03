@@ -25,6 +25,7 @@ export class EventModel {
 
     RepeatSelection: number = 0;
     RepeatEnd: number = 0;
+    HasNoWeekEnds: boolean = false;
 
     After: number = 0;
     OnDate: string = '01/01/0001';
@@ -36,4 +37,5 @@ export class EventModel {
 
     MainEventReference: EventModel;
     IsEmptyEvent: boolean = false;
+    DateId: string = '';
 }

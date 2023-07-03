@@ -6,7 +6,7 @@
     </button>
     <br>
     <br>
-    <table mat-table [dataSource]="users" class="mat-elevation-z8">
+    <table mat-table [dataSource]="users" class="mat-elevation-z8" *ngIf="showLargeTable">
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>Id</th>
             <td mat-cell *matCellDef="let u"> {{u.Id}} </td>
@@ -36,4 +36,52 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr class="scheduler-table" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
+    <div class="table-mini-section" *ngIf="!showLargeTable">
+        <div class="table-mini" *ngFor="let u of users">
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                    Id
+                </div>
+                <div class="table-mini-content">
+                    {{u.Id}}
+                </div>
+            </div>
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                    UserName
+                </div>
+                <div class="table-mini-content">
+                    {{u.UserName}}
+                </div>
+            </div>
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                    Name
+                </div>
+                <div class="table-mini-content">
+                    {{ u.LastName }}, {{ u.FirstName }} {{ u.MiddleName }}
+                </div>
+            </div>
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                    Email
+                </div>
+                <div class="table-mini-content">
+                    {{u.Email}}
+                </div>
+            </div>
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                   
+                </div>
+                <div class="table-mini-content">
+                    <button mat-flat-button class="red-button display-none opacity-button" (click)="remove(u.Id, u.Email)">
+                        <img height="16" width="16" [src]="removeIcon">
+                        Remove
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

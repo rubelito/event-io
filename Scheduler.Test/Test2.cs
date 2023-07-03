@@ -33,6 +33,25 @@ namespace Scheduler.Test
         }
 
         [Test]
+        public void Test_GetDaysInRangeWeekDaysOnly()
+        {
+            DateTime from = new DateTime(2022, 9, 9);
+            DateTime to = new DateTime(2022, 10, 10);
+
+            var dates = DateUtils.GetDaysInRange(from, to);
+            dates = DateUtils.RemoveWeekEnds(dates);
+        }
+
+        [Test]
+        public void Test_GetDaysInRangeForAfter_NoWeekEnds()
+        {
+            DateTime from = new DateTime(2023, 6, 5);
+            int after = 21;
+
+            var dates = DateUtils.GetDaysInRangeForAfter_NoWeekEnds(from, after);
+        }
+
+        [Test]
         public void Test_GetYearlydayInRange()
         {
             DateTime from = new DateTime(2022, 9, 9);
@@ -44,16 +63,16 @@ namespace Scheduler.Test
         [Test]
         public void Test_GetYearlydayInRangeWithAfter()
         {
-            DateTime from = new DateTime(2022, 9, 9);
+            DateTime from = new DateTime(2023, 6, 5);
 
-            var dates = DateUtils.GetYearlydayInRangeForAfter(from, 9, 10);
+            var dates = DateUtils.GetYearlydayInRangeForAfter(from, 9, 4);
         }
 
         [Test]
         public void Test_GetDaysInRangeWithAfter()
         {
-            DateTime from = new DateTime(2022, 9, 22);
-            int after = 35;
+            DateTime from = new DateTime(2023, 6, 5);
+            int after = 4;
 
             var dates = DateUtils.GetDaysInRangeForAfter(from, after);
         }
@@ -70,8 +89,8 @@ namespace Scheduler.Test
         [Test]
         public void Test_GetWeekDaysInRangeWithAfter()
         {
-            DateTime from = new DateTime(2022, 9, 6);
-            int after = 9;
+            DateTime from = new DateTime(2023, 6, 5);
+            int after = 4;
 
             var dates = DateUtils.GetWeekdayInRangeForAfter(from, DayOfWeek.Tuesday, after);
         }

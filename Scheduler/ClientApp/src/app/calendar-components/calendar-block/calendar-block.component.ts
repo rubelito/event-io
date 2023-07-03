@@ -73,7 +73,7 @@ export class CalendarBlockComponent implements OnInit {
         tempEventsBlocks = this.createEmptyEventBlocks(previosStartAndMids.length + previousEmptySpaceOnly.length);
 
         midsAndEnd.forEach(me => {
-          let previousIndex = this.block?.previousBlock.events.findIndex(e => e.Id == me.Id);
+          let previousIndex = this.block?.previousBlock.events.findIndex(e => e.DateId == me.DateId);
             tempEventsBlocks[previousIndex] = me;
         });
 
@@ -120,6 +120,7 @@ export class CalendarBlockComponent implements OnInit {
       param.isAdd = true;
       param.isOwner = true;
       param.selectedBlock = this.block as Block;
+      param.fullScreenLocationX = event.clientX;
       param.locationX = event.layerX;
       param.locationY = event.layerY;
       this.showParentContextMenu.emit(param);
@@ -135,6 +136,7 @@ export class CalendarBlockComponent implements OnInit {
       param.type = appoint.IsRange ? appoint.MainEventReference.Type : appoint.Type;
       param.isAdd = false;
       param.selectedEvent = appoint.IsRange ? appoint.MainEventReference : appoint;
+      param.fullScreenLocationX = event.clientX;
       param.locationX = event.layerX;
       param.locationY = event.layerY;
     this.showParentContextMenu.emit(param);

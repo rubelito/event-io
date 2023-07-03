@@ -6,7 +6,7 @@
     </button>
     <br>
     <br>
-    <table mat-table [dataSource]="groups">
+    <table mat-table [dataSource]="groups" *ngIf="showLargeTable">
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> Id </th>
             <td mat-cell *matCellDef="let g"> {{g.Id}} </td>
@@ -30,16 +30,70 @@
         <ng-container matColumnDef="members">
             <th mat-header-cell *matHeaderCellDef class="width-48-percent"> Members </th>
             <td mat-cell *matCellDef="let g">
-                <button mat-icon-button class="icon-blue opacity-button" *ngIf="g.IsOwner" (click)="openMembersDialog(g.Id)">
-                    <mat-icon>playlist_add_check</mat-icon>
-                </button> &nbsp;
-                <mat-chip-list class="chips-inline-block">
-                    <mat-chip class="custom-chip" *ngFor="let m of g.Members">{{ m.LastName }}, {{ m.FirstName }} .{{m.MiddleName.charAt(0)}} </mat-chip>
-                </mat-chip-list>
+                <div class="table-members">
+                    <button mat-icon-button class="icon-blue opacity-button" *ngIf="g.IsOwner" (click)="openMembersDialog(g.Id)">
+                        <mat-icon>playlist_add_check</mat-icon>
+                    </button> &nbsp;
+                    <mat-chip-list class="chips-inline-block">
+                        <mat-chip class="custom-chip" *ngFor="let m of g.Members">{{ m.LastName }}, {{ m.FirstName }} .{{m.MiddleName.charAt(0)}} </mat-chip>
+                    </mat-chip-list>
+                </div>
             </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr class="scheduler-table" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    
+    <div class="table-mini-section" *ngIf="!showLargeTable">
+        <div class="table-mini" *ngFor="let g of groups">
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                    Id
+                </div>
+                <div class="table-mini-content">
+                    {{g.Id}}
+                </div>
+            </div>
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                    Group Name
+                </div>
+                <div class="table-mini-content">
+                    {{g.Name}}
+                </div>
+            </div>
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                    Owner
+                </div>
+                <div class="table-mini-content">
+                    {{g.Owner}}
+                </div>
+            </div>
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                    Owner Email
+                </div>
+                <div class="table-mini-content">
+                    {{g.OwnerEmail}}
+                </div>
+            </div>
+            <div class="table-mini-row">
+                <div class="table-mini-column">
+                    Members
+                </div>
+                <div class="table-mini-content">
+                    <div class="table-members">
+                        <button mat-icon-button class="icon-blue opacity-button" *ngIf="g.IsOwner" (click)="openMembersDialog(g.Id)">
+                            <mat-icon>playlist_add_check</mat-icon>
+                        </button> &nbsp;
+                        <mat-chip-list class="chips-inline-block">
+                            <mat-chip class="custom-chip" *ngFor="let m of g.Members">{{ m.LastName }}, {{ m.FirstName }} .{{m.MiddleName.charAt(0)}} </mat-chip>
+                        </mat-chip-list>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

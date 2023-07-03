@@ -20,6 +20,7 @@ import { MessageboxComponent } from '../messagebox/messagebox.component';
 import { AppointmentType } from 'src/app/calendar-models/appointmentType-enum';
 import { GlobalFuntions } from 'src/app/common/global-functions';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 
 @Component({
   selector: 'app-calendar-dialog',
@@ -65,6 +66,7 @@ export class CalendarDialogComponent implements OnInit {
   readonly appointmentTypeList = AppointmentType;
   appointmentType: any;
   endDateSpan: number = 0;
+  HasNoWeekEnds: boolean = false;
   
   selectedToRemove: AttendeeModel;
   attendees: Array<AttendeeModel> = []; 
@@ -76,10 +78,13 @@ export class CalendarDialogComponent implements OnInit {
 
   leftIcon = GlobalConstants.leftArrowIcon;
 
-  columnSize: string;
+  repeatLayout: string;
+  radioButtonLayout: string;
+  colorSelection: string;
 
   constructor(public dialogRef: MatDialogRef<CalendarDialogComponent>, private authService: AuthService, private groupService: GroupService,
-    private appointmentService: AppointmentService, private responsive: BreakpointObserver,
+    private appointmentService: AppointmentService,
+    private dataSharingService: DataSharingService,
     @Inject(MAT_DIALOG_DATA) public data: {param: DialogOperation}
     , private dialog:MatDialog) {
       this.selectedRadio = this.radioGroups[0];
@@ -133,6 +138,7 @@ export class CalendarDialogComponent implements OnInit {
       this.selectedRepeatSelection = this.param?.appointment.RepeatSelection;
       this.selectedRepeatEnd = this.param?.appointment.RepeatEnd;
       this.after = this.param?.appointment.After;
+      this.HasNoWeekEnds = this.param.appointment.HasNoWeekEnds;
       this.onDate = moment(this.param?.appointment.OnDate, 'MM/DD/YYYY').toDate();
       this.onDate = this.onDate < moment("1975-01-01").toDate() ? this.date : this.onDate;
       this.endDate = moment(this.date).add(this.param?.appointment.EndDateSpan, 'days').toDate();
@@ -195,22 +201,20 @@ export class CalendarDialogComponent implements OnInit {
   }
 
   private responsiveness(){
-    this.responsive.observe([
-      Breakpoints.XSmall,
-      Breakpoints.Small,
-      Breakpoints.Medium,
-      Breakpoints.Large,
-      Breakpoints.XLarge]).subscribe(result => {
-        if (result.breakpoints[Breakpoints.XLarge] || result.breakpoints[Breakpoints.Large] || result.breakpoints[Breakpoints.Medium]){
-          this.columnSize = "1fr 1fr 1fr 1fr";
+    this.dataSharingService.calendarDialogLayout.subscribe(res => {
+      if (res){
+        this.colorSelection = "color-selection";
+        this.radioButtonLayout = "block-margin-10";
+        this.repeatLayout = "display-flex gap-10 dual-section";
+      }
+      else {
+        this.colorSelection = "color-selection color-selection-small";
+        this.radioButtonLayout = "calendar-dialog-readio-group block-margin-10";
+        this.repeatLayout = "display-flex gap-10 dual-section repeat-layout";
         }
-        else if (result.breakpoints[Breakpoints.Small]){
-          this.columnSize = "1fr 1fr";
-        }
-        else if (result.breakpoints[Breakpoints.XSmall]){
-          this.columnSize = "1fr";
-        }
-    });
+    })
+
+
   }
 
   cancelAdd(){
@@ -327,6 +331,7 @@ export class CalendarDialogComponent implements OnInit {
       newAppointment.After = this.after;
       newAppointment.OnDate = moment(this.onDate).format("MM/DD/YYYY");
       newAppointment.Type = this.param.contextOperation.Type;
+      newAppointment.HasNoWeekEnds = this.HasNoWeekEnds;
 
       model.Appointment = newAppointment;
 

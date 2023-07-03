@@ -6,11 +6,11 @@
     </div>
     
     <div class="buttons-group flex-center">
-      <button mat-flat-button class="blue-button opacity-button" (click)="previousMonth()">
+      <button [ngClass]="matButtonSize" mat-flat-button class="blue-button opacity-button" (click)="previousMonth()">
         <img height="18" width="18" [src]="leftArrowIcon">
       </button>
-      <button mat-flat-button class="blue-button opacity-button" (click)="today()">Today</button>
-      <button mat-flat-button class="blue-button opacity-button" (click)="nextMonth()">
+      <button [ngClass]="matButtonSize" mat-flat-button class="blue-button opacity-button" (click)="today()">Today</button>
+      <button [ngClass]="matButtonSize" mat-flat-button class="blue-button opacity-button" (click)="nextMonth()">
         <img height="18" width="18" [src]="rightArrowIcon">
       </button>
     </div>

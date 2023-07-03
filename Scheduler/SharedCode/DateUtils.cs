@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics.Metrics;
-using MySqlX.XDevAPI.Common;
-
-namespace Scheduler.SharedCode
+﻿namespace Scheduler.SharedCode
 {
     public static class DateUtils
     {
@@ -30,6 +26,30 @@ namespace Scheduler.SharedCode
                 result.Add(newDate);
                 from = from.AddDays(1);
             }
+
+            return result;
+        }
+
+        public static List<DateTime> GetDaysInRangeForAfter_NoWeekEnds(DateTime from, int after)
+        {
+            var result = new List<DateTime>();
+            int totalAfter = 1;
+
+            do
+            {
+                var newDate = new DateTime(from.Year, from.Month, from.Day);
+
+                if (IsWeekDays(newDate))
+                {
+                    result.Add(newDate);
+                    totalAfter++;
+                }
+
+                from = from.AddDays(1);
+                
+
+           
+            } while (totalAfter <= after);
 
             return result;
         }
@@ -143,6 +163,21 @@ namespace Scheduler.SharedCode
                 return false;
 
             return true;
+        }
+
+        public static List<DateTime> RemoveWeekEnds(List<DateTime> dateRange)
+        {
+            var weekdayDate = dateRange.Where(d => !(d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)).ToList();
+            return weekdayDate;
+        }
+
+        private static bool IsWeekDays(DateTime date)
+        {
+            return date.DayOfWeek == DayOfWeek.Monday ||
+                date.DayOfWeek == DayOfWeek.Tuesday ||
+                date.DayOfWeek == DayOfWeek.Wednesday ||
+                date.DayOfWeek == DayOfWeek.Thursday ||
+                date.DayOfWeek == DayOfWeek.Friday;
         }
     }
 }

@@ -1,11 +1,6 @@
-﻿using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Server.Kestrel.Https;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.HttpOverrides;
 using Scheduler.Authorization;
-using Scheduler.Entity;
+using Scheduler.Interfaces;
 using Scheduler.Services;
 using Scheduler.SharedCode;
 
@@ -16,7 +11,7 @@ if (builder.Environment.IsStaging())
 {
     builder.WebHost.ConfigureKestrel(serverOptions =>
     {
-        serverOptions.ListenAnyIP(5010);
+        serverOptions.ListenAnyIP(5020);
     });
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
     {
@@ -25,9 +20,7 @@ if (builder.Environment.IsStaging())
 }
 
 // Add services to the container.
-
 builder.Services.AddControllersWithViews();
-
 
 builder.Services.AddMvc(setupAction =>
 {
@@ -39,6 +32,9 @@ builder.Services.AddMvc(setupAction =>
     .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Latest);
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
@@ -62,7 +58,6 @@ app.UseMiddleware<CustomBasicAuthMiddleware>();
 
 app.UseAuthorization();
 app.UseAuthentication();
-
 
 app.MapControllerRoute(
     name: "default",

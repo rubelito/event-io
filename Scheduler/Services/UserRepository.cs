@@ -1,28 +1,21 @@
 ﻿using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
 using Scheduler.Entity;
 using Scheduler.Models;
-using Scheduler.SharedCode;
+using Scheduler.Interfaces;
 
 namespace Scheduler.Services
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        private MySqlConnection _conn;
         private SchedulerDbContext _dbContext;
 
         public UserRepository()
         {
-            // _conn = new MySqlConnection(StaticConfig.ConStr);
-            //_dbContext = new SchedulerDbContext(_conn, false);
-            //_dbContext.Database.CreateIfNotExists();
-            //_conn.Open();
-
             _dbContext = new SchedulerDbContext();
         }
 
-        public UserRepository(SchedulerDbContext dbContext) {
+        public UserRepository(SchedulerDbContext dbContext)
+        {
             _dbContext = dbContext;
         }
 
@@ -163,7 +156,8 @@ namespace Scheduler.Services
             bool isUserExist = _dbContext.Users.Any(u => u.Id == userId);
             bool isContactExist = _dbContext.Users.Any(u => u.Id == contactId);
 
-            try {
+            try
+            {
                 if (isUserExist && isContactExist)
                 {
                     bool isEntryExist = _dbContext.Contacts.Any(c => c.UserId == userId && c.ContactId == contactId);
@@ -181,9 +175,10 @@ namespace Scheduler.Services
                 }
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw ex;
-            } 
+            }
         }
 
         public void RemoveContact(int userId, int contactId)
@@ -255,8 +250,6 @@ namespace Scheduler.Services
 
         public void Dispose()
         {
-            //_conn.Close();
-            //_conn.Dispose();
         }
     }
 }

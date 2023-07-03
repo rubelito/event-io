@@ -18,8 +18,10 @@ import { DataSharingService } from 'src/app/calendar-service/DataSharingService'
 export class CalendarMyprofileDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<CalendarLoginDialogComponent>,
-    private authService: AuthService, private dialog: MatDialog,
-     private sanitizer: DomSanitizer, private dataSharingService: DataSharingService) { }
+    private authService: AuthService, 
+    private dialog: MatDialog,
+    private sanitizer: DomSanitizer, 
+    private dataSharingService: DataSharingService) { }
 
   user: User;
 

@@ -120,17 +120,3 @@ ngx-material-timepicker-toggle > button > svg {
 .mini2 > mat-toolbar-row > a:hover {
   color: white;
 }
-
-.position-relative {
-  position: relative;
-}
-
-mat-dialog-content {
-  max-height: 90vh !important;
-  overflow: auto !important;
-}
-
-mat-dialog-container {
-  height: initial !important;
-  overflow: hidden !important;
-}

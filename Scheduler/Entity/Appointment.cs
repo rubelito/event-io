@@ -18,6 +18,7 @@ namespace Scheduler.Entity
 			EndDateSpan = 0;
 			EndTime = "";
 			After = 0;
+			HasNoWeekEnds = false;
 			Type = AppointmentType.Appointment;
 
 			Meetings = new List<UserSchedule>();
@@ -51,6 +52,7 @@ namespace Scheduler.Entity
 		public int After { get; set; }
 		public DateTime OnDate { get; set; }
 		public AppointmentType Type { get; set; }
+		public bool HasNoWeekEnds { get; set; }
 		public bool IsDone { get; set; }
 
 

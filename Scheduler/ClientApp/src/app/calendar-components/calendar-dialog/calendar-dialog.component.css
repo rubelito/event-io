@@ -40,6 +40,10 @@
     gap: 3px;
 }
 
+.color-selection-small {
+    gap: 0.5px !important;
+}
+
 .color-selection > .color-container {
     width: 25px;
     display: flex;
@@ -90,3 +94,29 @@
     width: auto !important;
 }
 
+.calendar-dialog-readio-group {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.calendar-dialog-readio-group > mat-radio-button{
+    margin-left: 0px !important;
+    margin-top: 5px !important;
+}
+
+.repeat-layout {
+    flex-direction: column !important;
+    align-items: baseline !important;
+}
+
+.repeat-layout > div {
+    width: 100% !important;
+    text-align: left !important;
+}
+
+.times-label {
+    position: absolute;
+    font-size: 11px;
+    right: 4px;
+    top: 6px;
+}

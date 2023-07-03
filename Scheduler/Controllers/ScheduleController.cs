@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Net;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Authorization;
 using Scheduler.Entity;
 using Scheduler.Models;
+using Scheduler.Interfaces;
 using Scheduler.Services;
 using Scheduler.SharedCode;
 
@@ -19,13 +16,13 @@ namespace Scheduler.Controllers
     [Route("[controller]")]
     public class ScheduleController : Controller
     {
-        private AppointmentRepository _appointmentRepository;
-        private UserRepository _userRepository;
+        private IAppointmentRepository _appointmentRepository;
+        private IUserRepository _userRepository;
 
-        public ScheduleController()
+        public ScheduleController(IAppointmentRepository appointmentRepository, IUserRepository userRepository)
         {
-            _appointmentRepository = new AppointmentRepository();
-            _userRepository = new UserRepository();
+            _appointmentRepository = appointmentRepository;
+            _userRepository = userRepository;
         }
 
         [Route("[action]", Name = "GetMeetings")]
@@ -88,15 +85,13 @@ namespace Scheduler.Controllers
         [CustomAuthorize]
         public IActionResult GetNumberOfRepeats([FromBody] EventModel model)
         {
-            int numberOfRepeats = 0;
-
             Appointment ap = ClassConverter.ConvertToAppointment(model);
             var originalEvent = _appointmentRepository.GetAppointmentById(model.Id);
             ap.Date = originalEvent.Date;
 
             ScheduleRepeater repeaGenerator = new ScheduleRepeater();
             var repeatDates = repeaGenerator.GetDateRangeForRepeats(ap, ap.YearMonth);
-            numberOfRepeats = repeatDates.Count;
+            int numberOfRepeats = repeatDates.Count;
 
             return Ok(numberOfRepeats);   
         }
@@ -176,7 +171,7 @@ namespace Scheduler.Controllers
                 var appointment = ClassConverter.ConvertToAppointment(ev.Appointment);
 
                 _appointmentRepository.EditAppointment(appointment);
-                _appointmentRepository.DeleteRepeats(appointment.Id);
+                //_appointmentRepository.DeleteAllRepeats(appointment.Id);
 
                 _appointmentRepository.DeleteAllUserAsignedToAppointment(ev.Appointment.Id);
                 _appointmentRepository.AssignUserToAppointments(ev.MemberIds, ev.Appointment.Id);
@@ -290,7 +285,7 @@ namespace Scheduler.Controllers
             {
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
                 _appointmentRepository.DeleteAppointment(currentUser.Username, id);
-                _appointmentRepository.DeleteRepeats(id);
+                _appointmentRepository.DeleteAllRepeats(id);
             }
             catch (Exception ex)
             {

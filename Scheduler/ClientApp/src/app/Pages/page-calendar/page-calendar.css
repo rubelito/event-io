@@ -67,3 +67,11 @@ app-calendar-contextmenu {
     color: white;
     font-size: 35px;
 }
+
+.matButtonSize-large {
+    min-width: 64px !important;
+}
+
+.matButtonSize-small {
+    min-width: 50px !important;
+}
