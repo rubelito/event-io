@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.ApplicationInsights;
 using Scheduler.Authorization;
 using Scheduler.Entity;
 using Scheduler.Models;
@@ -20,6 +21,7 @@ namespace Scheduler.Controllers
         private IUserRepository _userRepository;
         private IActivityLoggerSql _activityLoggSql;
         private string userName = "";
+        private TelemetryClient telemetry;
 
         public ScheduleController(IAppointmentRepository appointmentRepository, IUserRepository userRepository, IActivityLoggerSql activityLoggerSql)
         {
@@ -71,6 +73,8 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/GetMeetings", ex);
+                telemetry = new TelemetryClient();
+                telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
