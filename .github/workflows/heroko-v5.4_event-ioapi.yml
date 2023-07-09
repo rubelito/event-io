@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'event-ioApi'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EF63D717888944FAA40742D2B394CCBE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1D36E609FA6347D5B0FBD1B0ECDC4964 }}
           package: .
