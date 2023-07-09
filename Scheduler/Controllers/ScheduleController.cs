@@ -34,8 +34,8 @@ namespace Scheduler.Controllers
         public IActionResult GetMeetings(string yearMonth)
         {
             List<EventModel> results = new List<EventModel>();
-            try
-            {
+           // try
+           // {
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
                 userName = currentUser.Username;
                 currentUser = null;
@@ -68,16 +68,16 @@ namespace Scheduler.Controllers
                     r.IsOwner = r.CreatedBy == currentUser.Username;
                 }
 
-            }
-            catch (Exception ex)
-            {
-                LogError(userName, "ScheduleController/GetMeetings", ex);
-                return StatusCode(500);
-            }
-            finally
-            {
-                Dispose();
-            }
+           // }
+          //  catch (Exception ex)
+          //  {
+            //    LogError(userName, "ScheduleController/GetMeetings", ex);
+            //    return StatusCode(500);
+          //  }
+           // finally
+          //  {
+           //     Dispose();
+          //  }
 
             return Ok(results);
         }
