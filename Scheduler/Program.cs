@@ -46,17 +46,17 @@ var conStr = builder.Configuration.GetSection("ConnectionStrings:schedulerDb").G
 StaticConfig.ConStr = conStr;
 //StaticConfig.LogFilePath = DbPath;
 
-//builder.Logging.AddAzureWebAppDiagnostics();
-//builder.Services.Configure<AzureFileLoggerOptions>(options =>
-//{
-  //  options.FileName = "azure-diagnostics-";
-  //  options.FileSizeLimit = 50 * 1024;
-   // options.RetainedFileCountLimit = 5;
-//});
-//builder.Services.Configure<AzureBlobLoggerOptions>(options =>
-//{
-  //  options.BlobName = "log.txt";
-//});
+builder.Logging.AddAzureWebAppDiagnostics();
+builder.Services.Configure<AzureFileLoggerOptions>(options =>
+{
+    options.FileName = "azure-diagnostics-";
+    options.FileSizeLimit = 50 * 1024;
+    options.RetainedFileCountLimit = 5;
+});
+builder.Services.Configure<AzureBlobLoggerOptions>(options =>
+{
+    options.BlobName = "log.txt";
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
