@@ -38,7 +38,6 @@ namespace Scheduler.Controllers
             {
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
                 userName = currentUser.Username;
-                currentUser = null;
                 var ownedEvents = _appointmentRepository.GetAppointments(currentUser.Username, yearMonth);
 
                 var events = _appointmentRepository.GetMeetings(currentUser.Id, yearMonth);
