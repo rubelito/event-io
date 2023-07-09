@@ -18,11 +18,14 @@ namespace Scheduler.Controllers
     {
         private IAppointmentRepository _appointmentRepository;
         private IUserRepository _userRepository;
+        private IActivityLoggerSql _activityLoggSql;
+        private string userName = "";
 
-        public ScheduleController(IAppointmentRepository appointmentRepository, IUserRepository userRepository)
+        public ScheduleController(IAppointmentRepository appointmentRepository, IUserRepository userRepository, IActivityLoggerSql activityLoggerSql)
         {
             _appointmentRepository = appointmentRepository;
             _userRepository = userRepository;
+            _activityLoggSql = activityLoggerSql;
         }
 
         [Route("[action]", Name = "GetMeetings")]
@@ -34,6 +37,7 @@ namespace Scheduler.Controllers
             try
             {
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
                 var ownedEvents = _appointmentRepository.GetAppointments(currentUser.Username, yearMonth);
 
                 var events = _appointmentRepository.GetMeetings(currentUser.Id, yearMonth);
@@ -66,10 +70,8 @@ namespace Scheduler.Controllers
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                LogError(userName, "ScheduleController/GetMeetings", ex);
+                return StatusCode(500);
             }
             finally
             {
@@ -85,13 +87,26 @@ namespace Scheduler.Controllers
         [CustomAuthorize]
         public IActionResult GetNumberOfRepeats([FromBody] EventModel model)
         {
-            Appointment ap = ClassConverter.ConvertToAppointment(model);
-            var originalEvent = _appointmentRepository.GetAppointmentById(model.Id);
-            ap.Date = originalEvent.Date;
+            int numberOfRepeats;
+            try
+            {
+                var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
 
-            ScheduleRepeater repeaGenerator = new ScheduleRepeater();
-            var repeatDates = repeaGenerator.GetDateRangeForRepeats(ap, ap.YearMonth);
-            int numberOfRepeats = repeatDates.Count;
+                Appointment ap = ClassConverter.ConvertToAppointment(model);
+                var originalEvent = _appointmentRepository.GetAppointmentById(model.Id);
+                ap.Date = originalEvent.Date;
+
+                ScheduleRepeater repeaGenerator = new ScheduleRepeater();
+                var repeatDates = repeaGenerator.GetDateRangeForRepeats(ap, ap.YearMonth);
+                numberOfRepeats = repeatDates.Count;
+            }
+
+            catch(Exception ex)
+            {
+                LogError(userName, "ScheduleController/GetNumberOfRepeats", ex);
+                return StatusCode(500);
+            }
 
             return Ok(numberOfRepeats);   
         }
@@ -138,6 +153,7 @@ namespace Scheduler.Controllers
             try
             {
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
 
                 var appointment = ClassConverter.ConvertToAppointment(ev.Appointment);
 
@@ -147,10 +163,8 @@ namespace Scheduler.Controllers
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                LogError(userName, "ScheduleController/CreateEvent", ex);
+                return StatusCode(500);
             }
             finally
             {
@@ -168,6 +182,9 @@ namespace Scheduler.Controllers
         {
             try
             {
+                var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
+
                 var appointment = ClassConverter.ConvertToAppointment(ev.Appointment);
 
                 _appointmentRepository.EditAppointment(appointment);
@@ -181,10 +198,8 @@ namespace Scheduler.Controllers
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                LogError(userName, "ScheduleController/EditEvent", ex);
+                return StatusCode(500);
             }
             finally
             {
@@ -202,6 +217,9 @@ namespace Scheduler.Controllers
         {
             try
             {
+                var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
+
                 bool hasDifference = hasDifferenceOnRepeatSettings(ev.Appointment);
                 if (hasDifference)
                 {
@@ -218,10 +236,8 @@ namespace Scheduler.Controllers
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                LogError(userName, "ScheduleController/EditRepeat", ex);
+                return StatusCode(500);
             }
             finally
             {
@@ -257,15 +273,16 @@ namespace Scheduler.Controllers
         {
             try
             {
+                var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
+
                 DateTime parsedDate = DateTime.ParseExact(ev.StrDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 _appointmentRepository.ChangeScheduleDate(ev.Id, parsedDate);
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                LogError(userName, "ScheduleController/ChangeScheduleDate", ex);
+                return StatusCode(500);
             }
             finally
             {
@@ -284,15 +301,15 @@ namespace Scheduler.Controllers
             try
             {
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
+
                 _appointmentRepository.DeleteAppointment(currentUser.Username, id);
                 _appointmentRepository.DeleteAllRepeats(id);
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                LogError(userName, "ScheduleController/DeleteAppointment", ex);
+                return StatusCode(500);
             }
             finally
             {
@@ -310,15 +327,15 @@ namespace Scheduler.Controllers
             try
             {
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
+
                 DateTime originalDate = DateTime.ParseExact(originalDateStr, "MM/dd/yyyy", CultureInfo.InvariantCulture);
                 _appointmentRepository.MarkRepeatAsDeleted(appointmentId, originalDate);
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                LogError(userName, "ScheduleController/DeleteAppointmentRepeat", ex);
+                return StatusCode(500);
             }
             finally
             {
@@ -336,15 +353,16 @@ namespace Scheduler.Controllers
             List<UserBasic> results = new List<UserBasic>();
             try
             {
+                var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
+
                 var attendees = _appointmentRepository.GetAllAttendeesByAppointment(appointmentId);
                 results = ClassConverter.ConvertToUserBasic(attendees);
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                LogError(userName, "ScheduleController/GetAllAttendees", ex);
+                return StatusCode(500);
             }
             finally
             {
@@ -362,15 +380,16 @@ namespace Scheduler.Controllers
             List<GroupBasic> results = new List<GroupBasic>();
             try
             {
+                var currentUser = HttpContext.Items["User"] as UserIdentity;
+                userName = currentUser.Username;
+
                 var groups = _appointmentRepository.GetAllGroupAttendessByAppointment(appointmentId);
                 results = ClassConverter.ConvertToGroupBasic(groups);
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                LogError(userName, "ScheduleController/GetAllGroupAttendees", ex);
+                return StatusCode(500);
             }
             finally
             {
@@ -378,6 +397,12 @@ namespace Scheduler.Controllers
             }
 
             return Ok(results);
+        }
+
+        private void LogError(string userName, string action, Exception ex)
+        {
+            var errorLog = LogMaker.MakeLog(userName, action, ex);
+            _activityLoggSql.LogErrorToDb(errorLog);
         }
 
         private void Dispose()

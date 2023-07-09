@@ -22,12 +22,14 @@ public class UserController : ControllerBase
     private IUserService _userService;
     private IUserRepository _userRepository;
     private IGroupRepository _groupRepository;
+    private IActivityLoggerSql _activityLoggSql;
 
-    public UserController(IGroupRepository groupRepository, IUserRepository userRepository, IUserService userService)
+    public UserController(IGroupRepository groupRepository, IUserRepository userRepository, IUserService userService, IActivityLoggerSql activityLoggerSql)
     {
         _userService = userService;
         _userRepository = userRepository;
         _groupRepository = groupRepository;
+        _activityLoggSql = activityLoggerSql;
     }
 
     // GET: api/values
@@ -50,14 +52,24 @@ public class UserController : ControllerBase
     [Consumes("application/json")]
     public ActionResult Login([FromBody] UserCredential userCredential)
     {
-        var user = _userService.Authenticate(userCredential.Username, userCredential.Password);
+        UserIdentity user;
 
-        if (user.IsAuthenticated)
+        try
         {
-            string credential = userCredential.Username + ":" + userCredential.Password;
+            user = _userService.Authenticate(userCredential.Username, userCredential.Password);
 
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(credential);
-            user.Credential = Convert.ToBase64String(plainTextBytes);
+            if (user.IsAuthenticated)
+            {
+                string credential = userCredential.Username + ":" + userCredential.Password;
+
+                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(credential);
+                user.Credential = Convert.ToBase64String(plainTextBytes);
+            }
+        }
+        catch (Exception ex)
+        {
+            LogError(userCredential.Username, "UserController/Login", ex);
+            return StatusCode(500);
         }
 
         return Ok(user);
@@ -69,20 +81,20 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetAllActiveUser()
     {
         List<UserBasic> results;
+        string userName = "";
 
         try
         {
-            // var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
-
+            var currentUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentUser.Username;
             var users = _userRepository.GetAllUser();
             results = ClassConverter.ConvertToUserBasic(users);
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            
+            LogError(userName, "UserController/GetAllActiveUser", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -98,18 +110,18 @@ public class UserController : ControllerBase
     public async Task<ActionResult> GetCurrentLogUser()
     {
         User userEntity = new User();
+        string userName = "";
 
         try
         {
             var currentUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentUser.Username;
             userEntity = _userRepository.GetUserById(currentUser.Id);
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/GetAllActiveUser", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -149,10 +161,8 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError("N/A", "UserController/Register", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -168,9 +178,12 @@ public class UserController : ControllerBase
     [Route("[action]", Name = "EditCurrentLogUser")]
     public async Task<ActionResult> EditCurrentLogUser([FromBody] UserBasic model)
     {
+        string userName = "";
+
         try
         {
             var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
             var userToEdit = _userRepository.GetUserByUsername(currentlyLogUser.Username);
 
             if (userToEdit != null)
@@ -185,10 +198,8 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/EditCurrentLogUser", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -210,10 +221,8 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError("N/A", "UserController/IsUserExist", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -235,10 +244,8 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError("N/A", "UserController/IsEmailExist", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -253,10 +260,12 @@ public class UserController : ControllerBase
     public async Task<ActionResult> GetContacts()
     {
         List<UserBasic> results = new List<UserBasic>();
+        string userName = "";
 
         try
         {
             var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
 
             var users = _userRepository.GetContacts(currentlyLogUser.Id);
 
@@ -264,10 +273,8 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/GetContacts", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -282,10 +289,12 @@ public class UserController : ControllerBase
     public async Task<ActionResult> AddContact(string email)
     {
         ResultModel result = new ResultModel();
+        string userName = "";
 
         try
         {
             var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
             var contact = _userRepository.GetUserByEmail(email);
 
             if (contact != null)
@@ -301,10 +310,8 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/AddContact", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -319,19 +326,19 @@ public class UserController : ControllerBase
     public async Task<ActionResult> RemoveContact(int contactId)
     {
         ResultModel result = new ResultModel();
+        string userName = "";
 
         try
         {
             var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
              _userRepository.RemoveContact(currentlyLogUser.Id, contactId);
             result.Success = true;
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/RemoveContact", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -346,10 +353,12 @@ public class UserController : ControllerBase
     public async Task<ActionResult> GetAllUserExcludingYou()
     {
         List<UserBasic> results;
+        string userName = "";
 
         try
         {
             var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
 
             var users = _userRepository.GetAllUser();
             var userToExclude = users.FirstOrDefault(u => u.Id == currentlyLogUser.Id);
@@ -359,10 +368,8 @@ public class UserController : ControllerBase
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/GetAllUserExcludingYou", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -377,19 +384,19 @@ public class UserController : ControllerBase
     [Route("[action]", Name = "ChangePassword")]
     public async Task<ActionResult> ChangePassword([FromBody] PasswordModel model)
     {
-        var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+        string userName = "";
         ChangePasswordResult result = new ChangePasswordResult();
 
         try
         {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
             result = _userRepository.ChangePassword(currentlyLogUser.Id, model.OldPassword, model.NewPassword);
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/ChangePassword", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -404,20 +411,20 @@ public class UserController : ControllerBase
     [Route("[action]", Name = "GetGroupListWithMembers")]
     public async Task<ActionResult> GetGroupListWithMembers()
     {
-        var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+        string userName = "";        
         var results = new List<GroupResult>();
 
         try
         {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
             var user = _userRepository.GetUserById(currentlyLogUser.Id);
             results = _groupRepository.GetGroupListWithMembers();
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/GetGroupListWithMembers", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -432,20 +439,20 @@ public class UserController : ControllerBase
     [Route("[action]", Name = "GetYourGroupListWithMembers")]
     public async Task<ActionResult> GetYourGroupListWithMembers()
     {
-        var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+        string userName = "";
         var results = new List<GroupResult>();
 
         try
         {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
             results = _groupRepository.GetYourGroupListWithMembers(currentlyLogUser.Id);
             
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/GetYourGroupListWithMembers", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -462,8 +469,7 @@ public class UserController : ControllerBase
     [Route("[action]", Name = "CreateGroup")]
     public async Task<ActionResult> CreateGroup([FromBody] CreateEditGroupModel model)
     {
-        var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
-        var user = _userRepository.GetUserById(currentlyLogUser.Id);
+        string userName = "";
         ResultModel result = new ResultModel();
 
         var newGroup = new Group();
@@ -471,20 +477,23 @@ public class UserController : ControllerBase
         newGroup.GroupName = model.GroupName;
         newGroup.Description = model.Description;
         newGroup.Active = true;
-        newGroup.OwnerId = user.Id;
+        
         
         try
         {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
+            var user = _userRepository.GetUserById(currentlyLogUser.Id);
+
+            newGroup.OwnerId = user.Id;
             _groupRepository.CreateGroup(newGroup);
             result.Success = true;
             result.Message = "Success";
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/CreateGroup", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -500,7 +509,7 @@ public class UserController : ControllerBase
     [Route("[action]", Name = "EditGroup")]
     public async Task<ActionResult> EditGroup([FromBody] CreateEditGroupModel model)
     {
-        var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+        string userName = "";
         ResultModel result = new ResultModel();
         
         var gToEdit = new Group();
@@ -511,17 +520,18 @@ public class UserController : ControllerBase
 
         try
         {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
+
             _groupRepository.EditGroup(gToEdit);
             result.Success = true;
             result.Message = "Success";
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
-        }
+            LogError(userName, "UserController/EditGroup", ex);
+            return StatusCode(500);
+        } 
         finally
         {
             dispose();
@@ -536,19 +546,21 @@ public class UserController : ControllerBase
     [Route("[action]", Name = "GetUsersInGroup")]
     public async Task<ActionResult> GetUsersInGroup(int groupId)
     {
+        string userName = "";
         List<UserBasic> results = new List<UserBasic>();
 
         try
         {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
+
             var users = _groupRepository.GetUsersInGroup(groupId);
             results = ClassConverter.ConvertToUserBasic(users);
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/GetUsersInGroup", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -565,17 +577,18 @@ public class UserController : ControllerBase
     public async Task<ActionResult> AddMembersToGroup([FromBody] AddMembersToGroupModel model)
     {
         ResultModel result = new ResultModel();
+        string userName = "";
 
         try
         {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
             result = _groupRepository.AddMembersToGroup(model.GroupId, model.Members);
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/AddMembersToGroup", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -592,17 +605,18 @@ public class UserController : ControllerBase
     public async Task<ActionResult> RemoveMembersToGroup([FromBody] AddMembersToGroupModel model)
     {
         ResultModel result = new ResultModel();
+        string userName = "";
 
         try
         {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
             result = _groupRepository.RemoveMembersToGroup(model.GroupId, model.Members);
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/RemoveMembersToGroup", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -618,26 +632,35 @@ public class UserController : ControllerBase
     [Route("[action]", Name = "UploadProfilePicture")]
     public async Task<ActionResult> UploadProfilePicture(IFormFile file)
     {
-        var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
-
-        var memoryStream = new MemoryStream();
-        file.CopyToAsync(memoryStream);
-        byte[] bytePicture = memoryStream.ToArray();
-
-        byte[] reducedImage = ReducePictureSize(bytePicture);
-
-        if (bytePicture.Length != 0)
-        {
-            UserPicture picture = new UserPicture();
-            picture.UserId = currentlyLogUser.Id;
-            picture.Picture = reducedImage;
-
-            _userRepository.InsertUserPicture(picture);
-        }
-
-
         ResultModel result = new ResultModel();
-        result.Success = true;
+        string userName = "";
+        try
+        {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
+
+            var memoryStream = new MemoryStream();
+            file.CopyToAsync(memoryStream);
+            byte[] bytePicture = memoryStream.ToArray();
+
+            byte[] reducedImage = ReducePictureSize(bytePicture);
+
+            if (bytePicture.Length != 0)
+            {
+                UserPicture picture = new UserPicture();
+                picture.UserId = currentlyLogUser.Id;
+                picture.Picture = reducedImage;
+
+                _userRepository.InsertUserPicture(picture);
+            }
+
+            result.Success = true;
+        }
+        catch(Exception ex)
+        {
+            LogError(userName, "UserController/UploadProfilePicture", ex);
+            return StatusCode(500);
+        }
 
         return Ok(result);
     }
@@ -648,19 +671,33 @@ public class UserController : ControllerBase
     [Route("[action]", Name = "GetAvatar")]
     public async Task<ActionResult> GetAvatar([FromBody] int userId)
     {
-        byte[] blobPicture;
+        string userName = "";
 
-        var picture = _userRepository.GetUserPicture(userId);
-        if (picture != null)
+        try
         {
-            blobPicture = picture.Picture;
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
+            byte[] blobPicture;
 
+            var picture = _userRepository.GetUserPicture(userId);
+            if (picture != null)
+            {
+                blobPicture = picture.Picture;
+
+                return File(blobPicture, "image/png");
+            }
+
+            blobPicture = _userRepository.GetEmptyProfilePicture();
             return File(blobPicture, "image/png");
         }
+        catch (Exception ex)
         {
-            blobPicture = _userRepository.GetEmptyProfilePicture();
-            return File(blobPicture, "image/png"); ;
+            LogError(userName, "UserController/GetAvatar", ex);
+            return StatusCode(500);
         }
+        finally {
+            dispose();
+        } 
     }
 
     private byte[] ReducePictureSize(byte[] bytes)
@@ -679,18 +716,20 @@ public class UserController : ControllerBase
     public async Task<ActionResult> RemoveProfilePicture(int userId)
     {
         ResultModel result = new ResultModel();
+        string userName = "";
 
         try
         {
+            var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
+            userName = currentlyLogUser.Username;
+
             _userRepository.DeleteProfilePicture(userId);
             result.Success = true;
         }
         catch (Exception ex)
         {
-            return new JsonResult(ex.Message)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
+            LogError(userName, "UserController/RemoveProfilePicture", ex);
+            return StatusCode(500);
         }
         finally
         {
@@ -700,6 +739,11 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    private void LogError(string userName, string action, Exception ex)
+    {
+        var errorLog = LogMaker.MakeLog(userName, action, ex);
+        _activityLoggSql.LogErrorToDb(errorLog);
+    }
 
     private void dispose()
     {

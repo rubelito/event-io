@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.HttpOverrides;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Logging.AzureAppServices;
 using Scheduler.Authorization;
 using Scheduler.Interfaces;
 using Scheduler.Services;
@@ -35,11 +37,26 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IActivityLoggerSql, LoggerSql>();
 
 var app = builder.Build();
 
 var conStr = builder.Configuration.GetSection("ConnectionStrings:schedulerDb").Get<string>();
+//var DbPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"/Db/log.txt";
 StaticConfig.ConStr = conStr;
+//StaticConfig.LogFilePath = DbPath;
+
+//builder.Logging.AddAzureWebAppDiagnostics();
+//builder.Services.Configure<AzureFileLoggerOptions>(options =>
+//{
+  //  options.FileName = "azure-diagnostics-";
+  //  options.FileSizeLimit = 50 * 1024;
+   // options.RetainedFileCountLimit = 5;
+//});
+//builder.Services.Configure<AzureBlobLoggerOptions>(options =>
+//{
+  //  options.BlobName = "log.txt";
+//});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

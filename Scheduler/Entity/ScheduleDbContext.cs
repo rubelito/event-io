@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Reflection.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Scheduler.Entity;
 
@@ -16,6 +15,7 @@ public class SchedulerDbContext : DbContext
     public DbSet<GroupSchedule> GroupsMeetings { get; set; }
     public DbSet<UserGroup> UsersGroups { get; set; }
 
+    public DbSet<ExceptionLog> ExceptionLogs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -39,6 +39,8 @@ public class SchedulerDbContext : DbContext
         modelBuilder.Entity<UserSchedule>().HasKey(us => new { us.ParticipantId, us.MeetingId });
         modelBuilder.Entity<GroupSchedule>().HasKey(gs => new { gs.ParticipantId, gs.MeetingId });
         modelBuilder.Entity<UserGroup>().HasKey(ug => new { ug.UserId, ug.GroupId });
+
+        modelBuilder.Entity<ExceptionLog>().HasKey(e => e.Id);
 
         //Relationships
 
