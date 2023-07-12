@@ -42,9 +42,9 @@ builder.Services.AddScoped<IActivityLoggerSql, LoggerSql>();
 var app = builder.Build();
 
 var conStr = builder.Configuration.GetSection("ConnectionStrings:schedulerDb").Get<string>();
-//var DbPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"/Db/log.txt";
+var DbPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"/Db/log.txt";
 StaticConfig.ConStr = conStr;
-//StaticConfig.LogFilePath = DbPath;
+StaticConfig.LogFilePath = DbPath;
 
 ///builder.Logging.AddAzureWebAppDiagnostics();
 //builder.Services.Configure<AzureFileLoggerOptions>(options =>
