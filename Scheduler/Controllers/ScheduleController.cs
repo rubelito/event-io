@@ -1,13 +1,13 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.ApplicationInsights;
 using Scheduler.Authorization;
 using Scheduler.Entity;
 using Scheduler.Models;
 using Scheduler.Interfaces;
 using Scheduler.Services;
 using Scheduler.SharedCode;
+using Microsoft.ApplicationInsights;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,13 +21,14 @@ namespace Scheduler.Controllers
         private IUserRepository _userRepository;
         private IActivityLoggerSql _activityLoggSql;
         private string userName = "";
-        private TelemetryClient telemetry;
+        private TelemetryClient _telemetry;
 
         public ScheduleController(IAppointmentRepository appointmentRepository, IUserRepository userRepository, IActivityLoggerSql activityLoggerSql)
         {
             _appointmentRepository = appointmentRepository;
             _userRepository = userRepository;
             _activityLoggSql = activityLoggerSql;
+            _telemetry = new TelemetryClient();
         }
 
         [Route("[action]", Name = "GetMeetings")]
@@ -73,8 +74,7 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/GetMeetings", ex);
-                telemetry = new TelemetryClient();
-                telemetry.TrackException(ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
@@ -109,6 +109,7 @@ namespace Scheduler.Controllers
             catch(Exception ex)
             {
                 LogError(userName, "ScheduleController/GetNumberOfRepeats", ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
 
@@ -168,6 +169,7 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/CreateEvent", ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
@@ -203,6 +205,7 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/EditEvent", ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
@@ -241,6 +244,7 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/EditRepeat", ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
@@ -286,6 +290,7 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/ChangeScheduleDate", ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
@@ -313,6 +318,7 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/DeleteAppointment", ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
@@ -339,6 +345,7 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/DeleteAppointmentRepeat", ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
@@ -366,6 +373,7 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/GetAllAttendees", ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
@@ -393,6 +401,7 @@ namespace Scheduler.Controllers
             catch (Exception ex)
             {
                 LogError(userName, "ScheduleController/GetAllGroupAttendees", ex);
+                _telemetry.TrackException(ex);
                 return StatusCode(500);
             }
             finally
@@ -416,4 +425,3 @@ namespace Scheduler.Controllers
         }
     }
 }
-
