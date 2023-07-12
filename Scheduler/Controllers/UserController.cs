@@ -277,7 +277,6 @@ public class UserController : ControllerBase
         {
             var currentlyLogUser = HttpContext.Items["User"] as UserIdentity;
             userName = currentlyLogUser.Username;
-            currentlyLogUser = null;
 
             var users = _userRepository.GetContacts(currentlyLogUser.Id);
 
