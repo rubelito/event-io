@@ -281,11 +281,6 @@ public class UserController : ControllerBase
             var users = _userRepository.GetContacts(currentlyLogUser.Id);
 
             results = ClassConverter.ConvertToUserBasic(users);
-
-            foreach (var r in results)
-            {
-                r.LastName = StaticConfig.ConStr;
-            }
         }
         catch (Exception ex)
         {
