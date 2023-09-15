@@ -185,7 +185,7 @@ export class PageCalendarComponent implements AfterViewInit {
     return this.dayToday == day && this.monthToday == this.currentMonth.getMonth()
       && this.yearToday == this.currentMonth.getFullYear();
   }
-  
+
   getEvents(){
     this.eventService.getAppointments(this.yearMonth)
       .subscribe((data: EventModel[]) =>
@@ -283,7 +283,7 @@ export class PageCalendarComponent implements AfterViewInit {
       this.contextMenuX = (menu.locationX - 150).toString();
     }
     else {
-    this.contextMenuX = menu.locationX.toString();
+      this.contextMenuX = menu.locationX.toString();
     }
 
     this.contextMenuY = menu.locationY.toString();
@@ -316,7 +316,7 @@ export class PageCalendarComponent implements AfterViewInit {
 
     if (operation.Operation == "Add" || operation.Operation == "Edit"){
       this.showAddEditMatDialog(param);
-    }
+    }  
   }
 
   showAddEditMatDialog(dialogParam: DialogOperation){
@@ -381,5 +381,39 @@ export class PageCalendarComponent implements AfterViewInit {
   refreshEvents(){
     this.eventRanges = [];
     this.generateMonth();
+  }
+
+  dbClick(event: any){
+    let param = new DialogOperation();
+    param.yearMonth = this.yearMonth;
+    this.shouldShowDialog = true;
+
+    if (event.isBlock){
+      this.shouldShowDialog = true;
+      param.stringDate = event.selectedBlock.stringDate;
+      param.contextOperation = new ContextOperationModel();
+      param.contextOperation.Operation = "Add";
+      param.contextOperation.Type = AppointmentType.Appointment;
+
+      this.showAddEditMatDialog(param);
+    }
+    else
+      {
+        if (event.selectedAppointment.IsOwner)
+        {
+          this.shouldShowDialog = true;
+          param.appointment = event.selectedAppointment;
+          param.stringDate = event.selectedAppointment.Date;
+          param.contextOperation.Type = event.selectedAppointment.Type;
+          param.contextOperation.Operation = "Edit";
+
+          this.showAddEditMatDialog(param);
+        }
+        else {//Show view
+          param.appointment = event.selectedAppointment;
+          param.stringDate = event.selectedAppointment.Date;
+          this.showViewDialog(param);
+        }
+      }
   }
 }
