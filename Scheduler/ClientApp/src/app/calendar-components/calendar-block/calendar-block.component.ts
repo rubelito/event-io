@@ -11,6 +11,7 @@ import { AppointmentService } from 'src/app/calendar-service/AppointmentService'
 import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 import { GlobalConstants } from 'src/app/common/global-constant';
 import { MessageboxComponent } from '../messagebox/messagebox.component';
+import { DoubleClickModel } from 'src/app/calendar-models/DoubleClickModel';
 
 @Component({
   selector: 'app-calendar-block',
@@ -21,6 +22,7 @@ export class CalendarBlockComponent implements OnInit {
 
   @Input() block: Block;
   @Output() showParentContextMenu = new EventEmitter<ContextMenuValue>();
+  @Output() dbClickShowAppointment = new EventEmitter<DoubleClickModel>();
   @Output() refreshList = new EventEmitter();
 
   readonly rangeType = RangeType;
@@ -129,7 +131,13 @@ export class CalendarBlockComponent implements OnInit {
 
   onRightClickAppointment(appoint: EventModel, event: any){
     if (!this.block?.isEmptyBlock){
-      let param = new ContextMenuValue();
+      let param = this.createParamForAppointment(appoint, event);
+      this.showParentContextMenu.emit(param);
+    }
+  }
+
+  createParamForAppointment(appoint: EventModel, event: any) : ContextMenuValue{
+    let param = new ContextMenuValue();
       param.show = true;
       param.isBlock = false;
       param.isOwner = appoint.IsOwner;
@@ -139,8 +147,8 @@ export class CalendarBlockComponent implements OnInit {
       param.fullScreenLocationX = event.clientX;
       param.locationX = event.layerX;
       param.locationY = event.layerY;
-    this.showParentContextMenu.emit(param);
-    }
+
+      return param;
   }
 
   getBGColor(){
@@ -231,5 +239,35 @@ export class CalendarBlockComponent implements OnInit {
     }
 
     return rangeStyle;
+  }
+
+  doubleClickBlock(event: any){
+    if (!this.block?.isEmptyBlock){
+      //Is doubleClick on block?
+      //To prevent Add appointment from opening when clicking on apppointments
+      if (event.srcElement.classList.contains("real-block")){
+        let dbClickParam = new DoubleClickModel();
+        dbClickParam.isBlock = true;
+        dbClickParam.selectedBlock = this.block as Block;
+  
+        this.dbClickShowAppointment.emit(dbClickParam);
+      }
+    }
+  }
+
+  doubleClickAppointment(appoint: EventModel, event: any){
+    if (!this.block?.isEmptyBlock){
+      let dbClickParam = new DoubleClickModel();
+      dbClickParam.isBlock = false;
+
+      if (appoint.IsRange){
+        dbClickParam.selectedAppointment = appoint.MainEventReference;
+      }
+      else {
+        dbClickParam.selectedAppointment = appoint;
+      }
+
+      this.dbClickShowAppointment.emit(dbClickParam);
+    }
   }
 }
