@@ -108,14 +108,10 @@ export class AuthService {
    }
 
    isUsernameExist(userName: string): Observable<boolean> {
-    let cre = localStorage.getItem("accessToken");
-    this.headers = this.headers.set('Authorization', cre!);
      return this.http.get<boolean>(this.baseUrl + "user/IsUserExist?userName=" + userName,{ headers: this.headers});
    }
 
    isEmailExist(email: string): Observable<boolean> {
-    let cre = localStorage.getItem("accessToken");
-    this.headers = this.headers.set('Authorization', cre!);
      return this.http.get<boolean>(this.baseUrl + "user/IsEmailExist?email=" + email, { headers: this.headers});
    }
 
