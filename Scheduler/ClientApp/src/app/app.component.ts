@@ -83,9 +83,11 @@ export class AppComponent implements OnInit  {
   }
 
   loadProfilePicture(){
-    this.authService.getAvatar(this.userId).subscribe(result => {
-      this.profilePic = GlobalFuntions.createImageFromBlob(result, this.sanitizer);
-    })
+    if (this.authService.isLoggedIn()){
+      this.authService.getAvatar(this.userId).subscribe(result => {
+        this.profilePic = GlobalFuntions.createImageFromBlob(result, this.sanitizer);
+      })
+    }
   }
 
   @HostListener('window:scroll', ['$event']) 
