@@ -154,8 +154,13 @@
 }
 
 mat-toolbar > * {
-  margin-right: 10px !important;
+  /* margin-right: 10px !important; */
   overflow: hidden;
+}
+
+mat-toolbar > .mat-toolbar-row {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .component-center + * > div{
