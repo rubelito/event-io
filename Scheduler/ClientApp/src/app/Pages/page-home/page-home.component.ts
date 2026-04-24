@@ -1,5 +1,8 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth-service/AuthService';
+import { UserCredential } from 'src/app/calendar-models/user-credential';
 import { DataSharingService } from 'src/app/calendar-service/DataSharingService';
 import { GlobalConstants } from 'src/app/common/global-constant';
 
@@ -36,16 +39,53 @@ export class PageHomeComponent implements OnInit, AfterViewInit {
   groupImage = GlobalConstants.groupImage;
   reoccurImage = GlobalConstants.reoccurImage;
 
+  isAutheticated: boolean = false;
+
   constructor(private responsive: BreakpointObserver,
-    private dataSharingService: DataSharingService) { }
+    private dataSharingService: DataSharingService,
+    public authService: AuthService,
+    private router: Router) {
+  }
 
   ngOnInit(): void {
     this.initiateLayoutResponsiveness();
   }
 
   ngAfterViewInit(): void {
+    if (!this.authService.isLoggedIn()){
+      this.onAuth();
+    }
+    else {
+      this.isAutheticated = true;
+    }
+
+
     this.dataSharingService.toggleMenu.next();
   }
+
+  onAuth(){
+      let userCredential = new UserCredential();
+      userCredential.Username = "john";
+      userCredential.Password = "john1030";
+      this.authService.logIn(userCredential).subscribe(data => {
+        if (data.IsAuthenticated){
+          console.log(data);
+          localStorage.setItem("id", data.Id.toString());
+          localStorage.setItem("username", data.Username);
+          localStorage.setItem("isLogin", data.IsAuthenticated.toString());
+          localStorage.setItem("loginStatus", data.LoginStatus);
+          localStorage.setItem('accessToken', "basic " + data.Credential);
+          localStorage.setItem('role', data.Role);
+  
+          this.dataSharingService.isProfilePictureChange.next(true);
+          
+         // setTimeout(() => {
+            this.router.navigate(["/"]);
+            this.isAutheticated = true;
+         // }, 2000);
+        }
+      });
+    }
 
   initiateLayoutResponsiveness(){
     this.responsive.observe([

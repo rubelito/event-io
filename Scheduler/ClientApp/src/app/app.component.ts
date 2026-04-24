@@ -13,6 +13,7 @@ import { MessageboxComponent } from './calendar-components/messagebox/messagebox
 import { GlobalFuntions } from './common/global-functions';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DataSharingService } from './calendar-service/DataSharingService';
+import { UserCredential } from './calendar-models/user-credential';
 
 @Component({
   selector: 'app-root',
@@ -51,7 +52,8 @@ export class AppComponent implements OnInit  {
   constructor(public authService: AuthService, private dialog: MatDialog,
     private responsive: BreakpointObserver, private router: Router,
     private sanitizer: DomSanitizer,
-    private dataSharingService: DataSharingService) { }
+    private dataSharingService: DataSharingService) {
+    }
 
   ngOnInit(): void {
     this.responsive.observe(['(min-width: 700px)']).subscribe(result => {

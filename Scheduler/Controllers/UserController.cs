@@ -25,15 +25,12 @@ public class UserController : ControllerBase
     private IUserRepository _userRepository;
     private IGroupRepository _groupRepository;
     private IActivityLoggerSql _activityLoggSql;
-    private TelemetryClient _telemetry;
-
     public UserController(IGroupRepository groupRepository, IUserRepository userRepository, IUserService userService, IActivityLoggerSql activityLoggerSql)
     {
         _userService = userService;
         _userRepository = userRepository;
         _groupRepository = groupRepository;
         _activityLoggSql = activityLoggerSql;
-        _telemetry = new TelemetryClient();
     }
 
     // GET: api/values
@@ -73,7 +70,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userCredential.Username, "UserController/Login", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
 
@@ -99,7 +96,7 @@ public class UserController : ControllerBase
         {
             
             LogError(userName, "UserController/GetAllActiveUser", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -127,7 +124,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/GetAllActiveUser", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -169,7 +166,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError("N/A", "UserController/Register", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -207,7 +204,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/EditCurrentLogUser", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -231,7 +228,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError("N/A", "UserController/IsUserExist", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -255,7 +252,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError("N/A", "UserController/IsEmailExist", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -285,7 +282,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/GetContacts", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -323,7 +320,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/AddContact", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -351,7 +348,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/RemoveContact", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -383,7 +380,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/GetAllUserExcludingYou", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -411,7 +408,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/ChangePassword", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -440,7 +437,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/GetGroupListWithMembers", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -469,7 +466,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/GetYourGroupListWithMembers", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -511,7 +508,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/CreateGroup", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -549,7 +546,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/EditGroup", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         } 
         finally
@@ -580,7 +577,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/GetUsersInGroup", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -609,7 +606,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/AddMembersToGroup", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -638,7 +635,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/RemoveMembersToGroup", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally
@@ -682,7 +679,7 @@ public class UserController : ControllerBase
         catch(Exception ex)
         {
             LogError(userName, "UserController/UploadProfilePicture", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
 
@@ -717,7 +714,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/GetAvatar", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally {
@@ -754,7 +751,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             LogError(userName, "UserController/RemoveProfilePicture", ex);
-            _telemetry.TrackException(ex);
+            
             return StatusCode(500);
         }
         finally

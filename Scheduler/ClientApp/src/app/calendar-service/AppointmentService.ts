@@ -19,6 +19,7 @@ export class AppointmentService {
 
     getAppointments(yearMonth: string) {
         let cre = localStorage.getItem("accessToken");
+        console.log(cre);
         this.headers = this.headers.set('Authorization', cre!);
         return this.http.get<EventModel[]>(this.baseUrl + "schedule/GetMeetings?yearMonth=" + yearMonth, { headers: this.headers});
     }

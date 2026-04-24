@@ -211,3 +211,10 @@
 .third-section {
     background-color: white;
 }
+
+:host ::ng-deep page-calendar > div {
+  min-height: 600px;
+  max-width: 1040px;
+  margin-left: auto;
+  margin-right: auto;
+}

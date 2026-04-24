@@ -1,8 +1,9 @@
 <div class="middle-section">
-    <div class="screenshot-section" [ngClass]="big ? 'screenshot-section-large' : 'screenshot-section-small'">
+    <div *ngIf="!isAutheticated" class="screenshot-section" [ngClass]="big ? 'screenshot-section-large' : 'screenshot-section-small'">
         <img class="bottom" [src]="addeditImage">
         <img id="top" class="top" [src]="screenshotImage">
     </div>
+    <page-calendar *ngIf="isAutheticated"></page-calendar>
     <div id="mobile-part" class="home-section first-section grey-text">
         <div class="home-content-width">
             <div class="section-title"> 

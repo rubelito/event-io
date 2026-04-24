@@ -165,8 +165,6 @@ mat-toolbar > .mat-toolbar-row {
 
 .component-center + * > div{
   min-height: 600px;
-  /* display: flex; */
-  /* justify-content: center; */
   max-width: 1040px;
   margin-left: auto;
   margin-right: auto;

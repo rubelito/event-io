@@ -1,6 +1,4 @@
 ﻿using System.Globalization;
-using Microsoft.AspNetCore.Http;
-using MySql.Data.MySqlClient;
 using Scheduler.Entity;
 using Scheduler.Models;
 using Scheduler.Services;
