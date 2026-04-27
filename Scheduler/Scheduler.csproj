@@ -43,7 +43,6 @@
     <None Remove="ClientApp\dist\main.1f6b9871f27fa6d2.js" />
     <None Remove="Certificate\" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
-    <None Remove="Db\" />
     <None Remove="SixLabors.ImageSharp" />
     <None Remove="Interfaces\" />
   </ItemGroup>
@@ -55,9 +54,14 @@
     <Folder Include="Services\" />
     <Folder Include="SharedCode\" />
     <Folder Include="Certificate\" />
-    <Folder Include="Db\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>
+	<ItemGroup>
+		<Content Include="Db\**\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
