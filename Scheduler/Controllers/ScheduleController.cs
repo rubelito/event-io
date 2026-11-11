@@ -160,9 +160,11 @@ namespace Scheduler.Controllers
 
                 var appointment = ClassConverter.ConvertToAppointment(ev.Appointment);
 
-                var newlyCreatedAppointment = _appointmentRepository.AddAppointment(currentUser.Username, appointment);
-                _appointmentRepository.AssignUserToAppointments(ev.MemberIds, newlyCreatedAppointment.Id);
-                _appointmentRepository.AssignGroupToAppointments(ev.GroupIds, newlyCreatedAppointment.Id);
+                _appointmentRepository.AddAppointmentWithAttendees(
+                    currentUser.Username,
+                    appointment,
+                    ev.MemberIds,
+                    ev.GroupIds);
             }
             catch (Exception ex)
             {
@@ -191,14 +193,10 @@ namespace Scheduler.Controllers
 
                 var appointment = ClassConverter.ConvertToAppointment(ev.Appointment);
 
-                _appointmentRepository.EditAppointment(appointment);
-                //_appointmentRepository.DeleteAllRepeats(appointment.Id);
-
-                _appointmentRepository.DeleteAllUserAsignedToAppointment(ev.Appointment.Id);
-                _appointmentRepository.AssignUserToAppointments(ev.MemberIds, ev.Appointment.Id);
-
-                _appointmentRepository.DeleteAllGroupAsignedToAppointment(appointment.Id);
-                _appointmentRepository.AssignGroupToAppointments(ev.GroupIds, appointment.Id);
+                _appointmentRepository.EditAppointmentWithAttendees(
+                    appointment,
+                    ev.MemberIds,
+                    ev.GroupIds);
             }
             catch (Exception ex)
             {
@@ -225,19 +223,10 @@ namespace Scheduler.Controllers
                 var currentUser = HttpContext.Items["User"] as UserIdentity;
                 userName = currentUser.Username;
 
-                bool hasDifference = hasDifferenceOnRepeatSettings(ev.Appointment);
-                if (hasDifference)
-                {
-                    _appointmentRepository.EditAppointmentRepeatSettings(ev.Appointment);
-                }
-
-                _appointmentRepository.EditAllRepeatAppointment(ev.Appointment);
-
-                _appointmentRepository.DeleteAllUserAsignedToAppointment(ev.Appointment.Id);
-                _appointmentRepository.AssignUserToAppointments(ev.MemberIds, ev.Appointment.Id);
-
-                _appointmentRepository.DeleteAllGroupAsignedToAppointment(ev.Appointment.Id);
-                _appointmentRepository.AssignGroupToAppointments(ev.GroupIds, ev.Appointment.Id);
+                _appointmentRepository.EditRepeatWithAttendees(
+                    ev.Appointment,
+                    ev.MemberIds,
+                    ev.GroupIds);
             }
             catch (Exception ex)
             {
@@ -251,24 +240,6 @@ namespace Scheduler.Controllers
             }
 
             return Ok("Success");
-        }
-
-        private bool hasDifferenceOnRepeatSettings(EventModel model)
-        {
-            var originalEvent = _appointmentRepository.GetAppointmentById(model.Id);
-
-            bool hasDifference = false;
-
-            if ((originalEvent.RepeatSelection != model.RepeatSelection) ||
-                (originalEvent.RepeatEnd != model.RepeatEnd) ||
-                (originalEvent.After != model.After) ||
-                 originalEvent.OnDate.ToString("MM/dd/yyyy") != model.OnDate)
-            {
-                hasDifference = true;
-            }
-
-            return hasDifference;
-
         }
 
         [HttpPost]

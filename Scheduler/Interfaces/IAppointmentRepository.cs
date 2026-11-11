@@ -6,6 +6,7 @@ namespace Scheduler.Interfaces
     public interface IAppointmentRepository
     {
         Appointment AddAppointment(string ownerUsername, Appointment appointment);
+        void AddAppointmentWithAttendees(string ownerUsername, Appointment appointment, List<int> memberIds, List<int> groupIds);
         void AssignGroupToAppointments(List<int> groupIds, int appointmentId);
         void AssignUserToAppointments(List<int> participantsIds, int appointmentId);
         void ChangeScheduleDate(int appointmentId, DateTime newDate);
@@ -17,7 +18,9 @@ namespace Scheduler.Interfaces
         void Dispose();
         void EditAllRepeatAppointment(EventModel ev);
         void EditAppointment(Appointment appointmentToEdit);
+        void EditAppointmentWithAttendees(Appointment appointment, List<int> memberIds, List<int> groupIds);
         void EditAppointmentRepeatSettings(EventModel model);
+        void EditRepeatWithAttendees(EventModel model, List<int> memberIds, List<int> groupIds);
         List<User> GetAllAttendeesByAppointment(int appointmentId);
         List<Group> GetAllGroupAttendessByAppointment(int appontmentId);
         Appointment GetAppointmentById(int id);

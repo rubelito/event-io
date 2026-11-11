@@ -99,67 +99,109 @@ namespace Scheduler.Services
             return _dbContext.Appointments.FirstOrDefault(a => a.Id == id);
         }
 
+        public void AddAppointmentWithAttendees(
+            string ownerUsername,
+            Appointment appointment,
+            List<int> memberIds,
+            List<int> groupIds)
+        {
+            using var transaction = _dbContext.Database.BeginTransaction();
+
+            var createdAppointment = AddAppointment(ownerUsername, appointment);
+            AssignUserToAppointments(memberIds, createdAppointment.Id);
+            AssignGroupToAppointments(groupIds, createdAppointment.Id);
+
+            transaction.Commit();
+        }
+
         public Appointment AddAppointment(string ownerUsername, Appointment appointment)
         {
-            _dbContext.Database.BeginTransaction();
-            try
+            var user = _dbContext.Users.FirstOrDefault(u => u.UserName == ownerUsername);
+            user.Appointments.Add(appointment);
+            _dbContext.Appointments.Add(appointment);
+            _dbContext.SaveChanges();
+            return appointment;
+        }
+
+        public void EditAppointmentWithAttendees(
+            Appointment appointment,
+            List<int> memberIds,
+            List<int> groupIds)
+        {
+            using var transaction = _dbContext.Database.BeginTransaction();
+
+            EditAppointment(appointment);
+
+            ReplaceAttendees(appointment.Id, memberIds, groupIds);
+
+            transaction.Commit();
+        }
+
+        public void EditRepeatWithAttendees(EventModel model, List<int> memberIds, List<int> groupIds)
+        {
+            using var transaction = _dbContext.Database.BeginTransaction();
+
+            var originalEvent = GetAppointmentById(model.Id);
+            if (originalEvent == null)
             {
-                var user = _dbContext.Users.FirstOrDefault(u => u.UserName == ownerUsername);
-                user.Appointments.Add(appointment);
-                _dbContext.Appointments.Add(appointment);
-                _dbContext.SaveChanges();
-                _dbContext.Database.CommitTransaction();
-                return appointment;
+                throw new ArgumentException("Cannot find existing appointment Id=" + model.Id);
             }
-            catch (Exception ex)
+
+            if (originalEvent.RepeatSelection != model.RepeatSelection ||
+                originalEvent.RepeatEnd != model.RepeatEnd ||
+                originalEvent.After != model.After ||
+                originalEvent.OnDate.ToString("MM/dd/yyyy") != model.OnDate)
             {
-                _dbContext.Database.RollbackTransaction();
-                throw ex;
+                EditAppointmentRepeatSettings(model);
             }
+
+            EditAllRepeatAppointment(model);
+            ReplaceAttendees(model.Id, memberIds, groupIds);
+
+            transaction.Commit();
+        }
+
+        private void ReplaceAttendees(int appointmentId, List<int> memberIds, List<int> groupIds)
+        {
+            DeleteAllUserAsignedToAppointment(appointmentId);
+            AssignUserToAppointments(memberIds, appointmentId);
+
+            DeleteAllGroupAsignedToAppointment(appointmentId);
+            AssignGroupToAppointments(groupIds, appointmentId);
         }
 
         public void EditAppointment(Appointment appointmentToEdit)
         {
-            _dbContext.Database.BeginTransaction();
-            try
+            var appoint = _dbContext.Appointments.FirstOrDefault(a => a.Id == appointmentToEdit.Id);
+            if (appoint == null)
             {
-                var appoint = _dbContext.Appointments.FirstOrDefault(a => a.Id == appointmentToEdit.Id);
-                if (appoint == null)
-                {
-                    throw new ArgumentException("Cannot find existing appointment Id=" + appointmentToEdit.Id);
-                }
-
-                appoint.Location = appointmentToEdit.Location;
-                appoint.Title = appointmentToEdit.Title;
-                appoint.Color = appointmentToEdit.Color;
-                appoint.Details = appointmentToEdit.Details;
-
-                DateTime monthYear = Convert.ToDateTime(appointmentToEdit.Date);
-
-                if (!appointmentToEdit.IsClone)
-                {
-                    appoint.Date = appointmentToEdit.Date;
-                }
-
-                appoint.YearMonth = monthYear.Month + "/" + monthYear.Year;
-                appoint.Time = appointmentToEdit.Time;
-                appoint.EndDateSpan = appointmentToEdit.EndDateSpan;
-                appoint.EndTime = appointmentToEdit.EndTime;
-                appoint.isRepeat = appointmentToEdit.isRepeat;
-                appoint.RepeatSelection = appointmentToEdit.RepeatSelection;
-                appoint.RepeatEnd = appointmentToEdit.RepeatEnd;
-                appoint.After = appointmentToEdit.After;
-                appoint.OnDate = appointmentToEdit.OnDate;
-                appoint.IsDone = appointmentToEdit.IsDone;
-
-                _dbContext.SaveChanges();
-                _dbContext.Database.CommitTransaction();
+                throw new ArgumentException("Cannot find existing appointment Id=" + appointmentToEdit.Id);
             }
-            catch (Exception ex)
+
+            appoint.Location = appointmentToEdit.Location;
+            appoint.Title = appointmentToEdit.Title;
+            appoint.Color = appointmentToEdit.Color;
+            appoint.Details = appointmentToEdit.Details;
+
+            DateTime monthYear = Convert.ToDateTime(appointmentToEdit.Date);
+
+            if (!appointmentToEdit.IsClone)
             {
-                _dbContext.Database.RollbackTransaction();
-                throw ex;
+                appoint.Date = appointmentToEdit.Date;
             }
+
+            appoint.YearMonth = monthYear.Month + "/" + monthYear.Year;
+            appoint.Time = appointmentToEdit.Time;
+            appoint.EndDateSpan = appointmentToEdit.EndDateSpan;
+            appoint.EndTime = appointmentToEdit.EndTime;
+            appoint.isRepeat = appointmentToEdit.isRepeat;
+            appoint.RepeatSelection = appointmentToEdit.RepeatSelection;
+            appoint.RepeatEnd = appointmentToEdit.RepeatEnd;
+            appoint.After = appointmentToEdit.After;
+            appoint.OnDate = appointmentToEdit.OnDate;
+            appoint.IsDone = appointmentToEdit.IsDone;
+
+            _dbContext.SaveChanges();
         }
 
         public void EditAllRepeatAppointment(EventModel ev)
