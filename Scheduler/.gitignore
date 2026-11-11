@@ -230,3 +230,6 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
+# Keep the database snapshot seeder despite the parent repository's *.cs rule.
+!/Services/TestDatabaseSeeder.cs
+

@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { ApiInterceptor } from './http/api.interceptor';
 import { RouterModule } from '@angular/router';
 
 import { AuthService } from './auth-service/AuthService';
@@ -107,6 +108,7 @@ import { CalendarDeleteDialogComponent } from './calendar-components/calendar-de
     MatRadioModule
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     AppointmentService,
     AuthService,
     GroupService,

@@ -1,81 +1,59 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
+import { createApiParams } from "../http/api-params";
 import { Inject, Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import { AddEditModel } from "../calendar-models/addEditModel";
-import { Appointment } from "../calendar-models/Appointment";
 import { DateModel } from "../calendar-models/dateModel";
 import { EventModel } from "../calendar-models/event-model";
 import { UserBasic } from "../calendar-models/user-basic";
 
 @Injectable()
 export class AppointmentService {
-  private headers: HttpHeaders = new HttpHeaders();
+
   private baseUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string){
-    this.headers = this.headers.set('Content-type', 'application/json');
     this.baseUrl = baseUrl;
     }
 
-    getAppointments(yearMonth: string) {
-        let cre = localStorage.getItem("accessToken");
-        console.log(cre);
-        this.headers = this.headers.set('Authorization', cre!);
-        return this.http.get<EventModel[]>(this.baseUrl + "schedule/GetMeetings?yearMonth=" + yearMonth, { headers: this.headers});
+    getAppointments(yearMonth: string): Observable<EventModel[]> {
+        return this.http.get<EventModel[]>(this.baseUrl + "schedule/GetMeetings", { params: createApiParams().set("yearMonth", yearMonth) });
     }
 
-    getMeetings(yearMonth: string){
-        let cre = localStorage.getItem("accessToken");
-        this.headers = this.headers.set('Authorization', cre!);
-        return this.http.get<EventModel[]>(this.baseUrl + "schedule/GetMeetings?yearMonth=" + yearMonth, { headers: this.headers});
+    getMeetings(yearMonth: string): Observable<EventModel[]> {
+        return this.getAppointments(yearMonth);
     }
 
     getNumberOfRepeats(model: EventModel): Observable<number> {
-        let cre = localStorage.getItem("accessToken");
-        this.headers = this.headers.set('Authorization', cre!);
-        return this.http.post<number>(this.baseUrl + "schedule/GetNumberOfRepeats", model, { headers: this.headers});
+        return this.http.post<number>(this.baseUrl + "schedule/GetNumberOfRepeats", model);
     }
 
-    addSchedule(model: AddEditModel): Observable<Appointment>{
+    addSchedule(model: AddEditModel): Observable<string>{
         model.Appointment.After = model.Appointment.RepeatEnd != 1  ? 1 : model.Appointment.After;
-        let cre = localStorage.getItem("accessToken");
-        this.headers = this.headers.set('Authorization', cre!);
-        return this.http.post<Appointment>(this.baseUrl + "schedule/CreateEvent", model, { headers: this.headers});
+        return this.http.post<string>(this.baseUrl + "schedule/CreateEvent", model);
     }
 
-    editSchedule(model: AddEditModel): Observable<Appointment> {
-        let cre = localStorage.getItem("accessToken");
-        this.headers = this.headers.set('Authorization', cre!);
-        return this.http.post<Appointment>(this.baseUrl + "schedule/EditEvent", model, { headers: this.headers});
+    editSchedule(model: AddEditModel): Observable<string> {
+        return this.http.post<string>(this.baseUrl + "schedule/EditEvent", model);
     }
 
     editRepeat(model: AddEditModel): Observable<string> {
-        let cre = localStorage.getItem("accessToken");
-        this.headers = this.headers.set('Authorization', cre!);
-        return this.http.post<string>(this.baseUrl + "schedule/EditRepeat", model, { headers: this.headers});
+        return this.http.post<string>(this.baseUrl + "schedule/EditRepeat", model);
     }
 
     changeScheduleDate(model: DateModel): Observable<string> {
-        let cre = localStorage.getItem("accessToken");
-        this.headers = this.headers.set('Authorization', cre!);
-        return this.http.post<string>(this.baseUrl + "schedule/ChangeScheduleDate", model, { headers: this.headers});
+        return this.http.post<string>(this.baseUrl + "schedule/ChangeScheduleDate", model);
     }
 
     deleteSchedule(id: number): Observable<string> {
-        let cre = localStorage.getItem("accessToken");
-        this.headers = this.headers.set('Authorization', cre!);
-        return this.http.post<string>(this.baseUrl + "schedule/DeleteAppointment", id,  { headers: this.headers});
+        return this.http.post<string>(this.baseUrl + "schedule/DeleteAppointment", id);
     }
 
     deleteAppointmentRepeat(id: number, originalDateStr: string): Observable<string> {
-        let cre = localStorage.getItem("accessToken");
-        this.headers = this.headers.set('Authorization', cre!);
-        return this.http.get<string>(this.baseUrl + "schedule/DeleteAppointmentRepeat?appointmentId=" + id + "&originalDateStr=" + originalDateStr,  { headers: this.headers});
+        return this.http.get<string>(this.baseUrl + "schedule/DeleteAppointmentRepeat", { params: createApiParams().set("appointmentId", id).set("originalDateStr", originalDateStr) });
     }
     
    getAllAttendees(appointmentId: number): Observable<UserBasic[]> {
-    let cre = localStorage.getItem("accessToken");
-    this.headers = this.headers.set('Authorization', cre!);
-    return this.http.get<UserBasic[]>(this.baseUrl + "schedule/GetAllAttendees?appointmentId=" + appointmentId, { headers: this.headers});
+    return this.http.get<UserBasic[]>(this.baseUrl + "schedule/GetAllAttendees", { params: createApiParams().set("appointmentId", appointmentId) });
    }
 }
